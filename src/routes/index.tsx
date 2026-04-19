@@ -112,8 +112,9 @@ function Index() {
           </p>
         </div>
 
-        <footer className="mt-16 text-center text-xs text-muted-foreground">
-          Datos obtenidos de la API pública de ActioSAE · ArroyoBus · Arroyo de la Encomienda
+        <footer className="mt-16 text-center text-xs text-muted-foreground space-y-1">
+          <p>Datos obtenidos de la API pública de ActioSAE · ArroyoBus · Arroyo de la Encomienda</p>
+          <p>© {new Date().getFullYear()} Mateo Fernández Prieto · Todos los derechos reservados</p>
         </footer>
       </div>
     </div>
