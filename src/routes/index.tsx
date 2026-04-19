@@ -119,6 +119,10 @@ function Index() {
             <Link to="/aviso-legal" className="underline hover:text-foreground transition-colors">
               Aviso legal
             </Link>
+            {" · "}
+            <Link to="/contacto" className="underline hover:text-foreground transition-colors">
+              Contacto
+            </Link>
           </p>
         </footer>
       </div>
