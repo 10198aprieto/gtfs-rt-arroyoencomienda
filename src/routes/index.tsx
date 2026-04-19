@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { Bus, MapPin, Clock, ExternalLink, Download, FileArchive } from "lucide-react";
 import { lazy, Suspense } from "react";
 
@@ -114,7 +114,12 @@ function Index() {
 
         <footer className="mt-16 text-center text-xs text-muted-foreground space-y-1">
           <p>Datos obtenidos de la API pública de ActioSAE · ArroyoBus · Arroyo de la Encomienda</p>
-          <p>© {new Date().getFullYear()} Mateo Fernández Prieto · Todos los derechos reservados</p>
+          <p>
+            © {new Date().getFullYear()} Mateo Fernández Prieto · Todos los derechos reservados ·{" "}
+            <Link to="/aviso-legal" className="underline hover:text-foreground transition-colors">
+              Aviso legal
+            </Link>
+          </p>
         </footer>
       </div>
     </div>
