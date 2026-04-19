@@ -9,11 +9,17 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as ContactoRouteImport } from './routes/contacto'
 import { Route as AvisoLegalRouteImport } from './routes/aviso-legal'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ApiGtfsRtVehiclePositionsRouteImport } from './routes/api/gtfs-rt/vehicle-positions'
 import { Route as ApiGtfsRtTripUpdatesRouteImport } from './routes/api/gtfs-rt/trip-updates'
 
+const ContactoRoute = ContactoRouteImport.update({
+  id: '/contacto',
+  path: '/contacto',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AvisoLegalRoute = AvisoLegalRouteImport.update({
   id: '/aviso-legal',
   path: '/aviso-legal',
@@ -39,12 +45,14 @@ const ApiGtfsRtTripUpdatesRoute = ApiGtfsRtTripUpdatesRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/aviso-legal': typeof AvisoLegalRoute
+  '/contacto': typeof ContactoRoute
   '/api/gtfs-rt/trip-updates': typeof ApiGtfsRtTripUpdatesRoute
   '/api/gtfs-rt/vehicle-positions': typeof ApiGtfsRtVehiclePositionsRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/aviso-legal': typeof AvisoLegalRoute
+  '/contacto': typeof ContactoRoute
   '/api/gtfs-rt/trip-updates': typeof ApiGtfsRtTripUpdatesRoute
   '/api/gtfs-rt/vehicle-positions': typeof ApiGtfsRtVehiclePositionsRoute
 }
@@ -52,6 +60,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/aviso-legal': typeof AvisoLegalRoute
+  '/contacto': typeof ContactoRoute
   '/api/gtfs-rt/trip-updates': typeof ApiGtfsRtTripUpdatesRoute
   '/api/gtfs-rt/vehicle-positions': typeof ApiGtfsRtVehiclePositionsRoute
 }
@@ -60,18 +69,21 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/aviso-legal'
+    | '/contacto'
     | '/api/gtfs-rt/trip-updates'
     | '/api/gtfs-rt/vehicle-positions'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/aviso-legal'
+    | '/contacto'
     | '/api/gtfs-rt/trip-updates'
     | '/api/gtfs-rt/vehicle-positions'
   id:
     | '__root__'
     | '/'
     | '/aviso-legal'
+    | '/contacto'
     | '/api/gtfs-rt/trip-updates'
     | '/api/gtfs-rt/vehicle-positions'
   fileRoutesById: FileRoutesById
@@ -79,12 +91,20 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AvisoLegalRoute: typeof AvisoLegalRoute
+  ContactoRoute: typeof ContactoRoute
   ApiGtfsRtTripUpdatesRoute: typeof ApiGtfsRtTripUpdatesRoute
   ApiGtfsRtVehiclePositionsRoute: typeof ApiGtfsRtVehiclePositionsRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/contacto': {
+      id: '/contacto'
+      path: '/contacto'
+      fullPath: '/contacto'
+      preLoaderRoute: typeof ContactoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/aviso-legal': {
       id: '/aviso-legal'
       path: '/aviso-legal'
@@ -119,6 +139,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AvisoLegalRoute: AvisoLegalRoute,
+  ContactoRoute: ContactoRoute,
   ApiGtfsRtTripUpdatesRoute: ApiGtfsRtTripUpdatesRoute,
   ApiGtfsRtVehiclePositionsRoute: ApiGtfsRtVehiclePositionsRoute,
 }
