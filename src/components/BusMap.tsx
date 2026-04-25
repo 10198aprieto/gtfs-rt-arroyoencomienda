@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState, useCallback } from "react";
 import { RefreshCw } from "lucide-react";
+import stops from "@/data/stops.json";
 
 interface VehicleEntity {
   id: string;
@@ -23,6 +24,8 @@ export default function BusMap() {
   const mapRef = useRef<any>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const markersRef = useRef<Map<string, any>>(new Map());
+  const stopMarkersRef = useRef<Map<string, any>>(new Map());
+  const stopPopupTimers = useRef<Map<string, any>>(new Map());
   const leafletRef = useRef<any>(null);
   const [count, setCount] = useState(0);
   const [loading, setLoading] = useState(true);
@@ -125,6 +128,65 @@ export default function BusMap() {
       }).addTo(map);
 
       mapRef.current = map;
+
+      // --- Paradas (GTFS estático) ---
+      const stopIcon = Leaf.divIcon({
+        html: `<div style="background:white;width:14px;height:14px;border-radius:50%;border:2.5px solid hsl(221,83%,53%);box-shadow:0 1px 3px rgba(0,0,0,.3);"></div>`,
+        className: "",
+        iconSize: [14, 14],
+        iconAnchor: [7, 7],
+        popupAnchor: [0, -8],
+      });
+
+      const renderArrivals = async (stopId: string, stopName: string) => {
+        try {
+          const res = await fetch(`/api/stops/${stopId}`);
+          if (!res.ok) return `<div style="font-family:system-ui;font-size:13px"><strong>${stopName}</strong><br/><span style="color:#888">Sin datos</span></div>`;
+          const data = await res.json();
+          const list = (data.arrivals || []) as Array<any>;
+          const rows = list.length
+            ? list.map((a) => {
+                const color = a.routeColor ? `#${a.routeColor}` : "hsl(221,83%,53%)";
+                const short = (a.routeShortName || a.routeName || "—").toString();
+                const head = (a.tripHeadsign || "").toString();
+                const min = a.minutesAway === 0 ? "Ahora" : `${a.minutesAway} min`;
+                return `<tr>
+                  <td style="padding:4px 6px"><span style="display:inline-block;background:${color};color:#fff;font-weight:600;font-size:11px;padding:2px 7px;border-radius:10px">${short}</span></td>
+                  <td style="padding:4px 6px;color:#444;font-size:12px">${head}</td>
+                  <td style="padding:4px 6px;text-align:right;font-weight:600;font-size:12px">${min}</td>
+                </tr>`;
+              }).join("")
+            : `<tr><td colspan="3" style="padding:8px;color:#888;font-size:12px;text-align:center">Sin llegadas próximas</td></tr>`;
+          return `<div style="font-family:system-ui;min-width:240px">
+            <div style="font-weight:600;font-size:13px;margin-bottom:6px">${stopName}</div>
+            <div style="font-size:11px;color:#888;margin-bottom:4px">Parada ${stopId}</div>
+            <table style="border-collapse:collapse;width:100%">${rows}</table>
+          </div>`;
+        } catch {
+          return `<div style="font-family:system-ui;font-size:13px"><strong>${stopName}</strong><br/><span style="color:#888">Error</span></div>`;
+        }
+      };
+
+      for (const s of stops as Array<{ id: string; name: string; lat: number; lon: number }>) {
+        const m = Leaf.marker([s.lat, s.lon], { icon: stopIcon }).addTo(map);
+        m.bindPopup(`<div style="font-family:system-ui;font-size:13px"><strong>${s.name}</strong><br/><span style="color:#888">Cargando llegadas…</span></div>`);
+        m.on("popupopen", async () => {
+          const html = await renderArrivals(s.id, s.name);
+          m.setPopupContent(html);
+          // refresh while open every 15s
+          const t = setInterval(async () => {
+            const h = await renderArrivals(s.id, s.name);
+            m.setPopupContent(h);
+          }, 15000);
+          stopPopupTimers.current.set(s.id, t);
+        });
+        m.on("popupclose", () => {
+          const t = stopPopupTimers.current.get(s.id);
+          if (t) { clearInterval(t); stopPopupTimers.current.delete(s.id); }
+        });
+        stopMarkersRef.current.set(s.id, m);
+      }
+
       fetchVehicles();
     })();
 
@@ -132,11 +194,14 @@ export default function BusMap() {
     return () => {
       cancelled = true;
       clearInterval(interval);
+      for (const t of stopPopupTimers.current.values()) clearInterval(t);
+      stopPopupTimers.current.clear();
       if (mapRef.current) {
         mapRef.current.remove();
         mapRef.current = null;
       }
       markersRef.current.clear();
+      stopMarkersRef.current.clear();
     };
   }, [fetchVehicles]);
 
