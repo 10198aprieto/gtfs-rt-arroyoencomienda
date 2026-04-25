@@ -11,7 +11,10 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as ContactoRouteImport } from './routes/contacto'
 import { Route as AvisoLegalRouteImport } from './routes/aviso-legal'
+import { Route as AppRouteImport } from './routes/app'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ApiStopsIndexRouteImport } from './routes/api/stops/index'
+import { Route as ApiStopsStopIdRouteImport } from './routes/api/stops/$stopId'
 import { Route as ApiGtfsRtVehiclePositionsRouteImport } from './routes/api/gtfs-rt/vehicle-positions'
 import { Route as ApiGtfsRtTripUpdatesRouteImport } from './routes/api/gtfs-rt/trip-updates'
 
@@ -25,9 +28,24 @@ const AvisoLegalRoute = AvisoLegalRouteImport.update({
   path: '/aviso-legal',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AppRoute = AppRouteImport.update({
+  id: '/app',
+  path: '/app',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiStopsIndexRoute = ApiStopsIndexRouteImport.update({
+  id: '/api/stops/',
+  path: '/api/stops/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiStopsStopIdRoute = ApiStopsStopIdRouteImport.update({
+  id: '/api/stops/$stopId',
+  path: '/api/stops/$stopId',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ApiGtfsRtVehiclePositionsRoute =
@@ -44,56 +62,77 @@ const ApiGtfsRtTripUpdatesRoute = ApiGtfsRtTripUpdatesRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/app': typeof AppRoute
   '/aviso-legal': typeof AvisoLegalRoute
   '/contacto': typeof ContactoRoute
   '/api/gtfs-rt/trip-updates': typeof ApiGtfsRtTripUpdatesRoute
   '/api/gtfs-rt/vehicle-positions': typeof ApiGtfsRtVehiclePositionsRoute
+  '/api/stops/$stopId': typeof ApiStopsStopIdRoute
+  '/api/stops/': typeof ApiStopsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/app': typeof AppRoute
   '/aviso-legal': typeof AvisoLegalRoute
   '/contacto': typeof ContactoRoute
   '/api/gtfs-rt/trip-updates': typeof ApiGtfsRtTripUpdatesRoute
   '/api/gtfs-rt/vehicle-positions': typeof ApiGtfsRtVehiclePositionsRoute
+  '/api/stops/$stopId': typeof ApiStopsStopIdRoute
+  '/api/stops': typeof ApiStopsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/app': typeof AppRoute
   '/aviso-legal': typeof AvisoLegalRoute
   '/contacto': typeof ContactoRoute
   '/api/gtfs-rt/trip-updates': typeof ApiGtfsRtTripUpdatesRoute
   '/api/gtfs-rt/vehicle-positions': typeof ApiGtfsRtVehiclePositionsRoute
+  '/api/stops/$stopId': typeof ApiStopsStopIdRoute
+  '/api/stops/': typeof ApiStopsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/app'
     | '/aviso-legal'
     | '/contacto'
     | '/api/gtfs-rt/trip-updates'
     | '/api/gtfs-rt/vehicle-positions'
+    | '/api/stops/$stopId'
+    | '/api/stops/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/app'
     | '/aviso-legal'
     | '/contacto'
     | '/api/gtfs-rt/trip-updates'
     | '/api/gtfs-rt/vehicle-positions'
+    | '/api/stops/$stopId'
+    | '/api/stops'
   id:
     | '__root__'
     | '/'
+    | '/app'
     | '/aviso-legal'
     | '/contacto'
     | '/api/gtfs-rt/trip-updates'
     | '/api/gtfs-rt/vehicle-positions'
+    | '/api/stops/$stopId'
+    | '/api/stops/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AppRoute: typeof AppRoute
   AvisoLegalRoute: typeof AvisoLegalRoute
   ContactoRoute: typeof ContactoRoute
   ApiGtfsRtTripUpdatesRoute: typeof ApiGtfsRtTripUpdatesRoute
   ApiGtfsRtVehiclePositionsRoute: typeof ApiGtfsRtVehiclePositionsRoute
+  ApiStopsStopIdRoute: typeof ApiStopsStopIdRoute
+  ApiStopsIndexRoute: typeof ApiStopsIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -112,11 +151,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AvisoLegalRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/app': {
+      id: '/app'
+      path: '/app'
+      fullPath: '/app'
+      preLoaderRoute: typeof AppRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/stops/': {
+      id: '/api/stops/'
+      path: '/api/stops'
+      fullPath: '/api/stops/'
+      preLoaderRoute: typeof ApiStopsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/stops/$stopId': {
+      id: '/api/stops/$stopId'
+      path: '/api/stops/$stopId'
+      fullPath: '/api/stops/$stopId'
+      preLoaderRoute: typeof ApiStopsStopIdRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/gtfs-rt/vehicle-positions': {
@@ -138,10 +198,13 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AppRoute: AppRoute,
   AvisoLegalRoute: AvisoLegalRoute,
   ContactoRoute: ContactoRoute,
   ApiGtfsRtTripUpdatesRoute: ApiGtfsRtTripUpdatesRoute,
   ApiGtfsRtVehiclePositionsRoute: ApiGtfsRtVehiclePositionsRoute,
+  ApiStopsStopIdRoute: ApiStopsStopIdRoute,
+  ApiStopsIndexRoute: ApiStopsIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

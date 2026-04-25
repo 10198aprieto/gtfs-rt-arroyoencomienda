@@ -26,58 +26,6 @@ function getApiKey(): string {
   return process.env.ACTIOSAE_API_KEY || "";
 }
 
-// --- Búho Fiestas (San Juan 2026) ---
-// Servicio especial nocturno: noches del 5 al 10 de mayo de 2026,
-// de 00:00 a 05:00 (hora de Madrid), recorrido circular que empieza
-// y termina en la parada de Calle Presentación (La Vaca).
-const BUHO_FIESTAS_LABEL = "Buho Fiestas: Servicio Especial";
-const BUHO_PRESENTACION_KEYWORD = "presentaci"; // tolera acentos: "Presentación" / "presentacion"
-
-function isBuhoFiestasWindow(unixSeconds: number): boolean {
-  // Convertir a hora de Europa/Madrid de forma robusta
-  const date = new Date(unixSeconds * 1000);
-  const parts = new Intl.DateTimeFormat("en-GB", {
-    timeZone: "Europe/Madrid",
-    year: "numeric",
-    month: "2-digit",
-    day: "2-digit",
-    hour: "2-digit",
-    minute: "2-digit",
-    hour12: false,
-  }).formatToParts(date);
-  const get = (t: string) => Number(parts.find((p) => p.type === t)?.value);
-  const year = get("year");
-  const month = get("month");
-  const day = get("day");
-  const hour = get("hour");
-
-  if (year !== 2026 || month !== 5) return false;
-  // Noches del 5 al 9 de mayo (00:00–05:00 hora local).
-  // La noche del 9→10 se considera la última madrugada del día 10.
-  if (day < 5 || day > 10) return false;
-  return hour >= 0 && hour < 5;
-}
-
-function applyBuhoFiestasOverride(a: ArrivalData): ArrivalData {
-  if (!isBuhoFiestasWindow(a.estimatedArrival)) return a;
-  const headsign = (a.tripHeadsign || "").toLowerCase();
-  const stopName = (a.stopName || "").toLowerCase();
-  // El recorrido es circular y empieza/termina en Calle Presentación.
-  // Detectamos por headsign que apunte a Presentación.
-  if (
-    headsign.includes(BUHO_PRESENTACION_KEYWORD) ||
-    stopName.includes(BUHO_PRESENTACION_KEYWORD)
-  ) {
-    return {
-      ...a,
-      routeName: BUHO_FIESTAS_LABEL,
-      routeShortName: "BF",
-      tripHeadsign: BUHO_FIESTAS_LABEL,
-    };
-  }
-  return a;
-}
-
 async function fetchStopArrivals(stopId: string): Promise<ArrivalData[]> {
   try {
     const apiKey = getApiKey();
@@ -98,7 +46,7 @@ async function fetchStopArrivals(stopId: string): Promise<ArrivalData[]> {
 
     for (const item of json) {
       if (item.tripId && item.vehicleId) {
-        arrivals.push(applyBuhoFiestasOverride({
+        arrivals.push({
           tripId: String(item.tripId),
           vehicleId: String(item.vehicleId),
           routeId: String(item.route?.routeId || ""),
@@ -117,7 +65,7 @@ async function fetchStopArrivals(stopId: string): Promise<ArrivalData[]> {
           directionId: item.directionId,
           tripHeadsign: item.tripHeadsign,
           isEstimated: item.isEstimated,
-        }));
+        });
       }
     }
     return arrivals;

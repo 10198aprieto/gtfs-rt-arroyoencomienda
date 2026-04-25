@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { Bus, MapPin, Clock, ExternalLink, Download, FileArchive } from "lucide-react";
+import { Bus, MapPin, Clock, ExternalLink, Download, FileArchive, Smartphone } from "lucide-react";
 import { lazy, Suspense } from "react";
 
 const BusMap = lazy(() => import("@/components/BusMap"));
@@ -43,6 +43,22 @@ function Index() {
           Feed GTFS Realtime del servicio de autobuses de Arroyo de la Encomienda (Valladolid).
           Datos actualizados cada consulta desde la API de ActioSAE.
         </p>
+
+        <div className="mb-8">
+          <Link
+            to="/app"
+            className="flex items-center gap-3 p-4 border border-border rounded-xl bg-card hover:bg-accent transition-colors"
+          >
+            <div className="w-10 h-10 rounded-full bg-primary/10 text-primary flex items-center justify-center">
+              <Smartphone className="w-5 h-5" />
+            </div>
+            <div className="flex-1">
+              <p className="font-semibold text-sm">Abrir app móvil</p>
+              <p className="text-xs text-muted-foreground">Buscar paradas y ver llegadas en tiempo real</p>
+            </div>
+            <ExternalLink className="w-4 h-4 text-muted-foreground" />
+          </Link>
+        </div>
 
         <div className="mb-8">
           <Suspense fallback={<div className="border border-border rounded-xl h-[440px] bg-card animate-pulse" />}>
