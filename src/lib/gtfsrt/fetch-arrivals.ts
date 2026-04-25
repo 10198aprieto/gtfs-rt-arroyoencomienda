@@ -31,12 +31,16 @@ async function fetchStopArrivals(stopId: string): Promise<ArrivalData[]> {
     const apiKey = getApiKey();
     const url = `${BASE_URL}/${stopId}?feedId=${FEED_ID}${apiKey ? `&key=${apiKey}` : ""}`;
 
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), 5000);
     const res = await fetch(url, {
       headers: {
         "Accept": "application/json",
         "User-Agent": "ArroyoBus-GTFSRT/1.0",
       },
+      signal: controller.signal,
     });
+    clearTimeout(timer);
     if (!res.ok) return [];
     const json = await res.json() as any[];
 
@@ -78,23 +82,39 @@ async function fetchStopArrivals(stopId: string): Promise<ArrivalData[]> {
 let cachedArrivals: ArrivalData[] | null = null;
 let cacheTimestamp = 0;
 const CACHE_TTL_MS = 15_000; // 15 seconds
+const CACHE_STALE_MS = 120_000; // serve stale up to 2 min if upstream fails
+let inflight: Promise<ArrivalData[]> | null = null;
 
 export async function fetchAllArrivals(): Promise<ArrivalData[]> {
   const now = Date.now();
   if (cachedArrivals && now - cacheTimestamp < CACHE_TTL_MS) {
     return cachedArrivals;
   }
+  if (inflight) return inflight;
 
-  const allArrivals: ArrivalData[] = [];
-  const batchSize = 10;
+  inflight = (async () => {
+    try {
+      const allArrivals: ArrivalData[] = [];
+      // Mayor concurrencia para no agotar el límite de 30s del Worker.
+      const batchSize = 25;
+      for (let i = 0; i < STOP_IDS.length; i += batchSize) {
+        const batch = STOP_IDS.slice(i, i + batchSize);
+        const results = await Promise.all(batch.map(fetchStopArrivals));
+        for (const r of results) allArrivals.push(...r);
+      }
+      cachedArrivals = allArrivals;
+      cacheTimestamp = Date.now();
+      return allArrivals;
+    } catch {
+      // Si todo falla pero hay cache razonablemente reciente, sírvelo
+      if (cachedArrivals && Date.now() - cacheTimestamp < CACHE_STALE_MS) {
+        return cachedArrivals;
+      }
+      return [];
+    } finally {
+      inflight = null;
+    }
+  })();
 
-  for (let i = 0; i < STOP_IDS.length; i += batchSize) {
-    const batch = STOP_IDS.slice(i, i + batchSize);
-    const results = await Promise.all(batch.map(fetchStopArrivals));
-    for (const r of results) allArrivals.push(...r);
-  }
-
-  cachedArrivals = allArrivals;
-  cacheTimestamp = now;
-  return allArrivals;
+  return inflight;
 }
