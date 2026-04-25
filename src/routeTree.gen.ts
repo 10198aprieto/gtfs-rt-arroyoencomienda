@@ -12,6 +12,8 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as ContactoRouteImport } from './routes/contacto'
 import { Route as AvisoLegalRouteImport } from './routes/aviso-legal'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ApiStopsIndexRouteImport } from './routes/api/stops/index'
+import { Route as ApiStopsStopIdRouteImport } from './routes/api/stops/$stopId'
 import { Route as ApiGtfsRtVehiclePositionsRouteImport } from './routes/api/gtfs-rt/vehicle-positions'
 import { Route as ApiGtfsRtTripUpdatesRouteImport } from './routes/api/gtfs-rt/trip-updates'
 
@@ -28,6 +30,16 @@ const AvisoLegalRoute = AvisoLegalRouteImport.update({
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiStopsIndexRoute = ApiStopsIndexRouteImport.update({
+  id: '/api/stops/',
+  path: '/api/stops/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiStopsStopIdRoute = ApiStopsStopIdRouteImport.update({
+  id: '/api/stops/$stopId',
+  path: '/api/stops/$stopId',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ApiGtfsRtVehiclePositionsRoute =
@@ -48,6 +60,8 @@ export interface FileRoutesByFullPath {
   '/contacto': typeof ContactoRoute
   '/api/gtfs-rt/trip-updates': typeof ApiGtfsRtTripUpdatesRoute
   '/api/gtfs-rt/vehicle-positions': typeof ApiGtfsRtVehiclePositionsRoute
+  '/api/stops/$stopId': typeof ApiStopsStopIdRoute
+  '/api/stops/': typeof ApiStopsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -55,6 +69,8 @@ export interface FileRoutesByTo {
   '/contacto': typeof ContactoRoute
   '/api/gtfs-rt/trip-updates': typeof ApiGtfsRtTripUpdatesRoute
   '/api/gtfs-rt/vehicle-positions': typeof ApiGtfsRtVehiclePositionsRoute
+  '/api/stops/$stopId': typeof ApiStopsStopIdRoute
+  '/api/stops': typeof ApiStopsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -63,6 +79,8 @@ export interface FileRoutesById {
   '/contacto': typeof ContactoRoute
   '/api/gtfs-rt/trip-updates': typeof ApiGtfsRtTripUpdatesRoute
   '/api/gtfs-rt/vehicle-positions': typeof ApiGtfsRtVehiclePositionsRoute
+  '/api/stops/$stopId': typeof ApiStopsStopIdRoute
+  '/api/stops/': typeof ApiStopsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -72,6 +90,8 @@ export interface FileRouteTypes {
     | '/contacto'
     | '/api/gtfs-rt/trip-updates'
     | '/api/gtfs-rt/vehicle-positions'
+    | '/api/stops/$stopId'
+    | '/api/stops/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -79,6 +99,8 @@ export interface FileRouteTypes {
     | '/contacto'
     | '/api/gtfs-rt/trip-updates'
     | '/api/gtfs-rt/vehicle-positions'
+    | '/api/stops/$stopId'
+    | '/api/stops'
   id:
     | '__root__'
     | '/'
@@ -86,6 +108,8 @@ export interface FileRouteTypes {
     | '/contacto'
     | '/api/gtfs-rt/trip-updates'
     | '/api/gtfs-rt/vehicle-positions'
+    | '/api/stops/$stopId'
+    | '/api/stops/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -94,6 +118,8 @@ export interface RootRouteChildren {
   ContactoRoute: typeof ContactoRoute
   ApiGtfsRtTripUpdatesRoute: typeof ApiGtfsRtTripUpdatesRoute
   ApiGtfsRtVehiclePositionsRoute: typeof ApiGtfsRtVehiclePositionsRoute
+  ApiStopsStopIdRoute: typeof ApiStopsStopIdRoute
+  ApiStopsIndexRoute: typeof ApiStopsIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -119,6 +145,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/stops/': {
+      id: '/api/stops/'
+      path: '/api/stops'
+      fullPath: '/api/stops/'
+      preLoaderRoute: typeof ApiStopsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/stops/$stopId': {
+      id: '/api/stops/$stopId'
+      path: '/api/stops/$stopId'
+      fullPath: '/api/stops/$stopId'
+      preLoaderRoute: typeof ApiStopsStopIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/gtfs-rt/vehicle-positions': {
       id: '/api/gtfs-rt/vehicle-positions'
       path: '/api/gtfs-rt/vehicle-positions'
@@ -142,6 +182,8 @@ const rootRouteChildren: RootRouteChildren = {
   ContactoRoute: ContactoRoute,
   ApiGtfsRtTripUpdatesRoute: ApiGtfsRtTripUpdatesRoute,
   ApiGtfsRtVehiclePositionsRoute: ApiGtfsRtVehiclePositionsRoute,
+  ApiStopsStopIdRoute: ApiStopsStopIdRoute,
+  ApiStopsIndexRoute: ApiStopsIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
