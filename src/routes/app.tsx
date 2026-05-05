@@ -355,6 +355,7 @@ function CardEditor({
   const [label, setLabel] = useState(initial?.label || "");
   const [data, setData] = useState(initial?.data || "");
   const [color, setColor] = useState(initial?.color || CARD_COLORS[0]);
+  const [scanning, setScanning] = useState(false);
 
   const save = () => {
     const trimmedLabel = label.trim() || "Tarjeta Buscyl";
@@ -401,6 +402,13 @@ function CardEditor({
             rows={3}
             className="w-full px-3 py-2.5 rounded-lg border border-border bg-card text-sm font-mono focus:outline-none focus:ring-2 focus:ring-primary/40"
           />
+          <button
+            onClick={() => setScanning(true)}
+            type="button"
+            className="w-full mt-1 py-2.5 rounded-lg border border-border bg-card text-sm font-medium flex items-center justify-center gap-2 active:bg-accent"
+          >
+            <Camera className="w-4 h-4" /> Escanear QR con la cámara
+          </button>
           <p className="text-[11px] text-muted-foreground">
             Se guarda solo en este dispositivo (almacenamiento local). Nada se envía a ningún servidor.
           </p>
@@ -428,6 +436,15 @@ function CardEditor({
         >
           {initial ? "Guardar cambios" : "Guardar tarjeta"}
         </button>
+        {scanning && (
+          <QrScanner
+            onClose={() => setScanning(false)}
+            onResult={(text) => {
+              setData(text);
+              setScanning(false);
+            }}
+          />
+        )}
       </div>
     </div>
   );
