@@ -255,3 +255,258 @@ function StopDetail({ stop, onBack, userPos }: { stop: Stop; onBack: () => void;
     </div>
   );
 }
+
+const CARD_COLORS = ["#1d4ed8", "#0f766e", "#b45309", "#9333ea", "#dc2626", "#0891b2"];
+
+function CardsView() {
+  const [cards, setCards] = useState<BuscylCard[]>([]);
+  const [editor, setEditor] = useState<{ mode: "new" } | { mode: "edit"; card: BuscylCard } | null>(null);
+  const [viewing, setViewing] = useState<BuscylCard | null>(null);
+
+  useEffect(() => {
+    setCards(loadCards());
+  }, []);
+
+  const refresh = () => setCards(loadCards());
+
+  return (
+    <div className="flex-1 flex flex-col">
+      {cards.length === 0 ? (
+        <div className="flex-1 flex flex-col items-center justify-center text-center px-6 py-12 gap-3">
+          <div className="w-16 h-16 rounded-2xl bg-primary/10 text-primary flex items-center justify-center">
+            <CreditCard className="w-8 h-8" />
+          </div>
+          <h3 className="text-base font-semibold">Tus tarjetas Buscyl</h3>
+          <p className="text-sm text-muted-foreground max-w-xs">
+            Guarda el QR de tu tarjeta Buscyl en el dispositivo para enseñarlo en el bus sin conexión.
+          </p>
+        </div>
+      ) : (
+        <ul className="flex-1 p-3 grid grid-cols-1 gap-3">
+          {cards.map((c) => (
+            <li key={c.id}>
+              <button
+                onClick={() => setViewing(c)}
+                className="w-full text-left rounded-2xl p-4 flex items-center gap-3 shadow-sm active:scale-[0.99] transition-transform"
+                style={{ backgroundColor: c.color || "#1d4ed8", color: "white" }}
+              >
+                <div className="w-12 h-12 rounded-xl bg-white/15 flex items-center justify-center shrink-0">
+                  <CreditCard className="w-6 h-6" />
+                </div>
+                <div className="min-w-0 flex-1">
+                  <p className="text-[10px] uppercase tracking-wider opacity-80">Buscyl</p>
+                  <p className="text-sm font-semibold truncate">{c.label}</p>
+                  <p className="text-[11px] opacity-80 truncate font-mono">{c.data}</p>
+                </div>
+              </button>
+            </li>
+          ))}
+        </ul>
+      )}
+
+      <div className="p-4">
+        <button
+          onClick={() => setEditor({ mode: "new" })}
+          className="w-full py-3 rounded-xl bg-primary text-primary-foreground text-sm font-semibold flex items-center justify-center gap-2 active:opacity-90"
+        >
+          <Plus className="w-4 h-4" /> Añadir tarjeta
+        </button>
+      </div>
+
+      {editor && (
+        <CardEditor
+          initial={editor.mode === "edit" ? editor.card : null}
+          onClose={() => setEditor(null)}
+          onSaved={() => {
+            setEditor(null);
+            refresh();
+          }}
+        />
+      )}
+
+      {viewing && (
+        <CardViewer
+          card={viewing}
+          onClose={() => setViewing(null)}
+          onEdit={() => {
+            setEditor({ mode: "edit", card: viewing });
+            setViewing(null);
+          }}
+          onDelete={() => {
+            removeCard(viewing.id);
+            setViewing(null);
+            refresh();
+          }}
+        />
+      )}
+    </div>
+  );
+}
+
+function CardEditor({
+  initial,
+  onClose,
+  onSaved,
+}: {
+  initial: BuscylCard | null;
+  onClose: () => void;
+  onSaved: () => void;
+}) {
+  const [label, setLabel] = useState(initial?.label || "");
+  const [data, setData] = useState(initial?.data || "");
+  const [color, setColor] = useState(initial?.color || CARD_COLORS[0]);
+
+  const save = () => {
+    const trimmedLabel = label.trim() || "Tarjeta Buscyl";
+    const trimmedData = data.trim();
+    if (!trimmedData) return;
+    if (initial) {
+      updateCard(initial.id, { label: trimmedLabel, data: trimmedData, color });
+    } else {
+      addCard({ label: trimmedLabel, data: trimmedData, color });
+    }
+    onSaved();
+  };
+
+  return (
+    <div className="fixed inset-0 z-50 bg-black/60 flex items-end sm:items-center justify-center" onClick={onClose}>
+      <div
+        className="w-full sm:max-w-md bg-background rounded-t-2xl sm:rounded-2xl p-5 space-y-4"
+        onClick={(e) => e.stopPropagation()}
+        style={{ paddingBottom: "calc(1.25rem + env(safe-area-inset-bottom))" }}
+      >
+        <div className="flex items-center gap-2">
+          <h3 className="text-base font-semibold flex-1">{initial ? "Editar tarjeta" : "Nueva tarjeta Buscyl"}</h3>
+          <button onClick={onClose} className="p-1.5 rounded-lg active:bg-accent">
+            <X className="w-4 h-4" />
+          </button>
+        </div>
+
+        <div className="space-y-1.5">
+          <label className="text-xs font-medium text-muted-foreground">Nombre</label>
+          <input
+            value={label}
+            onChange={(e) => setLabel(e.target.value)}
+            placeholder="Mi tarjeta"
+            className="w-full px-3 py-2.5 rounded-lg border border-border bg-card text-sm focus:outline-none focus:ring-2 focus:ring-primary/40"
+          />
+        </div>
+
+        <div className="space-y-1.5">
+          <label className="text-xs font-medium text-muted-foreground">Contenido del QR (número o texto)</label>
+          <textarea
+            value={data}
+            onChange={(e) => setData(e.target.value)}
+            placeholder="Pega aquí el código de tu tarjeta Buscyl"
+            rows={3}
+            className="w-full px-3 py-2.5 rounded-lg border border-border bg-card text-sm font-mono focus:outline-none focus:ring-2 focus:ring-primary/40"
+          />
+          <p className="text-[11px] text-muted-foreground">
+            Se guarda solo en este dispositivo (almacenamiento local). Nada se envía a ningún servidor.
+          </p>
+        </div>
+
+        <div className="space-y-1.5">
+          <label className="text-xs font-medium text-muted-foreground">Color</label>
+          <div className="flex gap-2 flex-wrap">
+            {CARD_COLORS.map((c) => (
+              <button
+                key={c}
+                onClick={() => setColor(c)}
+                className={`w-8 h-8 rounded-full border-2 ${color === c ? "border-foreground" : "border-transparent"}`}
+                style={{ backgroundColor: c }}
+                aria-label={`Color ${c}`}
+              />
+            ))}
+          </div>
+        </div>
+
+        <button
+          onClick={save}
+          disabled={!data.trim()}
+          className="w-full py-3 rounded-xl bg-primary text-primary-foreground text-sm font-semibold disabled:opacity-50"
+        >
+          {initial ? "Guardar cambios" : "Guardar tarjeta"}
+        </button>
+      </div>
+    </div>
+  );
+}
+
+function CardViewer({
+  card,
+  onClose,
+  onEdit,
+  onDelete,
+}: {
+  card: BuscylCard;
+  onClose: () => void;
+  onEdit: () => void;
+  onDelete: () => void;
+}) {
+  const [qr, setQr] = useState<string>("");
+  const [confirmDelete, setConfirmDelete] = useState(false);
+
+  useEffect(() => {
+    QRCode.toDataURL(card.data, { width: 600, margin: 2, errorCorrectionLevel: "M" })
+      .then(setQr)
+      .catch(() => setQr(""));
+  }, [card.data]);
+
+  return (
+    <div className="fixed inset-0 z-50 bg-black/80 flex flex-col" onClick={onClose}>
+      <div
+        className="flex-1 flex flex-col"
+        onClick={(e) => e.stopPropagation()}
+        style={{ paddingTop: "env(safe-area-inset-top)", paddingBottom: "env(safe-area-inset-bottom)" }}
+      >
+        <header className="flex items-center gap-2 px-3 py-3 text-white">
+          <button onClick={onClose} className="p-2 rounded-lg active:bg-white/10">
+            <ArrowLeft className="w-5 h-5" />
+          </button>
+          <h3 className="text-sm font-semibold flex-1 truncate">{card.label}</h3>
+          <button onClick={onEdit} className="p-2 rounded-lg active:bg-white/10" aria-label="Editar">
+            <Pencil className="w-4 h-4" />
+          </button>
+          <button onClick={() => setConfirmDelete(true)} className="p-2 rounded-lg active:bg-white/10" aria-label="Eliminar">
+            <Trash2 className="w-4 h-4" />
+          </button>
+        </header>
+
+        <div className="flex-1 flex flex-col items-center justify-center px-6 gap-6">
+          <div className="bg-white p-5 rounded-2xl shadow-2xl">
+            {qr ? (
+              <img src={qr} alt={`QR de ${card.label}`} className="w-64 h-64 sm:w-72 sm:h-72" />
+            ) : (
+              <div className="w-64 h-64 sm:w-72 sm:h-72 flex items-center justify-center text-xs text-muted-foreground">
+                Generando…
+              </div>
+            )}
+          </div>
+          <div className="text-center text-white/90">
+            <p className="text-xs uppercase tracking-wider opacity-70">Tarjeta Buscyl</p>
+            <p className="text-base font-semibold">{card.label}</p>
+            <p className="text-[11px] font-mono opacity-70 mt-1 break-all max-w-xs">{card.data}</p>
+          </div>
+        </div>
+
+        {confirmDelete && (
+          <div className="absolute inset-0 bg-black/70 flex items-center justify-center p-6" onClick={() => setConfirmDelete(false)}>
+            <div className="bg-background rounded-2xl p-5 max-w-sm w-full space-y-4" onClick={(e) => e.stopPropagation()}>
+              <h4 className="text-base font-semibold">Eliminar tarjeta</h4>
+              <p className="text-sm text-muted-foreground">¿Seguro que quieres eliminar “{card.label}”? Esta acción no se puede deshacer.</p>
+              <div className="flex gap-2">
+                <button onClick={() => setConfirmDelete(false)} className="flex-1 py-2.5 rounded-lg border border-border text-sm font-medium">
+                  Cancelar
+                </button>
+                <button onClick={onDelete} className="flex-1 py-2.5 rounded-lg bg-destructive text-destructive-foreground text-sm font-semibold">
+                  Eliminar
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
