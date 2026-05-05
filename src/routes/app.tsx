@@ -450,6 +450,139 @@ function CardEditor({
   );
 }
 
+function QrScanner({ onClose, onResult }: { onClose: () => void; onResult: (text: string) => void }) {
+  const videoRef = useRef<HTMLVideoElement | null>(null);
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [starting, setStarting] = useState(true);
+
+  useEffect(() => {
+    let stopped = false;
+    let controls: { stop: () => void } | null = null;
+    let reader: { reset?: () => void } | null = null;
+
+    (async () => {
+      try {
+        const { BrowserQRCodeReader } = await import("@zxing/browser");
+        if (stopped) return;
+        const codeReader = new BrowserQRCodeReader();
+        reader = codeReader as unknown as { reset?: () => void };
+        const devices = await BrowserQRCodeReader.listVideoInputDevices();
+        const back = devices.find((d) => /back|rear|environment|trasera/i.test(d.label));
+        const deviceId = back?.deviceId || devices[0]?.deviceId;
+        if (!videoRef.current) return;
+        const ctrl = await codeReader.decodeFromVideoDevice(
+          deviceId,
+          videoRef.current,
+          (result, err) => {
+            if (stopped) return;
+            if (result) {
+              const text = result.getText();
+              if (text) {
+                stopped = true;
+                ctrl.stop();
+                onResult(text);
+              }
+            }
+            // ignore "not found" errors — they fire continuously while scanning
+          }
+        );
+        controls = ctrl;
+        setStarting(false);
+      } catch (e: any) {
+        setError(
+          e?.name === "NotAllowedError"
+            ? "Permiso de cámara denegado. Habilítalo en los ajustes del navegador."
+            : e?.name === "NotFoundError"
+            ? "No se ha detectado ninguna cámara."
+            : "No se pudo iniciar la cámara."
+        );
+        setStarting(false);
+      }
+    })();
+
+    return () => {
+      stopped = true;
+      try { controls?.stop(); } catch {}
+      try { reader?.reset?.(); } catch {}
+    };
+  }, [onResult]);
+
+  const onPickFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    try {
+      const { BrowserQRCodeReader } = await import("@zxing/browser");
+      const codeReader = new BrowserQRCodeReader();
+      const url = URL.createObjectURL(file);
+      try {
+        const result = await codeReader.decodeFromImageUrl(url);
+        const text = result.getText();
+        if (text) onResult(text);
+        else setError("No se ha encontrado ningún QR en la imagen.");
+      } finally {
+        URL.revokeObjectURL(url);
+      }
+    } catch {
+      setError("No se ha podido leer el QR de la imagen.");
+    }
+  };
+
+  return (
+    <div className="fixed inset-0 z-[60] bg-black flex flex-col" style={{ paddingTop: "env(safe-area-inset-top)", paddingBottom: "env(safe-area-inset-bottom)" }}>
+      <header className="flex items-center gap-2 px-3 py-3 text-white">
+        <button onClick={onClose} className="p-2 rounded-lg active:bg-white/10" aria-label="Cerrar">
+          <X className="w-5 h-5" />
+        </button>
+        <h3 className="text-sm font-semibold flex-1">Escanear QR Buscyl</h3>
+      </header>
+
+      <div className="relative flex-1 overflow-hidden">
+        <video
+          ref={videoRef}
+          className="absolute inset-0 w-full h-full object-cover"
+          playsInline
+          muted
+        />
+        <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+          <div className="w-64 h-64 border-2 border-white/80 rounded-2xl shadow-[0_0_0_9999px_rgba(0,0,0,0.45)] relative">
+            <ScanLine className="absolute inset-0 m-auto w-10 h-10 text-white/70 animate-pulse" />
+          </div>
+        </div>
+        {starting && !error && (
+          <div className="absolute inset-0 flex items-center justify-center text-white text-sm">
+            Iniciando cámara…
+          </div>
+        )}
+        {error && (
+          <div className="absolute inset-x-0 bottom-0 p-4 bg-black/70 text-white text-sm text-center">
+            {error}
+          </div>
+        )}
+      </div>
+
+      <div className="p-4 space-y-2">
+        <input
+          ref={fileInputRef}
+          type="file"
+          accept="image/*"
+          className="hidden"
+          onChange={onPickFile}
+        />
+        <button
+          onClick={() => fileInputRef.current?.click()}
+          className="w-full py-3 rounded-xl bg-white/10 text-white text-sm font-medium flex items-center justify-center gap-2 active:bg-white/20"
+        >
+          <Camera className="w-4 h-4" /> Subir imagen del QR
+        </button>
+        <p className="text-[11px] text-white/60 text-center">
+          Apunta la cámara al QR de tu tarjeta Buscyl. Se detectará automáticamente.
+        </p>
+      </div>
+    </div>
+  );
+}
+
 function CardViewer({
   card,
   onClose,
