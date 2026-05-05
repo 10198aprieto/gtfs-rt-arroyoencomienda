@@ -1,7 +1,9 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
-import { Bus, Search, MapPin, RefreshCw, ArrowLeft, Map as MapIcon } from "lucide-react";
+import { Bus, Search, MapPin, RefreshCw, ArrowLeft, Map as MapIcon, CreditCard, Plus, Trash2, X, Pencil } from "lucide-react";
+import QRCode from "qrcode";
 import stopsData from "@/data/stops.json";
+import { loadCards, addCard, removeCard, updateCard, type BuscylCard } from "@/lib/buscyl-cards";
 
 interface Stop { id: string; name: string; desc: string; lat: number; lon: number }
 interface Arrival {
@@ -51,6 +53,7 @@ function AppPage() {
   const [query, setQuery] = useState("");
   const [selected, setSelected] = useState<Stop | null>(null);
   const [userPos, setUserPos] = useState<{ lat: number; lon: number } | null>(null);
+  const [tab, setTab] = useState<"stops" | "cards">("stops");
 
   useEffect(() => {
     if (typeof navigator === "undefined" || !navigator.geolocation) return;
@@ -96,7 +99,7 @@ function AppPage() {
             Web
           </Link>
         </div>
-        <div className="px-4 pb-3">
+        {tab === "stops" && <div className="px-4 pb-3">
           <div className="relative">
             <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
             <input
@@ -112,10 +115,10 @@ function AppPage() {
               <MapPin className="w-3 h-3" /> Ordenadas por cercanía
             </p>
           )}
-        </div>
+        </div>}
       </header>
 
-      <ul className="flex-1 divide-y divide-border">
+      {tab === "stops" ? <ul className="flex-1 divide-y divide-border">
         {filtered.map((s) => {
           const dist = userPos ? distance(userPos, s) : null;
           return (
@@ -145,12 +148,15 @@ function AppPage() {
             No hay paradas que coincidan
           </li>
         )}
-      </ul>
+      </ul> : <CardsView />}
 
       <nav className="sticky bottom-0 border-t border-border bg-background/95 backdrop-blur">
-        <div className="grid grid-cols-2">
-          <button className="py-3 text-xs font-medium text-primary flex flex-col items-center gap-0.5">
+        <div className="grid grid-cols-3">
+          <button onClick={() => setTab("stops")} className={`py-3 text-xs font-medium flex flex-col items-center gap-0.5 ${tab === "stops" ? "text-primary" : "text-muted-foreground"}`}>
             <Bus className="w-5 h-5" /> Paradas
+          </button>
+          <button onClick={() => setTab("cards")} className={`py-3 text-xs font-medium flex flex-col items-center gap-0.5 ${tab === "cards" ? "text-primary" : "text-muted-foreground"}`}>
+            <CreditCard className="w-5 h-5" /> Buscyl
           </button>
           <Link to="/" className="py-3 text-xs font-medium text-muted-foreground flex flex-col items-center gap-0.5">
             <MapIcon className="w-5 h-5" /> Mapa
