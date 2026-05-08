@@ -14,7 +14,136 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      telegram_processed_updates: {
+        Row: {
+          processed_at: string
+          update_id: number
+        }
+        Insert: {
+          processed_at?: string
+          update_id: number
+        }
+        Update: {
+          processed_at?: string
+          update_id?: number
+        }
+        Relationships: []
+      }
+      telegram_reminders: {
+        Row: {
+          active: boolean
+          chat_id: number
+          created_at: string
+          hour: number
+          id: string
+          last_sent_date: string | null
+          minute: number
+          stop_id: string
+          weekdays: number[]
+        }
+        Insert: {
+          active?: boolean
+          chat_id: number
+          created_at?: string
+          hour: number
+          id?: string
+          last_sent_date?: string | null
+          minute: number
+          stop_id: string
+          weekdays?: number[]
+        }
+        Update: {
+          active?: boolean
+          chat_id?: number
+          created_at?: string
+          hour?: number
+          id?: string
+          last_sent_date?: string | null
+          minute?: number
+          stop_id?: string
+          weekdays?: number[]
+        }
+        Relationships: [
+          {
+            foreignKeyName: "telegram_reminders_chat_id_fkey"
+            columns: ["chat_id"]
+            isOneToOne: false
+            referencedRelation: "telegram_users"
+            referencedColumns: ["chat_id"]
+          },
+        ]
+      }
+      telegram_subscriptions: {
+        Row: {
+          active: boolean
+          chat_id: number
+          created_at: string
+          id: string
+          last_notified_at: string | null
+          last_notified_trip_id: string | null
+          route_id: string | null
+          stop_id: string
+          threshold_minutes: number
+        }
+        Insert: {
+          active?: boolean
+          chat_id: number
+          created_at?: string
+          id?: string
+          last_notified_at?: string | null
+          last_notified_trip_id?: string | null
+          route_id?: string | null
+          stop_id: string
+          threshold_minutes: number
+        }
+        Update: {
+          active?: boolean
+          chat_id?: number
+          created_at?: string
+          id?: string
+          last_notified_at?: string | null
+          last_notified_trip_id?: string | null
+          route_id?: string | null
+          stop_id?: string
+          threshold_minutes?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "telegram_subscriptions_chat_id_fkey"
+            columns: ["chat_id"]
+            isOneToOne: false
+            referencedRelation: "telegram_users"
+            referencedColumns: ["chat_id"]
+          },
+        ]
+      }
+      telegram_users: {
+        Row: {
+          chat_id: number
+          created_at: string
+          first_name: string | null
+          language_code: string | null
+          last_seen_at: string
+          username: string | null
+        }
+        Insert: {
+          chat_id: number
+          created_at?: string
+          first_name?: string | null
+          language_code?: string | null
+          last_seen_at?: string
+          username?: string | null
+        }
+        Update: {
+          chat_id?: number
+          created_at?: string
+          first_name?: string | null
+          language_code?: string | null
+          last_seen_at?: string
+          username?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
