@@ -19,6 +19,7 @@ import { Route as ApiGtfsRtVehiclePositionsRouteImport } from './routes/api/gtfs
 import { Route as ApiGtfsRtTripUpdatesRouteImport } from './routes/api/gtfs-rt/trip-updates'
 import { Route as ApiPublicTelegramWebhookRouteImport } from './routes/api/public/telegram/webhook'
 import { Route as ApiPublicTelegramTickRouteImport } from './routes/api/public/telegram/tick'
+import { Route as ApiPublicTelegramBroadcastRouteImport } from './routes/api/public/telegram/broadcast'
 
 const ContactoRoute = ContactoRouteImport.update({
   id: '/contacto',
@@ -72,6 +73,12 @@ const ApiPublicTelegramTickRoute = ApiPublicTelegramTickRouteImport.update({
   path: '/api/public/telegram/tick',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiPublicTelegramBroadcastRoute =
+  ApiPublicTelegramBroadcastRouteImport.update({
+    id: '/api/public/telegram/broadcast',
+    path: '/api/public/telegram/broadcast',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -82,6 +89,7 @@ export interface FileRoutesByFullPath {
   '/api/gtfs-rt/vehicle-positions': typeof ApiGtfsRtVehiclePositionsRoute
   '/api/stops/$stopId': typeof ApiStopsStopIdRoute
   '/api/stops/': typeof ApiStopsIndexRoute
+  '/api/public/telegram/broadcast': typeof ApiPublicTelegramBroadcastRoute
   '/api/public/telegram/tick': typeof ApiPublicTelegramTickRoute
   '/api/public/telegram/webhook': typeof ApiPublicTelegramWebhookRoute
 }
@@ -94,6 +102,7 @@ export interface FileRoutesByTo {
   '/api/gtfs-rt/vehicle-positions': typeof ApiGtfsRtVehiclePositionsRoute
   '/api/stops/$stopId': typeof ApiStopsStopIdRoute
   '/api/stops': typeof ApiStopsIndexRoute
+  '/api/public/telegram/broadcast': typeof ApiPublicTelegramBroadcastRoute
   '/api/public/telegram/tick': typeof ApiPublicTelegramTickRoute
   '/api/public/telegram/webhook': typeof ApiPublicTelegramWebhookRoute
 }
@@ -107,6 +116,7 @@ export interface FileRoutesById {
   '/api/gtfs-rt/vehicle-positions': typeof ApiGtfsRtVehiclePositionsRoute
   '/api/stops/$stopId': typeof ApiStopsStopIdRoute
   '/api/stops/': typeof ApiStopsIndexRoute
+  '/api/public/telegram/broadcast': typeof ApiPublicTelegramBroadcastRoute
   '/api/public/telegram/tick': typeof ApiPublicTelegramTickRoute
   '/api/public/telegram/webhook': typeof ApiPublicTelegramWebhookRoute
 }
@@ -121,6 +131,7 @@ export interface FileRouteTypes {
     | '/api/gtfs-rt/vehicle-positions'
     | '/api/stops/$stopId'
     | '/api/stops/'
+    | '/api/public/telegram/broadcast'
     | '/api/public/telegram/tick'
     | '/api/public/telegram/webhook'
   fileRoutesByTo: FileRoutesByTo
@@ -133,6 +144,7 @@ export interface FileRouteTypes {
     | '/api/gtfs-rt/vehicle-positions'
     | '/api/stops/$stopId'
     | '/api/stops'
+    | '/api/public/telegram/broadcast'
     | '/api/public/telegram/tick'
     | '/api/public/telegram/webhook'
   id:
@@ -145,6 +157,7 @@ export interface FileRouteTypes {
     | '/api/gtfs-rt/vehicle-positions'
     | '/api/stops/$stopId'
     | '/api/stops/'
+    | '/api/public/telegram/broadcast'
     | '/api/public/telegram/tick'
     | '/api/public/telegram/webhook'
   fileRoutesById: FileRoutesById
@@ -158,6 +171,7 @@ export interface RootRouteChildren {
   ApiGtfsRtVehiclePositionsRoute: typeof ApiGtfsRtVehiclePositionsRoute
   ApiStopsStopIdRoute: typeof ApiStopsStopIdRoute
   ApiStopsIndexRoute: typeof ApiStopsIndexRoute
+  ApiPublicTelegramBroadcastRoute: typeof ApiPublicTelegramBroadcastRoute
   ApiPublicTelegramTickRoute: typeof ApiPublicTelegramTickRoute
   ApiPublicTelegramWebhookRoute: typeof ApiPublicTelegramWebhookRoute
 }
@@ -234,6 +248,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiPublicTelegramTickRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/public/telegram/broadcast': {
+      id: '/api/public/telegram/broadcast'
+      path: '/api/public/telegram/broadcast'
+      fullPath: '/api/public/telegram/broadcast'
+      preLoaderRoute: typeof ApiPublicTelegramBroadcastRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -246,6 +267,7 @@ const rootRouteChildren: RootRouteChildren = {
   ApiGtfsRtVehiclePositionsRoute: ApiGtfsRtVehiclePositionsRoute,
   ApiStopsStopIdRoute: ApiStopsStopIdRoute,
   ApiStopsIndexRoute: ApiStopsIndexRoute,
+  ApiPublicTelegramBroadcastRoute: ApiPublicTelegramBroadcastRoute,
   ApiPublicTelegramTickRoute: ApiPublicTelegramTickRoute,
   ApiPublicTelegramWebhookRoute: ApiPublicTelegramWebhookRoute,
 }
