@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as ContactoRouteImport } from './routes/contacto'
 import { Route as AvisoLegalRouteImport } from './routes/aviso-legal'
 import { Route as AppRouteImport } from './routes/app'
+import { Route as AdminRouteImport } from './routes/admin'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ApiStopsIndexRouteImport } from './routes/api/stops/index'
 import { Route as ApiStopsStopIdRouteImport } from './routes/api/stops/$stopId'
@@ -34,6 +35,11 @@ const AvisoLegalRoute = AvisoLegalRouteImport.update({
 const AppRoute = AppRouteImport.update({
   id: '/app',
   path: '/app',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminRoute = AdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -82,6 +88,7 @@ const ApiPublicTelegramBroadcastRoute =
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/admin': typeof AdminRoute
   '/app': typeof AppRoute
   '/aviso-legal': typeof AvisoLegalRoute
   '/contacto': typeof ContactoRoute
@@ -95,6 +102,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/admin': typeof AdminRoute
   '/app': typeof AppRoute
   '/aviso-legal': typeof AvisoLegalRoute
   '/contacto': typeof ContactoRoute
@@ -109,6 +117,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/admin': typeof AdminRoute
   '/app': typeof AppRoute
   '/aviso-legal': typeof AvisoLegalRoute
   '/contacto': typeof ContactoRoute
@@ -124,6 +133,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/admin'
     | '/app'
     | '/aviso-legal'
     | '/contacto'
@@ -137,6 +147,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/admin'
     | '/app'
     | '/aviso-legal'
     | '/contacto'
@@ -150,6 +161,7 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/admin'
     | '/app'
     | '/aviso-legal'
     | '/contacto'
@@ -164,6 +176,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AdminRoute: typeof AdminRoute
   AppRoute: typeof AppRoute
   AvisoLegalRoute: typeof AvisoLegalRoute
   ContactoRoute: typeof ContactoRoute
@@ -197,6 +210,13 @@ declare module '@tanstack/react-router' {
       path: '/app'
       fullPath: '/app'
       preLoaderRoute: typeof AppRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -260,6 +280,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AdminRoute: AdminRoute,
   AppRoute: AppRoute,
   AvisoLegalRoute: AvisoLegalRoute,
   ContactoRoute: ContactoRoute,
