@@ -1,19 +1,7 @@
 import { createServerFn } from "@tanstack/react-start";
-import { useSession } from "@tanstack/react-start/server";
 import { z } from "zod";
 import { sendMessage } from "@/lib/telegram/api";
-
-type SessionData = { admin?: boolean };
-
-function getSessionConfig() {
-  const password = process.env.SESSION_SECRET!;
-  return {
-    password,
-    name: "arroyobus_admin",
-    maxAge: 60 * 60 * 8,
-    cookie: { httpOnly: true, secure: true, sameSite: "lax" as const, path: "/" },
-  };
-}
+import { getAdminSession } from "./session.server";
 
 const schema = z.object({
   text: z.string().trim().min(1, "Texto vacío").max(3500, "Máximo 3500 caracteres"),
@@ -22,7 +10,7 @@ const schema = z.object({
 export const sendIncident = createServerFn({ method: "POST" })
   .inputValidator((d) => schema.parse(d))
   .handler(async ({ data }) => {
-    const session = await useSession<SessionData>(getSessionConfig());
+    const session = await getAdminSession();
     if (!session.data.admin) {
       return { ok: false as const, error: "No autenticado" };
     }
