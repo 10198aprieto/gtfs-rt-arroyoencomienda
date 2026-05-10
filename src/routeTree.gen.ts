@@ -23,6 +23,7 @@ import { Route as ApiPublicVoiceStopRouteImport } from './routes/api/public/voic
 import { Route as ApiPublicTelegramWebhookRouteImport } from './routes/api/public/telegram/webhook'
 import { Route as ApiPublicTelegramTickRouteImport } from './routes/api/public/telegram/tick'
 import { Route as ApiPublicTelegramBroadcastRouteImport } from './routes/api/public/telegram/broadcast'
+import { Route as ApiPublicAlexaSkillRouteImport } from './routes/api/public/alexa/skill'
 
 const ContactoRoute = ContactoRouteImport.update({
   id: '/contacto',
@@ -98,6 +99,11 @@ const ApiPublicTelegramBroadcastRoute =
     path: '/api/public/telegram/broadcast',
     getParentRoute: () => rootRouteImport,
   } as any)
+const ApiPublicAlexaSkillRoute = ApiPublicAlexaSkillRouteImport.update({
+  id: '/api/public/alexa/skill',
+  path: '/api/public/alexa/skill',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -109,6 +115,7 @@ export interface FileRoutesByFullPath {
   '/api/gtfs-rt/vehicle-positions': typeof ApiGtfsRtVehiclePositionsRoute
   '/api/stops/$stopId': typeof ApiStopsStopIdRoute
   '/api/stops/': typeof ApiStopsIndexRoute
+  '/api/public/alexa/skill': typeof ApiPublicAlexaSkillRoute
   '/api/public/telegram/broadcast': typeof ApiPublicTelegramBroadcastRoute
   '/api/public/telegram/tick': typeof ApiPublicTelegramTickRoute
   '/api/public/telegram/webhook': typeof ApiPublicTelegramWebhookRoute
@@ -125,6 +132,7 @@ export interface FileRoutesByTo {
   '/api/gtfs-rt/vehicle-positions': typeof ApiGtfsRtVehiclePositionsRoute
   '/api/stops/$stopId': typeof ApiStopsStopIdRoute
   '/api/stops': typeof ApiStopsIndexRoute
+  '/api/public/alexa/skill': typeof ApiPublicAlexaSkillRoute
   '/api/public/telegram/broadcast': typeof ApiPublicTelegramBroadcastRoute
   '/api/public/telegram/tick': typeof ApiPublicTelegramTickRoute
   '/api/public/telegram/webhook': typeof ApiPublicTelegramWebhookRoute
@@ -142,6 +150,7 @@ export interface FileRoutesById {
   '/api/gtfs-rt/vehicle-positions': typeof ApiGtfsRtVehiclePositionsRoute
   '/api/stops/$stopId': typeof ApiStopsStopIdRoute
   '/api/stops/': typeof ApiStopsIndexRoute
+  '/api/public/alexa/skill': typeof ApiPublicAlexaSkillRoute
   '/api/public/telegram/broadcast': typeof ApiPublicTelegramBroadcastRoute
   '/api/public/telegram/tick': typeof ApiPublicTelegramTickRoute
   '/api/public/telegram/webhook': typeof ApiPublicTelegramWebhookRoute
@@ -160,6 +169,7 @@ export interface FileRouteTypes {
     | '/api/gtfs-rt/vehicle-positions'
     | '/api/stops/$stopId'
     | '/api/stops/'
+    | '/api/public/alexa/skill'
     | '/api/public/telegram/broadcast'
     | '/api/public/telegram/tick'
     | '/api/public/telegram/webhook'
@@ -176,6 +186,7 @@ export interface FileRouteTypes {
     | '/api/gtfs-rt/vehicle-positions'
     | '/api/stops/$stopId'
     | '/api/stops'
+    | '/api/public/alexa/skill'
     | '/api/public/telegram/broadcast'
     | '/api/public/telegram/tick'
     | '/api/public/telegram/webhook'
@@ -192,6 +203,7 @@ export interface FileRouteTypes {
     | '/api/gtfs-rt/vehicle-positions'
     | '/api/stops/$stopId'
     | '/api/stops/'
+    | '/api/public/alexa/skill'
     | '/api/public/telegram/broadcast'
     | '/api/public/telegram/tick'
     | '/api/public/telegram/webhook'
@@ -209,6 +221,7 @@ export interface RootRouteChildren {
   ApiGtfsRtVehiclePositionsRoute: typeof ApiGtfsRtVehiclePositionsRoute
   ApiStopsStopIdRoute: typeof ApiStopsStopIdRoute
   ApiStopsIndexRoute: typeof ApiStopsIndexRoute
+  ApiPublicAlexaSkillRoute: typeof ApiPublicAlexaSkillRoute
   ApiPublicTelegramBroadcastRoute: typeof ApiPublicTelegramBroadcastRoute
   ApiPublicTelegramTickRoute: typeof ApiPublicTelegramTickRoute
   ApiPublicTelegramWebhookRoute: typeof ApiPublicTelegramWebhookRoute
@@ -316,6 +329,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiPublicTelegramBroadcastRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/public/alexa/skill': {
+      id: '/api/public/alexa/skill'
+      path: '/api/public/alexa/skill'
+      fullPath: '/api/public/alexa/skill'
+      preLoaderRoute: typeof ApiPublicAlexaSkillRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -329,6 +349,7 @@ const rootRouteChildren: RootRouteChildren = {
   ApiGtfsRtVehiclePositionsRoute: ApiGtfsRtVehiclePositionsRoute,
   ApiStopsStopIdRoute: ApiStopsStopIdRoute,
   ApiStopsIndexRoute: ApiStopsIndexRoute,
+  ApiPublicAlexaSkillRoute: ApiPublicAlexaSkillRoute,
   ApiPublicTelegramBroadcastRoute: ApiPublicTelegramBroadcastRoute,
   ApiPublicTelegramTickRoute: ApiPublicTelegramTickRoute,
   ApiPublicTelegramWebhookRoute: ApiPublicTelegramWebhookRoute,
