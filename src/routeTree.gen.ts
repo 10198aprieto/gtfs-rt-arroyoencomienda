@@ -18,6 +18,7 @@ import { Route as ApiStopsIndexRouteImport } from './routes/api/stops/index'
 import { Route as ApiStopsStopIdRouteImport } from './routes/api/stops/$stopId'
 import { Route as ApiGtfsRtVehiclePositionsRouteImport } from './routes/api/gtfs-rt/vehicle-positions'
 import { Route as ApiGtfsRtTripUpdatesRouteImport } from './routes/api/gtfs-rt/trip-updates'
+import { Route as ApiPublicWhatsappWebhookRouteImport } from './routes/api/public/whatsapp/webhook'
 import { Route as ApiPublicTelegramWebhookRouteImport } from './routes/api/public/telegram/webhook'
 import { Route as ApiPublicTelegramTickRouteImport } from './routes/api/public/telegram/tick'
 import { Route as ApiPublicTelegramBroadcastRouteImport } from './routes/api/public/telegram/broadcast'
@@ -68,6 +69,12 @@ const ApiGtfsRtTripUpdatesRoute = ApiGtfsRtTripUpdatesRouteImport.update({
   path: '/api/gtfs-rt/trip-updates',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiPublicWhatsappWebhookRoute =
+  ApiPublicWhatsappWebhookRouteImport.update({
+    id: '/api/public/whatsapp/webhook',
+    path: '/api/public/whatsapp/webhook',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const ApiPublicTelegramWebhookRoute =
   ApiPublicTelegramWebhookRouteImport.update({
     id: '/api/public/telegram/webhook',
@@ -99,6 +106,7 @@ export interface FileRoutesByFullPath {
   '/api/public/telegram/broadcast': typeof ApiPublicTelegramBroadcastRoute
   '/api/public/telegram/tick': typeof ApiPublicTelegramTickRoute
   '/api/public/telegram/webhook': typeof ApiPublicTelegramWebhookRoute
+  '/api/public/whatsapp/webhook': typeof ApiPublicWhatsappWebhookRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -113,6 +121,7 @@ export interface FileRoutesByTo {
   '/api/public/telegram/broadcast': typeof ApiPublicTelegramBroadcastRoute
   '/api/public/telegram/tick': typeof ApiPublicTelegramTickRoute
   '/api/public/telegram/webhook': typeof ApiPublicTelegramWebhookRoute
+  '/api/public/whatsapp/webhook': typeof ApiPublicWhatsappWebhookRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -128,6 +137,7 @@ export interface FileRoutesById {
   '/api/public/telegram/broadcast': typeof ApiPublicTelegramBroadcastRoute
   '/api/public/telegram/tick': typeof ApiPublicTelegramTickRoute
   '/api/public/telegram/webhook': typeof ApiPublicTelegramWebhookRoute
+  '/api/public/whatsapp/webhook': typeof ApiPublicWhatsappWebhookRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -144,6 +154,7 @@ export interface FileRouteTypes {
     | '/api/public/telegram/broadcast'
     | '/api/public/telegram/tick'
     | '/api/public/telegram/webhook'
+    | '/api/public/whatsapp/webhook'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -158,6 +169,7 @@ export interface FileRouteTypes {
     | '/api/public/telegram/broadcast'
     | '/api/public/telegram/tick'
     | '/api/public/telegram/webhook'
+    | '/api/public/whatsapp/webhook'
   id:
     | '__root__'
     | '/'
@@ -172,6 +184,7 @@ export interface FileRouteTypes {
     | '/api/public/telegram/broadcast'
     | '/api/public/telegram/tick'
     | '/api/public/telegram/webhook'
+    | '/api/public/whatsapp/webhook'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -187,6 +200,7 @@ export interface RootRouteChildren {
   ApiPublicTelegramBroadcastRoute: typeof ApiPublicTelegramBroadcastRoute
   ApiPublicTelegramTickRoute: typeof ApiPublicTelegramTickRoute
   ApiPublicTelegramWebhookRoute: typeof ApiPublicTelegramWebhookRoute
+  ApiPublicWhatsappWebhookRoute: typeof ApiPublicWhatsappWebhookRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -254,6 +268,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiGtfsRtTripUpdatesRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/public/whatsapp/webhook': {
+      id: '/api/public/whatsapp/webhook'
+      path: '/api/public/whatsapp/webhook'
+      fullPath: '/api/public/whatsapp/webhook'
+      preLoaderRoute: typeof ApiPublicWhatsappWebhookRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/public/telegram/webhook': {
       id: '/api/public/telegram/webhook'
       path: '/api/public/telegram/webhook'
@@ -291,6 +312,7 @@ const rootRouteChildren: RootRouteChildren = {
   ApiPublicTelegramBroadcastRoute: ApiPublicTelegramBroadcastRoute,
   ApiPublicTelegramTickRoute: ApiPublicTelegramTickRoute,
   ApiPublicTelegramWebhookRoute: ApiPublicTelegramWebhookRoute,
+  ApiPublicWhatsappWebhookRoute: ApiPublicWhatsappWebhookRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
