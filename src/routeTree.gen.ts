@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as ContactoRouteImport } from './routes/contacto'
 import { Route as AvisoLegalRouteImport } from './routes/aviso-legal'
+import { Route as AsistentesRouteImport } from './routes/asistentes'
 import { Route as AppRouteImport } from './routes/app'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as IndexRouteImport } from './routes/index'
@@ -33,6 +34,11 @@ const ContactoRoute = ContactoRouteImport.update({
 const AvisoLegalRoute = AvisoLegalRouteImport.update({
   id: '/aviso-legal',
   path: '/aviso-legal',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AsistentesRoute = AsistentesRouteImport.update({
+  id: '/asistentes',
+  path: '/asistentes',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AppRoute = AppRouteImport.update({
@@ -109,6 +115,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/admin': typeof AdminRoute
   '/app': typeof AppRoute
+  '/asistentes': typeof AsistentesRoute
   '/aviso-legal': typeof AvisoLegalRoute
   '/contacto': typeof ContactoRoute
   '/api/gtfs-rt/trip-updates': typeof ApiGtfsRtTripUpdatesRoute
@@ -126,6 +133,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/admin': typeof AdminRoute
   '/app': typeof AppRoute
+  '/asistentes': typeof AsistentesRoute
   '/aviso-legal': typeof AvisoLegalRoute
   '/contacto': typeof ContactoRoute
   '/api/gtfs-rt/trip-updates': typeof ApiGtfsRtTripUpdatesRoute
@@ -144,6 +152,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/admin': typeof AdminRoute
   '/app': typeof AppRoute
+  '/asistentes': typeof AsistentesRoute
   '/aviso-legal': typeof AvisoLegalRoute
   '/contacto': typeof ContactoRoute
   '/api/gtfs-rt/trip-updates': typeof ApiGtfsRtTripUpdatesRoute
@@ -163,6 +172,7 @@ export interface FileRouteTypes {
     | '/'
     | '/admin'
     | '/app'
+    | '/asistentes'
     | '/aviso-legal'
     | '/contacto'
     | '/api/gtfs-rt/trip-updates'
@@ -180,6 +190,7 @@ export interface FileRouteTypes {
     | '/'
     | '/admin'
     | '/app'
+    | '/asistentes'
     | '/aviso-legal'
     | '/contacto'
     | '/api/gtfs-rt/trip-updates'
@@ -197,6 +208,7 @@ export interface FileRouteTypes {
     | '/'
     | '/admin'
     | '/app'
+    | '/asistentes'
     | '/aviso-legal'
     | '/contacto'
     | '/api/gtfs-rt/trip-updates'
@@ -215,6 +227,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AdminRoute: typeof AdminRoute
   AppRoute: typeof AppRoute
+  AsistentesRoute: typeof AsistentesRoute
   AvisoLegalRoute: typeof AvisoLegalRoute
   ContactoRoute: typeof ContactoRoute
   ApiGtfsRtTripUpdatesRoute: typeof ApiGtfsRtTripUpdatesRoute
@@ -243,6 +256,13 @@ declare module '@tanstack/react-router' {
       path: '/aviso-legal'
       fullPath: '/aviso-legal'
       preLoaderRoute: typeof AvisoLegalRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/asistentes': {
+      id: '/asistentes'
+      path: '/asistentes'
+      fullPath: '/asistentes'
+      preLoaderRoute: typeof AsistentesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/app': {
@@ -343,6 +363,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AdminRoute: AdminRoute,
   AppRoute: AppRoute,
+  AsistentesRoute: AsistentesRoute,
   AvisoLegalRoute: AvisoLegalRoute,
   ContactoRoute: ContactoRoute,
   ApiGtfsRtTripUpdatesRoute: ApiGtfsRtTripUpdatesRoute,
