@@ -19,6 +19,7 @@ import { Route as ApiStopsStopIdRouteImport } from './routes/api/stops/$stopId'
 import { Route as ApiGtfsRtVehiclePositionsRouteImport } from './routes/api/gtfs-rt/vehicle-positions'
 import { Route as ApiGtfsRtTripUpdatesRouteImport } from './routes/api/gtfs-rt/trip-updates'
 import { Route as ApiPublicWhatsappWebhookRouteImport } from './routes/api/public/whatsapp/webhook'
+import { Route as ApiPublicVoiceStopRouteImport } from './routes/api/public/voice/stop'
 import { Route as ApiPublicTelegramWebhookRouteImport } from './routes/api/public/telegram/webhook'
 import { Route as ApiPublicTelegramTickRouteImport } from './routes/api/public/telegram/tick'
 import { Route as ApiPublicTelegramBroadcastRouteImport } from './routes/api/public/telegram/broadcast'
@@ -75,6 +76,11 @@ const ApiPublicWhatsappWebhookRoute =
     path: '/api/public/whatsapp/webhook',
     getParentRoute: () => rootRouteImport,
   } as any)
+const ApiPublicVoiceStopRoute = ApiPublicVoiceStopRouteImport.update({
+  id: '/api/public/voice/stop',
+  path: '/api/public/voice/stop',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiPublicTelegramWebhookRoute =
   ApiPublicTelegramWebhookRouteImport.update({
     id: '/api/public/telegram/webhook',
@@ -106,6 +112,7 @@ export interface FileRoutesByFullPath {
   '/api/public/telegram/broadcast': typeof ApiPublicTelegramBroadcastRoute
   '/api/public/telegram/tick': typeof ApiPublicTelegramTickRoute
   '/api/public/telegram/webhook': typeof ApiPublicTelegramWebhookRoute
+  '/api/public/voice/stop': typeof ApiPublicVoiceStopRoute
   '/api/public/whatsapp/webhook': typeof ApiPublicWhatsappWebhookRoute
 }
 export interface FileRoutesByTo {
@@ -121,6 +128,7 @@ export interface FileRoutesByTo {
   '/api/public/telegram/broadcast': typeof ApiPublicTelegramBroadcastRoute
   '/api/public/telegram/tick': typeof ApiPublicTelegramTickRoute
   '/api/public/telegram/webhook': typeof ApiPublicTelegramWebhookRoute
+  '/api/public/voice/stop': typeof ApiPublicVoiceStopRoute
   '/api/public/whatsapp/webhook': typeof ApiPublicWhatsappWebhookRoute
 }
 export interface FileRoutesById {
@@ -137,6 +145,7 @@ export interface FileRoutesById {
   '/api/public/telegram/broadcast': typeof ApiPublicTelegramBroadcastRoute
   '/api/public/telegram/tick': typeof ApiPublicTelegramTickRoute
   '/api/public/telegram/webhook': typeof ApiPublicTelegramWebhookRoute
+  '/api/public/voice/stop': typeof ApiPublicVoiceStopRoute
   '/api/public/whatsapp/webhook': typeof ApiPublicWhatsappWebhookRoute
 }
 export interface FileRouteTypes {
@@ -154,6 +163,7 @@ export interface FileRouteTypes {
     | '/api/public/telegram/broadcast'
     | '/api/public/telegram/tick'
     | '/api/public/telegram/webhook'
+    | '/api/public/voice/stop'
     | '/api/public/whatsapp/webhook'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -169,6 +179,7 @@ export interface FileRouteTypes {
     | '/api/public/telegram/broadcast'
     | '/api/public/telegram/tick'
     | '/api/public/telegram/webhook'
+    | '/api/public/voice/stop'
     | '/api/public/whatsapp/webhook'
   id:
     | '__root__'
@@ -184,6 +195,7 @@ export interface FileRouteTypes {
     | '/api/public/telegram/broadcast'
     | '/api/public/telegram/tick'
     | '/api/public/telegram/webhook'
+    | '/api/public/voice/stop'
     | '/api/public/whatsapp/webhook'
   fileRoutesById: FileRoutesById
 }
@@ -200,6 +212,7 @@ export interface RootRouteChildren {
   ApiPublicTelegramBroadcastRoute: typeof ApiPublicTelegramBroadcastRoute
   ApiPublicTelegramTickRoute: typeof ApiPublicTelegramTickRoute
   ApiPublicTelegramWebhookRoute: typeof ApiPublicTelegramWebhookRoute
+  ApiPublicVoiceStopRoute: typeof ApiPublicVoiceStopRoute
   ApiPublicWhatsappWebhookRoute: typeof ApiPublicWhatsappWebhookRoute
 }
 
@@ -275,6 +288,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiPublicWhatsappWebhookRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/public/voice/stop': {
+      id: '/api/public/voice/stop'
+      path: '/api/public/voice/stop'
+      fullPath: '/api/public/voice/stop'
+      preLoaderRoute: typeof ApiPublicVoiceStopRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/public/telegram/webhook': {
       id: '/api/public/telegram/webhook'
       path: '/api/public/telegram/webhook'
@@ -312,6 +332,7 @@ const rootRouteChildren: RootRouteChildren = {
   ApiPublicTelegramBroadcastRoute: ApiPublicTelegramBroadcastRoute,
   ApiPublicTelegramTickRoute: ApiPublicTelegramTickRoute,
   ApiPublicTelegramWebhookRoute: ApiPublicTelegramWebhookRoute,
+  ApiPublicVoiceStopRoute: ApiPublicVoiceStopRoute,
   ApiPublicWhatsappWebhookRoute: ApiPublicWhatsappWebhookRoute,
 }
 export const routeTree = rootRouteImport
