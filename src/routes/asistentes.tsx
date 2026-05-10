@@ -225,7 +225,7 @@ function AsistentesPage() {
             "cuándo llega el bus a {parada}",
             "parada {parada}",
             "qué buses pasan por {parada}",
-            "{parada}"
+            "consulta la parada {parada}"
           ]
         }
       ]
