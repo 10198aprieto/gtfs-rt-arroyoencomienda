@@ -1,4 +1,5 @@
 import { fetchAllArrivals } from "@/lib/gtfsrt/fetch-arrivals";
+import { getScheduledArrivals } from "@/lib/gtfsrt/schedule";
 import { findStop, searchStops, getStopById } from "@/lib/telegram/stops";
 import { minutesAway } from "@/lib/telegram/format";
 
@@ -10,6 +11,7 @@ export interface VoiceArrival {
   vehicleId: string;
   lat: number;
   lon: number;
+  isScheduled?: boolean;
 }
 
 export interface VoiceResponse {
@@ -71,11 +73,9 @@ export async function lookupStop(query: string): Promise<VoiceResponse> {
 
   const all = await fetchAllArrivals();
   const now = Math.floor(Date.now() / 1000);
-  const arrivals = all
+  const realtime = all
     .filter((a) => String(a.stopId) === String(stop.id))
     .filter((a) => a.estimatedArrival >= now - 60)
-    .sort((a, b) => a.estimatedArrival - b.estimatedArrival)
-    .slice(0, 4)
     .map<VoiceArrival>((a) => ({
       route: a.routeShortName || a.routeName || "—",
       headsign: a.tripHeadsign,
@@ -84,7 +84,26 @@ export async function lookupStop(query: string): Promise<VoiceResponse> {
       vehicleId: a.vehicleId,
       lat: a.lat,
       lon: a.lon,
+      isScheduled: false,
     }));
+  const rtTripIds = new Set(
+    all.filter((a) => String(a.stopId) === String(stop.id)).map((a) => a.tripId)
+  );
+  const scheduled = getScheduledArrivals(stop.id, 8)
+    .filter((s) => !rtTripIds.has(s.tripId))
+    .map<VoiceArrival>((s) => ({
+      route: s.routeShortName,
+      headsign: s.tripHeadsign,
+      minutes: s.minutesAway,
+      estimatedArrival: s.estimatedArrival,
+      vehicleId: "",
+      lat: 0,
+      lon: 0,
+      isScheduled: true,
+    }));
+  const arrivals = [...realtime, ...scheduled]
+    .sort((a, b) => a.estimatedArrival - b.estimatedArrival)
+    .slice(0, 4);
 
   if (!arrivals.length) {
     return {
@@ -100,10 +119,14 @@ export async function lookupStop(query: string): Promise<VoiceResponse> {
   const lines = arrivals.map((a) => {
     const when = a.minutes <= 0 ? "Ahora" : `${a.minutes} min`;
     const head = a.headsign ? ` → ${a.headsign}` : "";
-    return `L${a.route}${head}: ${when}`;
+    const tag = a.isScheduled ? " (horario)" : "";
+    return `L${a.route}${head}: ${when}${tag}`;
   });
 
-  const speechLines = arrivals.map((a) => `${speakRoute(a.route)}, ${speakMinutes(a.minutes)}`);
+  const speechLines = arrivals.map((a) => {
+    const tag = a.isScheduled ? " según horario" : "";
+    return `${speakRoute(a.route)}, ${speakMinutes(a.minutes)}${tag}`;
+  });
 
   return {
     ok: true,

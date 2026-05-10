@@ -149,7 +149,10 @@ export default function BusMap() {
                 const color = a.routeColor ? `#${a.routeColor}` : "hsl(221,83%,53%)";
                 const short = (a.routeShortName || a.routeName || "—").toString();
                 const head = (a.tripHeadsign || "").toString();
-                const min = a.minutesAway === 0 ? "Ahora" : `${a.minutesAway} min`;
+                const time = new Date(a.estimatedArrival * 1000).toLocaleTimeString("es-ES",{hour:"2-digit",minute:"2-digit"});
+                const min = a.isScheduled
+                  ? `${time} (horario)`
+                  : (a.minutesAway === 0 ? "Ahora" : `${a.minutesAway} min`);
                 return `<tr>
                   <td style="padding:4px 6px"><span style="display:inline-block;background:${color};color:#fff;font-weight:600;font-size:11px;padding:2px 7px;border-radius:10px">${short}</span></td>
                   <td style="padding:4px 6px;color:#444;font-size:12px">${head}</td>
