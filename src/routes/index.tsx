@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { Bus, MapPin, Clock, ExternalLink, Download, Smartphone, Send, Copy, Check, Activity, Radio, Github } from "lucide-react";
+import { Bus, MapPin, Clock, ExternalLink, Download, Smartphone, Send, Copy, Check, Activity, Radio, Github, MessageCircle, Mic, Sparkles } from "lucide-react";
 import { lazy, Suspense, useEffect, useState } from "react";
 
 const BusMap = lazy(() => import("@/components/BusMap"));
@@ -203,6 +203,45 @@ function Index() {
                 <code className="px-2 py-1 rounded-md bg-background border border-border">/recordar 100 08:30</code>
               </div>
             </div>
+          </div>
+        </section>
+
+        {/* Asistentes de voz */}
+        <section aria-labelledby="asistentes-title" className="space-y-4">
+          <div className="flex items-end justify-between flex-wrap gap-2">
+            <div>
+              <h2 id="asistentes-title" className="text-2xl font-bold tracking-tight">
+                Asistentes y mensajería
+              </h2>
+              <p className="text-sm text-muted-foreground mt-1">
+                Pregunta por una parada desde WhatsApp, Siri o Alexa.
+              </p>
+            </div>
+            <Link
+              to="/asistentes"
+              className="text-sm font-semibold text-primary hover:underline"
+            >
+              Cómo configurarlos →
+            </Link>
+          </div>
+          <div className="grid sm:grid-cols-3 gap-4">
+            {[
+              { icon: MessageCircle, name: "WhatsApp", desc: "Webhook Twilio listo." },
+              { icon: Mic, name: "Siri (Atajos)", desc: "Endpoint JSON para iOS." },
+              { icon: Sparkles, name: "Alexa", desc: "Skill custom en español." },
+            ].map((c) => (
+              <Link
+                key={c.name}
+                to="/asistentes"
+                className="group border border-border rounded-2xl p-5 bg-card hover:border-primary/40 hover:shadow-lg transition-all"
+              >
+                <div className="w-10 h-10 rounded-lg bg-primary/10 text-primary flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
+                  <c.icon className="w-5 h-5" />
+                </div>
+                <h3 className="font-semibold mb-0.5">{c.name}</h3>
+                <p className="text-xs text-muted-foreground">{c.desc}</p>
+              </Link>
+            ))}
           </div>
         </section>
 
