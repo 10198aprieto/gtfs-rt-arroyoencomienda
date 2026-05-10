@@ -17,6 +17,7 @@ interface Arrival {
   estimatedArrival: number;
   minutesAway: number;
   isEstimated?: boolean;
+  isScheduled?: boolean;
 }
 
 export const Route = createFileRoute("/app")({
@@ -238,11 +239,15 @@ function StopDetail({ stop, onBack, userPos }: { stop: Stop; onBack: () => void;
               </span>
               <div className="min-w-0 flex-1">
                 <p className="text-sm font-medium truncate">{a.tripHeadsign || a.routeName}</p>
-                <p className="text-[11px] text-muted-foreground">Bus {a.vehicleId}{a.isEstimated ? " · estimado" : ""}</p>
+                <p className="text-[11px] text-muted-foreground">
+                  {a.isScheduled
+                    ? "Según horario"
+                    : `Bus ${a.vehicleId}${a.isEstimated ? " · estimado" : ""}`}
+                </p>
               </div>
               <div className="text-right shrink-0">
-                <p className="text-base font-semibold tabular-nums">
-                  {min === 0 ? "Ahora" : `${min}′`}
+                <p className={`text-base font-semibold tabular-nums ${a.isScheduled ? "text-muted-foreground" : ""}`}>
+                  {min === 0 && !a.isScheduled ? "Ahora" : `${min}′`}
                 </p>
                 <p className="text-[10px] text-muted-foreground">
                   {new Date(a.estimatedArrival * 1000).toLocaleTimeString("es-ES", { hour: "2-digit", minute: "2-digit" })}
