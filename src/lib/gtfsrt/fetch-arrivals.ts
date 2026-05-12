@@ -12,64 +12,47 @@ export interface ArrivalData {
   lon: number;
   speed?: number;
   bearing?: number;
-  directionId?: string;
-  tripHeadsign?: string;
-  routeShortName?: string;
-  routeColor?: string;
-  isEstimated?: boolean;
 }
 
 const BASE_URL = "https://arroyo.actiosae.com/bff/mobile/arrivals";
-const FEED_ID = "arroyo";
-
-function getApiKey(): string {
-  return process.env.ACTIOSAE_API_KEY || "";
-}
 
 async function fetchStopArrivals(stopId: string): Promise<ArrivalData[]> {
   try {
-    const apiKey = getApiKey();
-    const url = `${BASE_URL}/${stopId}?feedId=${FEED_ID}${apiKey ? `&key=${apiKey}` : ""}`;
-
-    const controller = new AbortController();
-    const timer = setTimeout(() => controller.abort(), 5000);
-    const res = await fetch(url, {
+    const res = await fetch(`${BASE_URL}/${stopId}`, {
       headers: {
         "Accept": "application/json",
         "User-Agent": "ArroyoBus-GTFSRT/1.0",
       },
-      signal: controller.signal,
     });
-    clearTimeout(timer);
     if (!res.ok) return [];
-    const json = await res.json() as any[];
-
-    if (!Array.isArray(json)) return [];
+    const json = await res.json() as any;
 
     const arrivals: ArrivalData[] = [];
+    const lines = json?.lines || [];
 
-    for (const item of json) {
-      if (item.tripId && item.vehicleId) {
-        arrivals.push({
-          tripId: String(item.tripId),
-          vehicleId: String(item.vehicleId),
-          routeId: String(item.route?.routeId || ""),
-          routeName: String(item.route?.routeName || ""),
-          routeShortName: item.route?.routeShortName,
-          routeColor: item.route?.color,
-          stopId: String(item.stopId || stopId),
-          stopName: String(item.stopName || ""),
-          estimatedArrival: item.arrivalTime
-            ? Math.floor(new Date(item.arrivalTime).getTime() / 1000)
-            : Math.floor(Date.now() / 1000),
-          lat: item.lat ?? 0,
-          lon: item.lon ?? 0,
-          speed: item.speed,
-          bearing: item.bearing,
-          directionId: item.directionId,
-          tripHeadsign: item.tripHeadsign,
-          isEstimated: item.isEstimated,
-        });
+    for (const line of lines) {
+      const destinations = line?.destinations || [];
+      for (const dest of destinations) {
+        const trips = dest?.trips || [];
+        for (const trip of trips) {
+          if (trip.tripId && trip.vehicleId) {
+            arrivals.push({
+              tripId: String(trip.tripId),
+              vehicleId: String(trip.vehicleId),
+              routeId: String(line.lineId || line.id || ""),
+              routeName: String(line.name || ""),
+              stopId,
+              stopName: String(json.stopName || json.name || ""),
+              estimatedArrival: trip.estimatedArrival
+                ? Math.floor(new Date(trip.estimatedArrival).getTime() / 1000)
+                : Math.floor(Date.now() / 1000),
+              lat: trip.lat ?? trip.latitude ?? 0,
+              lon: trip.lon ?? trip.longitude ?? 0,
+              speed: trip.speed,
+              bearing: trip.bearing,
+            });
+          }
+        }
       }
     }
     return arrivals;
@@ -78,43 +61,16 @@ async function fetchStopArrivals(stopId: string): Promise<ArrivalData[]> {
   }
 }
 
-// In-memory cache to prevent upstream API abuse
-let cachedArrivals: ArrivalData[] | null = null;
-let cacheTimestamp = 0;
-const CACHE_TTL_MS = 15_000; // 15 seconds
-const CACHE_STALE_MS = 120_000; // serve stale up to 2 min if upstream fails
-let inflight: Promise<ArrivalData[]> | null = null;
-
 export async function fetchAllArrivals(): Promise<ArrivalData[]> {
-  const now = Date.now();
-  if (cachedArrivals && now - cacheTimestamp < CACHE_TTL_MS) {
-    return cachedArrivals;
+  // Fetch in batches of 10 to avoid overwhelming the API
+  const allArrivals: ArrivalData[] = [];
+  const batchSize = 10;
+
+  for (let i = 0; i < STOP_IDS.length; i += batchSize) {
+    const batch = STOP_IDS.slice(i, i + batchSize);
+    const results = await Promise.all(batch.map(fetchStopArrivals));
+    for (const r of results) allArrivals.push(...r);
   }
-  if (inflight) return inflight;
 
-  inflight = (async () => {
-    try {
-      const allArrivals: ArrivalData[] = [];
-      // Mayor concurrencia para no agotar el límite de 30s del Worker.
-      const batchSize = 25;
-      for (let i = 0; i < STOP_IDS.length; i += batchSize) {
-        const batch = STOP_IDS.slice(i, i + batchSize);
-        const results = await Promise.all(batch.map(fetchStopArrivals));
-        for (const r of results) allArrivals.push(...r);
-      }
-      cachedArrivals = allArrivals;
-      cacheTimestamp = Date.now();
-      return allArrivals;
-    } catch {
-      // Si todo falla pero hay cache razonablemente reciente, sírvelo
-      if (cachedArrivals && Date.now() - cacheTimestamp < CACHE_STALE_MS) {
-        return cachedArrivals;
-      }
-      return [];
-    } finally {
-      inflight = null;
-    }
-  })();
-
-  return inflight;
+  return allArrivals;
 }

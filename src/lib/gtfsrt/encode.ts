@@ -169,14 +169,11 @@ export function buildVehiclePositionsFeed(arrivals: ArrivalData[]): Uint8Array {
   const timestamp = Math.floor(Date.now() / 1000);
   const header = encodeFeedHeader(timestamp);
 
-  // Dedupe by vehicleId — keep the entry with the closest arrival time
+  // Dedupe by vehicleId (one position per vehicle)
   const vehicleMap = new Map<string, ArrivalData>();
   for (const arrival of arrivals) {
     if (arrival.lat !== 0 && arrival.lon !== 0) {
-      const existing = vehicleMap.get(arrival.vehicleId);
-      if (!existing || Math.abs(arrival.estimatedArrival - timestamp) < Math.abs(existing.estimatedArrival - timestamp)) {
-        vehicleMap.set(arrival.vehicleId, arrival);
-      }
+      vehicleMap.set(arrival.vehicleId, arrival);
     }
   }
 
@@ -225,14 +222,10 @@ export function buildTripUpdatesJson(arrivals: ArrivalData[]) {
 }
 
 export function buildVehiclePositionsJson(arrivals: ArrivalData[]) {
-  const now = Math.floor(Date.now() / 1000);
   const vehicleMap = new Map<string, ArrivalData>();
   for (const a of arrivals) {
     if (a.lat !== 0 && a.lon !== 0) {
-      const existing = vehicleMap.get(a.vehicleId);
-      if (!existing || Math.abs(a.estimatedArrival - now) < Math.abs(existing.estimatedArrival - now)) {
-        vehicleMap.set(a.vehicleId, a);
-      }
+      vehicleMap.set(a.vehicleId, a);
     }
   }
 
