@@ -9,13 +9,61 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as ContactoRouteImport } from './routes/contacto'
+import { Route as AvisoLegalRouteImport } from './routes/aviso-legal'
+import { Route as AsistentesRouteImport } from './routes/asistentes'
+import { Route as AppRouteImport } from './routes/app'
+import { Route as AdminRouteImport } from './routes/admin'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ApiStopsIndexRouteImport } from './routes/api/stops/index'
+import { Route as ApiStopsStopIdRouteImport } from './routes/api/stops/$stopId'
 import { Route as ApiGtfsRtVehiclePositionsRouteImport } from './routes/api/gtfs-rt/vehicle-positions'
 import { Route as ApiGtfsRtTripUpdatesRouteImport } from './routes/api/gtfs-rt/trip-updates'
+import { Route as ApiPublicWhatsappWebhookRouteImport } from './routes/api/public/whatsapp/webhook'
+import { Route as ApiPublicVoiceStopRouteImport } from './routes/api/public/voice/stop'
+import { Route as ApiPublicTelegramWebhookRouteImport } from './routes/api/public/telegram/webhook'
+import { Route as ApiPublicTelegramTickRouteImport } from './routes/api/public/telegram/tick'
+import { Route as ApiPublicTelegramBroadcastRouteImport } from './routes/api/public/telegram/broadcast'
+import { Route as ApiPublicAlexaSkillRouteImport } from './routes/api/public/alexa/skill'
 
+const ContactoRoute = ContactoRouteImport.update({
+  id: '/contacto',
+  path: '/contacto',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AvisoLegalRoute = AvisoLegalRouteImport.update({
+  id: '/aviso-legal',
+  path: '/aviso-legal',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AsistentesRoute = AsistentesRouteImport.update({
+  id: '/asistentes',
+  path: '/asistentes',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AppRoute = AppRouteImport.update({
+  id: '/app',
+  path: '/app',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminRoute = AdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiStopsIndexRoute = ApiStopsIndexRouteImport.update({
+  id: '/api/stops/',
+  path: '/api/stops/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiStopsStopIdRoute = ApiStopsStopIdRouteImport.update({
+  id: '/api/stops/$stopId',
+  path: '/api/stops/$stopId',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ApiGtfsRtVehiclePositionsRoute =
@@ -29,51 +77,227 @@ const ApiGtfsRtTripUpdatesRoute = ApiGtfsRtTripUpdatesRouteImport.update({
   path: '/api/gtfs-rt/trip-updates',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiPublicWhatsappWebhookRoute =
+  ApiPublicWhatsappWebhookRouteImport.update({
+    id: '/api/public/whatsapp/webhook',
+    path: '/api/public/whatsapp/webhook',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const ApiPublicVoiceStopRoute = ApiPublicVoiceStopRouteImport.update({
+  id: '/api/public/voice/stop',
+  path: '/api/public/voice/stop',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiPublicTelegramWebhookRoute =
+  ApiPublicTelegramWebhookRouteImport.update({
+    id: '/api/public/telegram/webhook',
+    path: '/api/public/telegram/webhook',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const ApiPublicTelegramTickRoute = ApiPublicTelegramTickRouteImport.update({
+  id: '/api/public/telegram/tick',
+  path: '/api/public/telegram/tick',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiPublicTelegramBroadcastRoute =
+  ApiPublicTelegramBroadcastRouteImport.update({
+    id: '/api/public/telegram/broadcast',
+    path: '/api/public/telegram/broadcast',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const ApiPublicAlexaSkillRoute = ApiPublicAlexaSkillRouteImport.update({
+  id: '/api/public/alexa/skill',
+  path: '/api/public/alexa/skill',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/admin': typeof AdminRoute
+  '/app': typeof AppRoute
+  '/asistentes': typeof AsistentesRoute
+  '/aviso-legal': typeof AvisoLegalRoute
+  '/contacto': typeof ContactoRoute
   '/api/gtfs-rt/trip-updates': typeof ApiGtfsRtTripUpdatesRoute
   '/api/gtfs-rt/vehicle-positions': typeof ApiGtfsRtVehiclePositionsRoute
+  '/api/stops/$stopId': typeof ApiStopsStopIdRoute
+  '/api/stops/': typeof ApiStopsIndexRoute
+  '/api/public/alexa/skill': typeof ApiPublicAlexaSkillRoute
+  '/api/public/telegram/broadcast': typeof ApiPublicTelegramBroadcastRoute
+  '/api/public/telegram/tick': typeof ApiPublicTelegramTickRoute
+  '/api/public/telegram/webhook': typeof ApiPublicTelegramWebhookRoute
+  '/api/public/voice/stop': typeof ApiPublicVoiceStopRoute
+  '/api/public/whatsapp/webhook': typeof ApiPublicWhatsappWebhookRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/admin': typeof AdminRoute
+  '/app': typeof AppRoute
+  '/asistentes': typeof AsistentesRoute
+  '/aviso-legal': typeof AvisoLegalRoute
+  '/contacto': typeof ContactoRoute
   '/api/gtfs-rt/trip-updates': typeof ApiGtfsRtTripUpdatesRoute
   '/api/gtfs-rt/vehicle-positions': typeof ApiGtfsRtVehiclePositionsRoute
+  '/api/stops/$stopId': typeof ApiStopsStopIdRoute
+  '/api/stops': typeof ApiStopsIndexRoute
+  '/api/public/alexa/skill': typeof ApiPublicAlexaSkillRoute
+  '/api/public/telegram/broadcast': typeof ApiPublicTelegramBroadcastRoute
+  '/api/public/telegram/tick': typeof ApiPublicTelegramTickRoute
+  '/api/public/telegram/webhook': typeof ApiPublicTelegramWebhookRoute
+  '/api/public/voice/stop': typeof ApiPublicVoiceStopRoute
+  '/api/public/whatsapp/webhook': typeof ApiPublicWhatsappWebhookRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/admin': typeof AdminRoute
+  '/app': typeof AppRoute
+  '/asistentes': typeof AsistentesRoute
+  '/aviso-legal': typeof AvisoLegalRoute
+  '/contacto': typeof ContactoRoute
   '/api/gtfs-rt/trip-updates': typeof ApiGtfsRtTripUpdatesRoute
   '/api/gtfs-rt/vehicle-positions': typeof ApiGtfsRtVehiclePositionsRoute
+  '/api/stops/$stopId': typeof ApiStopsStopIdRoute
+  '/api/stops/': typeof ApiStopsIndexRoute
+  '/api/public/alexa/skill': typeof ApiPublicAlexaSkillRoute
+  '/api/public/telegram/broadcast': typeof ApiPublicTelegramBroadcastRoute
+  '/api/public/telegram/tick': typeof ApiPublicTelegramTickRoute
+  '/api/public/telegram/webhook': typeof ApiPublicTelegramWebhookRoute
+  '/api/public/voice/stop': typeof ApiPublicVoiceStopRoute
+  '/api/public/whatsapp/webhook': typeof ApiPublicWhatsappWebhookRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/admin'
+    | '/app'
+    | '/asistentes'
+    | '/aviso-legal'
+    | '/contacto'
     | '/api/gtfs-rt/trip-updates'
     | '/api/gtfs-rt/vehicle-positions'
+    | '/api/stops/$stopId'
+    | '/api/stops/'
+    | '/api/public/alexa/skill'
+    | '/api/public/telegram/broadcast'
+    | '/api/public/telegram/tick'
+    | '/api/public/telegram/webhook'
+    | '/api/public/voice/stop'
+    | '/api/public/whatsapp/webhook'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/api/gtfs-rt/trip-updates' | '/api/gtfs-rt/vehicle-positions'
+  to:
+    | '/'
+    | '/admin'
+    | '/app'
+    | '/asistentes'
+    | '/aviso-legal'
+    | '/contacto'
+    | '/api/gtfs-rt/trip-updates'
+    | '/api/gtfs-rt/vehicle-positions'
+    | '/api/stops/$stopId'
+    | '/api/stops'
+    | '/api/public/alexa/skill'
+    | '/api/public/telegram/broadcast'
+    | '/api/public/telegram/tick'
+    | '/api/public/telegram/webhook'
+    | '/api/public/voice/stop'
+    | '/api/public/whatsapp/webhook'
   id:
     | '__root__'
     | '/'
+    | '/admin'
+    | '/app'
+    | '/asistentes'
+    | '/aviso-legal'
+    | '/contacto'
     | '/api/gtfs-rt/trip-updates'
     | '/api/gtfs-rt/vehicle-positions'
+    | '/api/stops/$stopId'
+    | '/api/stops/'
+    | '/api/public/alexa/skill'
+    | '/api/public/telegram/broadcast'
+    | '/api/public/telegram/tick'
+    | '/api/public/telegram/webhook'
+    | '/api/public/voice/stop'
+    | '/api/public/whatsapp/webhook'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AdminRoute: typeof AdminRoute
+  AppRoute: typeof AppRoute
+  AsistentesRoute: typeof AsistentesRoute
+  AvisoLegalRoute: typeof AvisoLegalRoute
+  ContactoRoute: typeof ContactoRoute
   ApiGtfsRtTripUpdatesRoute: typeof ApiGtfsRtTripUpdatesRoute
   ApiGtfsRtVehiclePositionsRoute: typeof ApiGtfsRtVehiclePositionsRoute
+  ApiStopsStopIdRoute: typeof ApiStopsStopIdRoute
+  ApiStopsIndexRoute: typeof ApiStopsIndexRoute
+  ApiPublicAlexaSkillRoute: typeof ApiPublicAlexaSkillRoute
+  ApiPublicTelegramBroadcastRoute: typeof ApiPublicTelegramBroadcastRoute
+  ApiPublicTelegramTickRoute: typeof ApiPublicTelegramTickRoute
+  ApiPublicTelegramWebhookRoute: typeof ApiPublicTelegramWebhookRoute
+  ApiPublicVoiceStopRoute: typeof ApiPublicVoiceStopRoute
+  ApiPublicWhatsappWebhookRoute: typeof ApiPublicWhatsappWebhookRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/contacto': {
+      id: '/contacto'
+      path: '/contacto'
+      fullPath: '/contacto'
+      preLoaderRoute: typeof ContactoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/aviso-legal': {
+      id: '/aviso-legal'
+      path: '/aviso-legal'
+      fullPath: '/aviso-legal'
+      preLoaderRoute: typeof AvisoLegalRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/asistentes': {
+      id: '/asistentes'
+      path: '/asistentes'
+      fullPath: '/asistentes'
+      preLoaderRoute: typeof AsistentesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/app': {
+      id: '/app'
+      path: '/app'
+      fullPath: '/app'
+      preLoaderRoute: typeof AppRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/stops/': {
+      id: '/api/stops/'
+      path: '/api/stops'
+      fullPath: '/api/stops/'
+      preLoaderRoute: typeof ApiStopsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/stops/$stopId': {
+      id: '/api/stops/$stopId'
+      path: '/api/stops/$stopId'
+      fullPath: '/api/stops/$stopId'
+      preLoaderRoute: typeof ApiStopsStopIdRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/gtfs-rt/vehicle-positions': {
@@ -90,13 +314,68 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiGtfsRtTripUpdatesRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/public/whatsapp/webhook': {
+      id: '/api/public/whatsapp/webhook'
+      path: '/api/public/whatsapp/webhook'
+      fullPath: '/api/public/whatsapp/webhook'
+      preLoaderRoute: typeof ApiPublicWhatsappWebhookRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/public/voice/stop': {
+      id: '/api/public/voice/stop'
+      path: '/api/public/voice/stop'
+      fullPath: '/api/public/voice/stop'
+      preLoaderRoute: typeof ApiPublicVoiceStopRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/public/telegram/webhook': {
+      id: '/api/public/telegram/webhook'
+      path: '/api/public/telegram/webhook'
+      fullPath: '/api/public/telegram/webhook'
+      preLoaderRoute: typeof ApiPublicTelegramWebhookRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/public/telegram/tick': {
+      id: '/api/public/telegram/tick'
+      path: '/api/public/telegram/tick'
+      fullPath: '/api/public/telegram/tick'
+      preLoaderRoute: typeof ApiPublicTelegramTickRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/public/telegram/broadcast': {
+      id: '/api/public/telegram/broadcast'
+      path: '/api/public/telegram/broadcast'
+      fullPath: '/api/public/telegram/broadcast'
+      preLoaderRoute: typeof ApiPublicTelegramBroadcastRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/public/alexa/skill': {
+      id: '/api/public/alexa/skill'
+      path: '/api/public/alexa/skill'
+      fullPath: '/api/public/alexa/skill'
+      preLoaderRoute: typeof ApiPublicAlexaSkillRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AdminRoute: AdminRoute,
+  AppRoute: AppRoute,
+  AsistentesRoute: AsistentesRoute,
+  AvisoLegalRoute: AvisoLegalRoute,
+  ContactoRoute: ContactoRoute,
   ApiGtfsRtTripUpdatesRoute: ApiGtfsRtTripUpdatesRoute,
   ApiGtfsRtVehiclePositionsRoute: ApiGtfsRtVehiclePositionsRoute,
+  ApiStopsStopIdRoute: ApiStopsStopIdRoute,
+  ApiStopsIndexRoute: ApiStopsIndexRoute,
+  ApiPublicAlexaSkillRoute: ApiPublicAlexaSkillRoute,
+  ApiPublicTelegramBroadcastRoute: ApiPublicTelegramBroadcastRoute,
+  ApiPublicTelegramTickRoute: ApiPublicTelegramTickRoute,
+  ApiPublicTelegramWebhookRoute: ApiPublicTelegramWebhookRoute,
+  ApiPublicVoiceStopRoute: ApiPublicVoiceStopRoute,
+  ApiPublicWhatsappWebhookRoute: ApiPublicWhatsappWebhookRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
