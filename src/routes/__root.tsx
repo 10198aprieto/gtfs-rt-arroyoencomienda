@@ -41,8 +41,8 @@ export const Route = createRootRoute({
       { name: "twitter:site", content: "@Lovable" },
       { name: "twitter:title", content: "ArroyoBus" },
       { name: "twitter:description", content: "ArroyoBus — sigue en tiempo real los autobuses de Arroyo de la Encomienda. Llegadas, posiciones GPS y tu tarjeta Buscyl en el bolsillo." },
-      { property: "og:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/q96k7LEcw9b6oVavZiCePAkLYvu1/social-images/social-1779303360565-Captura_de_pantalla_2026-05-20_205502.webp" },
-      { name: "twitter:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/q96k7LEcw9b6oVavZiCePAkLYvu1/social-images/social-1779303360565-Captura_de_pantalla_2026-05-20_205502.webp" },
+      { property: "og:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/q96k7LEcw9b6oVavZiCePAkLYvu1/social-images/social-1779626093161-Sigue_en_tiempo_real_los_autobuses_de_Arroyo_de_Encomnienda_Llegadas,_positiones_GPS_y_tu_tarjeta_Buscyl_en_la_bosbilio._(1).webp" },
+      { name: "twitter:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/q96k7LEcw9b6oVavZiCePAkLYvu1/social-images/social-1779626093161-Sigue_en_tiempo_real_los_autobuses_de_Arroyo_de_Encomnienda_Llegadas,_positiones_GPS_y_tu_tarjeta_Buscyl_en_la_bosbilio._(1).webp" },
     ],
     links: [
       {
