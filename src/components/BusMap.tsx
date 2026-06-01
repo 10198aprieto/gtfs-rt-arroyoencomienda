@@ -151,11 +151,14 @@ export default function BusMap() {
                 const head = (a.tripHeadsign || "").toString();
                 const time = new Date(a.estimatedArrival * 1000).toLocaleTimeString("es-ES",{hour:"2-digit",minute:"2-digit"});
                 const min = a.isScheduled
-                  ? `${time} (horario)`
+                  ? time
                   : (a.minutesAway === 0 ? "Ahora" : `${a.minutesAway} min`);
+                const badge = a.isScheduled
+                  ? `<span title="Llegada según horario" style="display:inline-flex;align-items:center;gap:3px;background:#f59e0b22;color:#b45309;font-size:10px;font-weight:600;padding:2px 6px;border-radius:8px;white-space:nowrap">⏱ Horario</span>`
+                  : `<span title="Datos en tiempo real" style="display:inline-flex;align-items:center;gap:3px;background:#10b98122;color:#047857;font-size:10px;font-weight:600;padding:2px 6px;border-radius:8px;white-space:nowrap"><span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:#10b981"></span>En vivo</span>`;
                 return `<tr>
                   <td style="padding:4px 6px"><span style="display:inline-block;background:${color};color:#fff;font-weight:600;font-size:11px;padding:2px 7px;border-radius:10px">${short}</span></td>
-                  <td style="padding:4px 6px;color:#444;font-size:12px">${head}</td>
+                  <td style="padding:4px 6px;color:#444;font-size:12px">${head}<div style="margin-top:2px">${badge}</div></td>
                   <td style="padding:4px 6px;text-align:right;font-weight:600;font-size:12px">${min}</td>
                 </tr>`;
               }).join("")
@@ -164,6 +167,10 @@ export default function BusMap() {
             <div style="font-weight:600;font-size:13px;margin-bottom:6px">${stopName}</div>
             <div style="font-size:11px;color:#888;margin-bottom:4px">Parada ${stopId}</div>
             <table style="border-collapse:collapse;width:100%">${rows}</table>
+            <div style="margin-top:6px;font-size:10px;color:#888;display:flex;gap:8px">
+              <span><span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:#10b981;vertical-align:middle"></span> En vivo (GPS)</span>
+              <span><span style="vertical-align:middle">⏱</span> Horario</span>
+            </div>
           </div>`;
         } catch {
           return `<div style="font-family:system-ui;font-size:13px"><strong>${stopName}</strong><br/><span style="color:#888">Error</span></div>`;
