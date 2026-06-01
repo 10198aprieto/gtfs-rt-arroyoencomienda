@@ -21,9 +21,12 @@ export interface ArrivalData {
 
 const BASE_URL = "https://arroyo.actiosae.com/bff/mobile/arrivals";
 const FEED_ID = "arroyo";
+const ANDROID_PACKAGE = "com.geoactio.arroyo_encomienda";
+const ANDROID_CERT = "222E5B204DE7B52F04DBED2A8B7947D566B0C2CA";
+const DEFAULT_API_KEY = "AIzaSyCvtaF21g0lPX0cTgOiIcHZNZRQlw2TRVA";
 
 function getApiKey(): string {
-  return process.env.ACTIOSAE_API_KEY || "";
+  return process.env.ACTIOSAE_API_KEY || DEFAULT_API_KEY;
 }
 
 async function fetchStopArrivals(stopId: string): Promise<ArrivalData[]> {
@@ -37,6 +40,8 @@ async function fetchStopArrivals(stopId: string): Promise<ArrivalData[]> {
       headers: {
         "Accept": "application/json",
         "User-Agent": "ArroyoBus-GTFSRT/1.0",
+        "X-Android-Package": ANDROID_PACKAGE,
+        "X-Android-Cert": ANDROID_CERT,
       },
       signal: controller.signal,
     });

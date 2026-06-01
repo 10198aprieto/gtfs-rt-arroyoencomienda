@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { Bus, MapPin, Clock, ExternalLink, Download, Smartphone, Send, Copy, Check, Activity, Radio, Github, MessageCircle, Mic, Sparkles } from "lucide-react";
+import { Bus, MapPin, Clock, ExternalLink, Download, Smartphone, Send, Copy, Check, Activity, Radio, HelpCircle } from "lucide-react";
 import { lazy, Suspense, useEffect, useState } from "react";
 
 const BusMap = lazy(() => import("@/components/BusMap"));
@@ -206,43 +206,28 @@ function Index() {
           </div>
         </section>
 
-        {/* Asistentes de voz */}
-        <section aria-labelledby="asistentes-title" className="space-y-4">
-          <div className="flex items-end justify-between flex-wrap gap-2">
-            <div>
-              <h2 id="asistentes-title" className="text-2xl font-bold tracking-tight">
-                Asistentes y mensajería
-              </h2>
-              <p className="text-sm text-muted-foreground mt-1">
-                Pregunta por una parada desde WhatsApp, Siri o Alexa.
-              </p>
-            </div>
-            <Link
-              to="/asistentes"
-              className="text-sm font-semibold text-primary hover:underline"
-            >
-              Cómo configurarlos →
-            </Link>
+        {/* Ayuda */}
+        <section
+          aria-labelledby="ayuda-title"
+          className="rounded-2xl p-6 border border-border bg-card flex flex-col sm:flex-row items-start sm:items-center gap-4"
+        >
+          <div className="w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center flex-shrink-0">
+            <HelpCircle className="w-5 h-5" />
           </div>
-          <div className="grid sm:grid-cols-3 gap-4">
-            {[
-              { icon: MessageCircle, name: "WhatsApp", desc: "Webhook Twilio listo." },
-              { icon: Mic, name: "Siri (Atajos)", desc: "Endpoint JSON para iOS." },
-              { icon: Sparkles, name: "Alexa", desc: "Skill custom en español." },
-            ].map((c) => (
-              <Link
-                key={c.name}
-                to="/asistentes"
-                className="group border border-border rounded-2xl p-5 bg-card hover:border-primary/40 hover:shadow-lg transition-all"
-              >
-                <div className="w-10 h-10 rounded-lg bg-primary/10 text-primary flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
-                  <c.icon className="w-5 h-5" />
-                </div>
-                <h3 className="font-semibold mb-0.5">{c.name}</h3>
-                <p className="text-xs text-muted-foreground">{c.desc}</p>
-              </Link>
-            ))}
+          <div className="flex-1">
+            <h2 id="ayuda-title" className="text-lg font-semibold">Centro de ayuda</h2>
+            <p className="text-sm text-muted-foreground">
+              Guías de uso, preguntas frecuentes y cómo aprovechar todas las funciones de ArroyoBus.
+            </p>
           </div>
+          <a
+            href="https://arroyobus.gitbook.io/ayuda/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-1.5 px-4 py-2 bg-primary text-primary-foreground rounded-lg text-sm font-semibold hover:opacity-90 transition-opacity"
+          >
+            Abrir ayuda <ExternalLink className="w-3.5 h-3.5" />
+          </a>
         </section>
 
         {/* Endpoints GTFS-RT */}
@@ -323,6 +308,18 @@ function Index() {
             <Link to="/aviso-legal" className="underline hover:text-foreground transition-colors">
               Aviso legal
             </Link>
+            {" · "}
+            <Link to="/politica-privacidad" className="underline hover:text-foreground transition-colors">
+              Privacidad
+            </Link>
+            {" · "}
+            <Link to="/politica-cookies" className="underline hover:text-foreground transition-colors">
+              Cookies
+            </Link>
+            {" · "}
+            <a href="https://arroyobus.gitbook.io/ayuda/" target="_blank" rel="noopener noreferrer" className="underline hover:text-foreground transition-colors">
+              Ayuda
+            </a>
             {" · "}
             <Link to="/contacto" className="underline hover:text-foreground transition-colors">
               Contacto
