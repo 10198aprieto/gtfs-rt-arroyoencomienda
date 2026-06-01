@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { Bus, Search, MapPin, RefreshCw, ArrowLeft, Map as MapIcon, CreditCard, Plus, Trash2, X, Pencil, ScanLine, Camera } from "lucide-react";
+import { Bus, Search, MapPin, RefreshCw, ArrowLeft, Map as MapIcon, CreditCard, Plus, Trash2, X, Pencil, ScanLine, Camera, Radio, CalendarClock } from "lucide-react";
 import QRCode from "qrcode";
 import stopsData from "@/data/stops.json";
 import { loadCards, addCard, removeCard, updateCard, type BuscylCard } from "@/lib/buscyl-cards";
@@ -239,10 +239,21 @@ function StopDetail({ stop, onBack, userPos }: { stop: Stop; onBack: () => void;
               </span>
               <div className="min-w-0 flex-1">
                 <p className="text-sm font-medium truncate">{a.tripHeadsign || a.routeName}</p>
-                <p className="text-[11px] text-muted-foreground">
-                  {a.isScheduled
-                    ? "Según horario"
-                    : `Bus ${a.vehicleId}${a.isEstimated ? " · estimado" : ""}`}
+                <p className="text-[11px] text-muted-foreground flex items-center gap-1.5">
+                  {a.isScheduled ? (
+                    <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-amber-500/15 text-amber-700 dark:text-amber-400 font-medium">
+                      <CalendarClock className="w-3 h-3" /> Horario
+                    </span>
+                  ) : (
+                    <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-emerald-500/15 text-emerald-700 dark:text-emerald-400 font-medium">
+                      <Radio className="w-3 h-3" /> En vivo
+                    </span>
+                  )}
+                  <span className="truncate">
+                    {a.isScheduled
+                      ? "Según horario"
+                      : `Bus ${a.vehicleId}${a.isEstimated ? " · estimado" : ""}`}
+                  </span>
                 </p>
               </div>
               <div className="text-right shrink-0">
