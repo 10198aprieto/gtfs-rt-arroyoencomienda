@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { fetchAllArrivals } from "@/lib/gtfsrt/fetch-arrivals";
+import { fetchStopArrivals } from "@/lib/gtfsrt/fetch-arrivals";
 import { getScheduledArrivals } from "@/lib/gtfsrt/schedule";
 
 const corsHeaders = {
@@ -13,10 +13,9 @@ export const Route = createFileRoute("/api/stops/$stopId")({
   server: {
     handlers: {
       GET: async ({ params }) => {
-        const all = await fetchAllArrivals();
+        const all = await fetchStopArrivals(String(params.stopId));
         const now = Math.floor(Date.now() / 1000);
         const realtime = all
-          .filter((a) => String(a.stopId) === String(params.stopId))
           .filter((a) => a.estimatedArrival >= now - 60)
           .map((a) => ({
             tripId: a.tripId,
