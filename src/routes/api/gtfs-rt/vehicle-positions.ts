@@ -1,6 +1,25 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { fetchAllArrivals, type ArrivalData } from "@/lib/gtfsrt/fetch-arrivals";
+import { fetchAllVehiclePositions, type VehiclePosition, type ArrivalData } from "@/lib/gtfsrt/fetch-arrivals";
 import { buildVehiclePositionsFeed, buildVehiclePositionsJson } from "@/lib/gtfsrt/encode";
+
+function toArrival(v: VehiclePosition): ArrivalData {
+  return {
+    tripId: "",
+    vehicleId: v.vehicleId,
+    routeId: v.routeId,
+    routeName: v.routeId,
+    stopId: "",
+    stopName: "",
+    estimatedArrival: v.timestamp ?? Math.floor(Date.now() / 1000),
+    lat: v.lat,
+    lon: v.lon,
+    speed: v.speed,
+    bearing: v.bearing,
+    routeShortName: v.routeId === "Roja" ? "R" : v.routeId === "Azul" ? "A" : v.routeId,
+    routeColor: v.routeId === "Roja" ? "ca0d32" : v.routeId === "Azul" ? "3b4cd1" : undefined,
+    tripHeadsign: v.vehicleName,
+  };
+}
 
 export const Route = createFileRoute("/api/gtfs-rt/vehicle-positions")({
   server: {
@@ -9,17 +28,8 @@ export const Route = createFileRoute("/api/gtfs-rt/vehicle-positions")({
         const url = new URL(request.url);
         const format = url.searchParams.get("format");
 
-        const all = await fetchAllArrivals();
-        // Deduplicar por vehículo: cada vehículo aparece en muchas paradas,
-        // pero su posición es la misma. Quedarnos con la primera ocurrencia.
-        const seen = new Set<string>();
-        const arrivals: ArrivalData[] = [];
-        for (const a of all) {
-          const key = a.vehicleId || a.tripId;
-          if (!key || seen.has(key)) continue;
-          seen.add(key);
-          arrivals.push(a);
-        }
+        const vehicles = await fetchAllVehiclePositions();
+        const arrivals: ArrivalData[] = vehicles.map(toArrival);
 
         if (format === "json") {
           return Response.json(buildVehiclePositionsJson(arrivals), {
