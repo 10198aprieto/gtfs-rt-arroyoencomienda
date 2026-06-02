@@ -46,7 +46,11 @@ async function fetchStopArrivals(stopId: string): Promise<ArrivalData[]> {
       signal: controller.signal,
     });
     clearTimeout(timer);
-    if (!res.ok) return [];
+    if (!res.ok) {
+      const body = await res.text().catch(() => "");
+      console.error(`[actiosae] stop=${stopId} status=${res.status} body=${body.slice(0, 200)}`);
+      return [];
+    }
     const json = await res.json() as any[];
 
     if (!Array.isArray(json)) return [];
@@ -78,7 +82,8 @@ async function fetchStopArrivals(stopId: string): Promise<ArrivalData[]> {
       }
     }
     return arrivals;
-  } catch {
+  } catch (e) {
+    console.error(`[actiosae] stop=${stopId} fetch error:`, (e as Error)?.message);
     return [];
   }
 }
