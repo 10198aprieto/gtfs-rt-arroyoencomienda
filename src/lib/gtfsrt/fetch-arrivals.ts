@@ -20,6 +20,8 @@ export interface ArrivalData {
 }
 
 const BASE_URL = "https://arroyo.actiosae.com/bff/mobile/arrivals";
+const VEHICLE_URL = "https://arroyo.actiosae.com/bff/mobile/vehiclePosition";
+const ROUTE_IDS = ["Roja", "Azul"] as const;
 const FEED_ID = "arroyo";
 const ANDROID_PACKAGE = "com.geoactio.arroyo_encomienda";
 const ANDROID_CERT = "222E5B204DE7B52F04DBED2A8B7947D566B0C2CA";
@@ -29,7 +31,16 @@ function getApiKey(): string {
   return process.env.ACTIOSAE_API_KEY || DEFAULT_API_KEY;
 }
 
-async function fetchStopArrivals(stopId: string): Promise<ArrivalData[]> {
+function commonHeaders() {
+  return {
+    "Accept": "application/json",
+    "User-Agent": "ArroyoBus-GTFSRT/1.0",
+    "X-Android-Package": ANDROID_PACKAGE,
+    "X-Android-Cert": ANDROID_CERT,
+  } as Record<string, string>;
+}
+
+export async function fetchStopArrivals(stopId: string): Promise<ArrivalData[]> {
   try {
     const apiKey = getApiKey();
     const url = `${BASE_URL}/${stopId}?feedId=${FEED_ID}${apiKey ? `&key=${apiKey}` : ""}`;
@@ -37,12 +48,7 @@ async function fetchStopArrivals(stopId: string): Promise<ArrivalData[]> {
     const controller = new AbortController();
     const timer = setTimeout(() => controller.abort(), 5000);
     const res = await fetch(url, {
-      headers: {
-        "Accept": "application/json",
-        "User-Agent": "ArroyoBus-GTFSRT/1.0",
-        "X-Android-Package": ANDROID_PACKAGE,
-        "X-Android-Cert": ANDROID_CERT,
-      },
+      headers: commonHeaders(),
       signal: controller.signal,
     });
     clearTimeout(timer);
@@ -86,6 +92,77 @@ async function fetchStopArrivals(stopId: string): Promise<ArrivalData[]> {
     console.error(`[actiosae] stop=${stopId} fetch error:`, (e as Error)?.message);
     return [];
   }
+}
+
+export interface VehiclePosition {
+  vehicleId: string;
+  vehicleName?: string;
+  routeId: string;
+  lat: number;
+  lon: number;
+  speed?: number;
+  bearing?: number;
+  timestamp?: number;
+}
+
+async function fetchVehiclesForRoute(routeId: string): Promise<VehiclePosition[]> {
+  try {
+    const apiKey = getApiKey();
+    const url = `${VEHICLE_URL}?feedId=${FEED_ID}&routeId=${encodeURIComponent(routeId)}${apiKey ? `&key=${apiKey}` : ""}`;
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), 5000);
+    const res = await fetch(url, { headers: commonHeaders(), signal: controller.signal });
+    clearTimeout(timer);
+    if (!res.ok) {
+      const body = await res.text().catch(() => "");
+      console.error(`[actiosae] vehiclePosition route=${routeId} status=${res.status} body=${body.slice(0, 200)}`);
+      return [];
+    }
+    const json = await res.json() as { gpsPositions?: any[] };
+    const list = Array.isArray(json?.gpsPositions) ? json.gpsPositions : [];
+    return list
+      .filter((v) => typeof v?.latitude === "number" && typeof v?.longitude === "number")
+      .map((v) => ({
+        vehicleId: String(v.vehicleId ?? ""),
+        vehicleName: v.vehicleName ? String(v.vehicleName) : undefined,
+        routeId: String(v.routeId ?? routeId),
+        lat: v.latitude,
+        lon: v.longitude,
+        speed: typeof v.speed === "number" ? v.speed / 3.6 : undefined, // km/h -> m/s
+        bearing: typeof v.orientation === "number" ? v.orientation : undefined,
+        timestamp: v.timestamp ? Math.floor(new Date(v.timestamp).getTime() / 1000) : undefined,
+      }));
+  } catch (e) {
+    console.error(`[actiosae] vehiclePosition route=${routeId} fetch error:`, (e as Error)?.message);
+    return [];
+  }
+}
+
+let cachedVehicles: VehiclePosition[] | null = null;
+let cachedVehiclesAt = 0;
+const VEHICLES_TTL_MS = 10_000;
+let vehiclesInflight: Promise<VehiclePosition[]> | null = null;
+
+export async function fetchAllVehiclePositions(): Promise<VehiclePosition[]> {
+  const now = Date.now();
+  if (cachedVehicles && now - cachedVehiclesAt < VEHICLES_TTL_MS) return cachedVehicles;
+  if (vehiclesInflight) return vehiclesInflight;
+  vehiclesInflight = (async () => {
+    try {
+      const results = await Promise.all(ROUTE_IDS.map(fetchVehiclesForRoute));
+      const dedup = new Map<string, VehiclePosition>();
+      for (const list of results) for (const v of list) {
+        if (!v.vehicleId) continue;
+        dedup.set(v.vehicleId, v);
+      }
+      cachedVehicles = Array.from(dedup.values());
+      cachedVehiclesAt = Date.now();
+      return cachedVehicles;
+    } finally {
+      vehiclesInflight = null;
+    }
+  })();
+  return vehiclesInflight;
 }
 
 // In-memory cache to prevent upstream API abuse
