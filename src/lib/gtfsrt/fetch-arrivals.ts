@@ -1,4 +1,4 @@
-import { STOP_IDS } from "./stops";
+import stopsData from "@/data/stops.json";
 
 export interface ArrivalData {
   tripId: string;
@@ -19,81 +19,6 @@ export interface ArrivalData {
   isEstimated?: boolean;
 }
 
-const BASE_URL = "https://arroyo.actiosae.com/bff/mobile/arrivals";
-const VEHICLE_URL = "https://arroyo.actiosae.com/bff/mobile/vehiclePosition";
-const ROUTE_IDS = ["Roja", "Azul"] as const;
-const FEED_ID = "arroyo";
-const ANDROID_PACKAGE = "com.geoactio.arroyo_encomienda";
-const ANDROID_CERT = "222E5B204DE7B52F04DBED2A8B7947D566B0C2CA";
-const DEFAULT_API_KEY = "AIzaSyCvtaF21g0lPX0cTgOiIcHZNZRQlw2TRVA";
-
-function getApiKey(): string {
-  return process.env.ACTIOSAE_API_KEY || DEFAULT_API_KEY;
-}
-
-function commonHeaders() {
-  return {
-    "Accept": "application/json",
-    "User-Agent": "ArroyoBus-GTFSRT/1.0",
-    "X-Android-Package": ANDROID_PACKAGE,
-    "X-Android-Cert": ANDROID_CERT,
-  } as Record<string, string>;
-}
-
-export async function fetchStopArrivals(stopId: string): Promise<ArrivalData[]> {
-  try {
-    const apiKey = getApiKey();
-    const url = `${BASE_URL}/${stopId}?feedId=${FEED_ID}${apiKey ? `&key=${apiKey}` : ""}`;
-
-    const controller = new AbortController();
-    const timer = setTimeout(() => controller.abort(), 5000);
-    const res = await fetch(url, {
-      headers: commonHeaders(),
-      signal: controller.signal,
-    });
-    clearTimeout(timer);
-    if (!res.ok) {
-      const body = await res.text().catch(() => "");
-      console.error(`[actiosae] stop=${stopId} status=${res.status} body=${body.slice(0, 200)}`);
-      return [];
-    }
-    const json = await res.json() as any[];
-
-    if (!Array.isArray(json)) return [];
-
-    const arrivals: ArrivalData[] = [];
-
-    for (const item of json) {
-      if (item.tripId && item.vehicleId) {
-        arrivals.push({
-          tripId: String(item.tripId),
-          vehicleId: String(item.vehicleId),
-          routeId: String(item.route?.routeId || ""),
-          routeName: String(item.route?.routeName || ""),
-          routeShortName: item.route?.routeShortName,
-          routeColor: item.route?.color,
-          stopId: String(item.stopId || stopId),
-          stopName: String(item.stopName || ""),
-          estimatedArrival: item.arrivalTime
-            ? Math.floor(new Date(item.arrivalTime).getTime() / 1000)
-            : Math.floor(Date.now() / 1000),
-          lat: item.lat ?? 0,
-          lon: item.lon ?? 0,
-          speed: item.speed,
-          bearing: item.bearing,
-          directionId: item.directionId,
-          tripHeadsign: item.tripHeadsign,
-          isEstimated: item.isEstimated,
-        });
-      }
-    }
-    return arrivals;
-  } catch (e) {
-    console.error(`[actiosae] stop=${stopId} fetch error:`, (e as Error)?.message);
-    return [];
-  }
-}
-
 export interface VehiclePosition {
   vehicleId: string;
   vehicleName?: string;
@@ -105,42 +30,44 @@ export interface VehiclePosition {
   timestamp?: number;
 }
 
-async function fetchVehiclesForRoute(routeId: string): Promise<VehiclePosition[]> {
-  try {
-    const apiKey = getApiKey();
-    const url = `${VEHICLE_URL}?feedId=${FEED_ID}&routeId=${encodeURIComponent(routeId)}${apiKey ? `&key=${apiKey}` : ""}`;
-    const controller = new AbortController();
-    const timer = setTimeout(() => controller.abort(), 5000);
-    const res = await fetch(url, { headers: commonHeaders(), signal: controller.signal });
-    clearTimeout(timer);
-    if (!res.ok) {
-      const body = await res.text().catch(() => "");
-      console.error(`[actiosae] vehiclePosition route=${routeId} status=${res.status} body=${body.slice(0, 200)}`);
-      return [];
-    }
-    const json = await res.json() as { gpsPositions?: any[] };
-    const list = Array.isArray(json?.gpsPositions) ? json.gpsPositions : [];
-    return list
-      .filter((v) => typeof v?.latitude === "number" && typeof v?.longitude === "number")
-      .map((v) => ({
-        vehicleId: String(v.vehicleId ?? ""),
-        vehicleName: v.vehicleName ? String(v.vehicleName) : undefined,
-        routeId: String(v.routeId ?? routeId),
-        lat: v.latitude,
-        lon: v.longitude,
-        speed: typeof v.speed === "number" ? v.speed / 3.6 : undefined, // km/h -> m/s
-        bearing: typeof v.orientation === "number" ? v.orientation : undefined,
-        timestamp: v.timestamp ? Math.floor(new Date(v.timestamp).getTime() / 1000) : undefined,
-      }));
-  } catch (e) {
-    console.error(`[actiosae] vehiclePosition route=${routeId} fetch error:`, (e as Error)?.message);
-    return [];
+const UPSTREAM_VP = "https://enzeyiwpoomhlxmcjivn.supabase.co/functions/v1/gtfs-rt?format=json";
+const UPSTREAM_TU = "https://enzeyiwpoomhlxmcjivn.supabase.co/functions/v1/gtfs-rt-trip-updates?format=json";
+
+const STOPS_MAP = new Map<string, { name: string }>(
+  (stopsData as Array<{ id: string; name: string }>).map((s) => [String(s.id), { name: s.name }])
+);
+
+function routeMeta(routeId: string): { shortName: string; color: string; name: string } {
+  switch (routeId) {
+    case "Roja": return { shortName: "R", color: "ca0d32", name: "Línea Roja" };
+    case "Azul": return { shortName: "A", color: "3b4cd1", name: "Línea Azul" };
+    case "Verde": return { shortName: "V", color: "2ea846", name: "Línea Verde" };
+    default: return { shortName: routeId, color: "888888", name: routeId };
   }
 }
 
+async function fetchJson(url: string, timeoutMs = 8000): Promise<any | null> {
+  try {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), timeoutMs);
+    const res = await fetch(url, { headers: { Accept: "application/json" }, signal: controller.signal });
+    clearTimeout(timer);
+    if (!res.ok) {
+      console.error(`[gtfs-rt] ${url} status=${res.status}`);
+      return null;
+    }
+    return await res.json();
+  } catch (e) {
+    console.error(`[gtfs-rt] ${url} error:`, (e as Error).message);
+    return null;
+  }
+}
+
+// ---------- Vehicle positions ----------
+
 let cachedVehicles: VehiclePosition[] | null = null;
 let cachedVehiclesAt = 0;
-const VEHICLES_TTL_MS = 10_000;
+const VEHICLES_TTL_MS = 8_000;
 let vehiclesInflight: Promise<VehiclePosition[]> | null = null;
 
 export async function fetchAllVehiclePositions(): Promise<VehiclePosition[]> {
@@ -149,15 +76,27 @@ export async function fetchAllVehiclePositions(): Promise<VehiclePosition[]> {
   if (vehiclesInflight) return vehiclesInflight;
   vehiclesInflight = (async () => {
     try {
-      const results = await Promise.all(ROUTE_IDS.map(fetchVehiclesForRoute));
-      const dedup = new Map<string, VehiclePosition>();
-      for (const list of results) for (const v of list) {
-        if (!v.vehicleId) continue;
-        dedup.set(v.vehicleId, v);
+      const json = await fetchJson(UPSTREAM_VP);
+      const entities: any[] = Array.isArray(json?.entity) ? json.entity : [];
+      const list: VehiclePosition[] = [];
+      for (const e of entities) {
+        const v = e?.vehicle;
+        const pos = v?.position;
+        if (!v || !pos) continue;
+        list.push({
+          vehicleId: String(v?.vehicle?.id ?? e?.id ?? ""),
+          vehicleName: v?.vehicle?.label ? String(v.vehicle.label) : undefined,
+          routeId: String(v?.trip?.route_id ?? v?.trip?.routeId ?? ""),
+          lat: Number(pos.latitude),
+          lon: Number(pos.longitude),
+          speed: typeof pos.speed === "number" ? pos.speed : undefined,
+          bearing: typeof pos.bearing === "number" ? pos.bearing : undefined,
+          timestamp: typeof v.timestamp === "number" ? v.timestamp : undefined,
+        });
       }
-      cachedVehicles = Array.from(dedup.values());
+      cachedVehicles = list;
       cachedVehiclesAt = Date.now();
-      return cachedVehicles;
+      return list;
     } finally {
       vehiclesInflight = null;
     }
@@ -165,43 +104,90 @@ export async function fetchAllVehiclePositions(): Promise<VehiclePosition[]> {
   return vehiclesInflight;
 }
 
-// In-memory cache to prevent upstream API abuse
+// ---------- Trip updates → ArrivalData ----------
+
 let cachedArrivals: ArrivalData[] | null = null;
-let cacheTimestamp = 0;
-const CACHE_TTL_MS = 15_000; // 15 seconds
-const CACHE_STALE_MS = 120_000; // serve stale up to 2 min if upstream fails
-let inflight: Promise<ArrivalData[]> | null = null;
+let cachedArrivalsAt = 0;
+const ARRIVALS_TTL_MS = 8_000;
+const ARRIVALS_STALE_MS = 120_000;
+let arrivalsInflight: Promise<ArrivalData[]> | null = null;
 
 export async function fetchAllArrivals(): Promise<ArrivalData[]> {
   const now = Date.now();
-  if (cachedArrivals && now - cacheTimestamp < CACHE_TTL_MS) {
-    return cachedArrivals;
-  }
-  if (inflight) return inflight;
+  if (cachedArrivals && now - cachedArrivalsAt < ARRIVALS_TTL_MS) return cachedArrivals;
+  if (arrivalsInflight) return arrivalsInflight;
 
-  inflight = (async () => {
+  arrivalsInflight = (async () => {
     try {
-      const allArrivals: ArrivalData[] = [];
-      // Mayor concurrencia para no agotar el límite de 30s del Worker.
-      const batchSize = 25;
-      for (let i = 0; i < STOP_IDS.length; i += batchSize) {
-        const batch = STOP_IDS.slice(i, i + batchSize);
-        const results = await Promise.all(batch.map(fetchStopArrivals));
-        for (const r of results) allArrivals.push(...r);
+      const [tuJson, vehicles] = await Promise.all([
+        fetchJson(UPSTREAM_TU),
+        fetchAllVehiclePositions(),
+      ]);
+      const vMap = new Map(vehicles.map((v) => [v.vehicleId, v]));
+      const entities: any[] = Array.isArray(tuJson?.entity) ? tuJson.entity : [];
+      const out: ArrivalData[] = [];
+
+      for (const e of entities) {
+        const tu = e?.trip_update ?? e?.tripUpdate;
+        if (!tu) continue;
+        const trip = tu.trip ?? {};
+        const tripId = String(trip.trip_id ?? trip.tripId ?? e.id ?? "");
+        const routeId = String(trip.route_id ?? trip.routeId ?? "");
+        const directionId = trip.direction_id != null ? String(trip.direction_id) : undefined;
+        const vehicleId = String(tu.vehicle?.id ?? "");
+        const meta = routeMeta(routeId);
+        const veh = vMap.get(vehicleId);
+
+        const updates: any[] = Array.isArray(tu.stop_time_update ?? tu.stopTimeUpdate)
+          ? (tu.stop_time_update ?? tu.stopTimeUpdate)
+          : [];
+
+        for (const u of updates) {
+          const stopId = String(u.stop_id ?? u.stopId ?? "");
+          if (!stopId) continue;
+          const t = u.arrival?.time ?? u.departure?.time;
+          if (typeof t !== "number") continue;
+
+          out.push({
+            tripId,
+            vehicleId,
+            routeId,
+            routeName: meta.name,
+            routeShortName: meta.shortName,
+            routeColor: meta.color,
+            stopId,
+            stopName: STOPS_MAP.get(stopId)?.name ?? "",
+            estimatedArrival: t,
+            lat: veh?.lat ?? 0,
+            lon: veh?.lon ?? 0,
+            speed: veh?.speed,
+            bearing: veh?.bearing,
+            directionId,
+            tripHeadsign: undefined,
+            isEstimated: false,
+          });
+        }
       }
-      cachedArrivals = allArrivals;
-      cacheTimestamp = Date.now();
-      return allArrivals;
-    } catch {
-      // Si todo falla pero hay cache razonablemente reciente, sírvelo
-      if (cachedArrivals && Date.now() - cacheTimestamp < CACHE_STALE_MS) {
+
+      cachedArrivals = out;
+      cachedArrivalsAt = Date.now();
+      return out;
+    } catch (e) {
+      console.error("[gtfs-rt] fetchAllArrivals error:", (e as Error).message);
+      if (cachedArrivals && Date.now() - cachedArrivalsAt < ARRIVALS_STALE_MS) {
         return cachedArrivals;
       }
       return [];
     } finally {
-      inflight = null;
+      arrivalsInflight = null;
     }
   })();
 
-  return inflight;
+  return arrivalsInflight;
+}
+
+export async function fetchStopArrivals(stopId: string): Promise<ArrivalData[]> {
+  const all = await fetchAllArrivals();
+  const sid = String(stopId);
+  return all.filter((a) => a.stopId === sid);
 }
