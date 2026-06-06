@@ -4,6 +4,7 @@ import { Bus, Search, MapPin, RefreshCw, ArrowLeft, Map as MapIcon, CreditCard, 
 import QRCode from "qrcode";
 import stopsData from "@/data/stops.json";
 import { loadCards, addCard, removeCard, updateCard, type BuscylCard } from "@/lib/buscyl-cards";
+import SanAntonioBanner from "@/components/SanAntonioBanner";
 
 interface Stop { id: string; name: string; desc: string; lat: number; lon: number }
 interface Arrival {
@@ -120,6 +121,9 @@ function AppPage() {
       </header>
 
       {tab === "stops" ? <ul className="flex-1 divide-y divide-border">
+        <li className="px-3 py-3">
+          <SanAntonioBanner compact />
+        </li>
         {filtered.map((s) => {
           const dist = userPos ? distance(userPos, s) : null;
           return (
