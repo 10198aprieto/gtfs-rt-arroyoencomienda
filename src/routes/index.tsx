@@ -3,6 +3,7 @@ import { Bus, MapPin, Clock, ExternalLink, Download, Smartphone, Send, Copy, Che
 import { lazy, Suspense, useEffect, useState } from "react";
 
 const BusMap = lazy(() => import("@/components/BusMap"));
+import SanAntonioBanner from "@/components/SanAntonioBanner";
 
 export const Route = createFileRoute("/")({
   component: Index,
@@ -165,6 +166,8 @@ function Index() {
         <section aria-label="Estadísticas en tiempo real" className="-mt-20 sm:-mt-24 relative z-10">
           <LiveStats />
         </section>
+
+        <SanAntonioBanner />
 
         {/* Mapa */}
         <section id="mapa" aria-labelledby="mapa-title" className="space-y-3">
