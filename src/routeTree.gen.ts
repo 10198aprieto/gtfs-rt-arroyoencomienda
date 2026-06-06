@@ -17,6 +17,7 @@ import { Route as AsistentesRouteImport } from './routes/asistentes'
 import { Route as AppRouteImport } from './routes/app'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AvisosSanAntonioRouteImport } from './routes/avisos.san-antonio'
 import { Route as ApiStopsIndexRouteImport } from './routes/api/stops/index'
 import { Route as ApiStopsStopIdRouteImport } from './routes/api/stops/$stopId'
 import { Route as ApiGtfsRtVehiclePositionsRouteImport } from './routes/api/gtfs-rt/vehicle-positions'
@@ -66,6 +67,11 @@ const AdminRoute = AdminRouteImport.update({
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AvisosSanAntonioRoute = AvisosSanAntonioRouteImport.update({
+  id: '/avisos/san-antonio',
+  path: '/avisos/san-antonio',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ApiStopsIndexRoute = ApiStopsIndexRouteImport.update({
@@ -132,6 +138,7 @@ export interface FileRoutesByFullPath {
   '/contacto': typeof ContactoRoute
   '/politica-cookies': typeof PoliticaCookiesRoute
   '/politica-privacidad': typeof PoliticaPrivacidadRoute
+  '/avisos/san-antonio': typeof AvisosSanAntonioRoute
   '/api/gtfs-rt/trip-updates': typeof ApiGtfsRtTripUpdatesRoute
   '/api/gtfs-rt/vehicle-positions': typeof ApiGtfsRtVehiclePositionsRoute
   '/api/stops/$stopId': typeof ApiStopsStopIdRoute
@@ -152,6 +159,7 @@ export interface FileRoutesByTo {
   '/contacto': typeof ContactoRoute
   '/politica-cookies': typeof PoliticaCookiesRoute
   '/politica-privacidad': typeof PoliticaPrivacidadRoute
+  '/avisos/san-antonio': typeof AvisosSanAntonioRoute
   '/api/gtfs-rt/trip-updates': typeof ApiGtfsRtTripUpdatesRoute
   '/api/gtfs-rt/vehicle-positions': typeof ApiGtfsRtVehiclePositionsRoute
   '/api/stops/$stopId': typeof ApiStopsStopIdRoute
@@ -173,6 +181,7 @@ export interface FileRoutesById {
   '/contacto': typeof ContactoRoute
   '/politica-cookies': typeof PoliticaCookiesRoute
   '/politica-privacidad': typeof PoliticaPrivacidadRoute
+  '/avisos/san-antonio': typeof AvisosSanAntonioRoute
   '/api/gtfs-rt/trip-updates': typeof ApiGtfsRtTripUpdatesRoute
   '/api/gtfs-rt/vehicle-positions': typeof ApiGtfsRtVehiclePositionsRoute
   '/api/stops/$stopId': typeof ApiStopsStopIdRoute
@@ -195,6 +204,7 @@ export interface FileRouteTypes {
     | '/contacto'
     | '/politica-cookies'
     | '/politica-privacidad'
+    | '/avisos/san-antonio'
     | '/api/gtfs-rt/trip-updates'
     | '/api/gtfs-rt/vehicle-positions'
     | '/api/stops/$stopId'
@@ -215,6 +225,7 @@ export interface FileRouteTypes {
     | '/contacto'
     | '/politica-cookies'
     | '/politica-privacidad'
+    | '/avisos/san-antonio'
     | '/api/gtfs-rt/trip-updates'
     | '/api/gtfs-rt/vehicle-positions'
     | '/api/stops/$stopId'
@@ -235,6 +246,7 @@ export interface FileRouteTypes {
     | '/contacto'
     | '/politica-cookies'
     | '/politica-privacidad'
+    | '/avisos/san-antonio'
     | '/api/gtfs-rt/trip-updates'
     | '/api/gtfs-rt/vehicle-positions'
     | '/api/stops/$stopId'
@@ -256,6 +268,7 @@ export interface RootRouteChildren {
   ContactoRoute: typeof ContactoRoute
   PoliticaCookiesRoute: typeof PoliticaCookiesRoute
   PoliticaPrivacidadRoute: typeof PoliticaPrivacidadRoute
+  AvisosSanAntonioRoute: typeof AvisosSanAntonioRoute
   ApiGtfsRtTripUpdatesRoute: typeof ApiGtfsRtTripUpdatesRoute
   ApiGtfsRtVehiclePositionsRoute: typeof ApiGtfsRtVehiclePositionsRoute
   ApiStopsStopIdRoute: typeof ApiStopsStopIdRoute
@@ -324,6 +337,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/avisos/san-antonio': {
+      id: '/avisos/san-antonio'
+      path: '/avisos/san-antonio'
+      fullPath: '/avisos/san-antonio'
+      preLoaderRoute: typeof AvisosSanAntonioRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/stops/': {
@@ -408,6 +428,7 @@ const rootRouteChildren: RootRouteChildren = {
   ContactoRoute: ContactoRoute,
   PoliticaCookiesRoute: PoliticaCookiesRoute,
   PoliticaPrivacidadRoute: PoliticaPrivacidadRoute,
+  AvisosSanAntonioRoute: AvisosSanAntonioRoute,
   ApiGtfsRtTripUpdatesRoute: ApiGtfsRtTripUpdatesRoute,
   ApiGtfsRtVehiclePositionsRoute: ApiGtfsRtVehiclePositionsRoute,
   ApiStopsStopIdRoute: ApiStopsStopIdRoute,
@@ -422,3 +443,12 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { createStart } from '@tanstack/react-start'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+  }
+}
