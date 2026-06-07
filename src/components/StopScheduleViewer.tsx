@@ -17,8 +17,7 @@ function fmtTime(sec: number): string {
 
 /** Para un día dado (Date), devuelve los serviceIds activos. */
 function servicesForDate(date: Date): Set<string> {
-  const dow = date.getDay(); // 0=Sun, 6=Sat — pero schedule usa Lun=0..Dom=6
-  const idx = dow === 0 ? 6 : dow - 1;
+  const idx = date.getDay(); // 0=Dom..6=Sáb — coincide con el formato del schedule
   const yyyymmdd = `${date.getFullYear()}${String(date.getMonth()+1).padStart(2,"0")}${String(date.getDate()).padStart(2,"0")}`;
   const out = new Set<string>();
   for (const [sid, def] of Object.entries(S.services)) {
