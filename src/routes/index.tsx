@@ -1,9 +1,10 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { Bus, MapPin, Clock, ExternalLink, Download, Smartphone, Send, Copy, Check, Activity, Radio, HelpCircle } from "lucide-react";
+import { Bus, MapPin, Clock, ExternalLink, Download, Smartphone, Send, Copy, Check, Activity, Radio, HelpCircle, AlertTriangle } from "lucide-react";
 import { lazy, Suspense, useEffect, useState } from "react";
 
 const BusMap = lazy(() => import("@/components/BusMap"));
 import SanAntonioBanner from "@/components/SanAntonioBanner";
+import PresenceBadge from "@/components/PresenceBadge";
 
 export const Route = createFileRoute("/")({
   component: Index,
@@ -143,13 +144,13 @@ function Index() {
               Abrir app
             </Link>
             <a
-              href="https://t.me/arroyobus"
+              href="https://t.me/arroyobus_bot"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-white/15 text-white font-semibold text-sm backdrop-blur-sm border border-white/20 hover:bg-white/25 transition-colors"
             >
               <Send className="w-4 h-4" />
-              Canal Telegram
+              Bot Telegram
             </a>
             <a
               href="#mapa"
@@ -166,6 +167,17 @@ function Index() {
         <section aria-label="Estadísticas en tiempo real" className="-mt-20 sm:-mt-24 relative z-10">
           <LiveStats />
         </section>
+
+        <div className="flex flex-wrap items-center gap-3">
+          <PresenceBadge />
+          <Link
+            to="/avisos/san-antonio"
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-amber-500/15 text-amber-700 dark:text-amber-300 text-xs font-semibold hover:bg-amber-500/25 transition-colors"
+          >
+            <AlertTriangle className="w-3.5 h-3.5" />
+            Avisos Fiestas San Antonio
+          </Link>
+        </div>
 
         <SanAntonioBanner />
 
@@ -196,9 +208,17 @@ function Index() {
             <div className="flex-1 min-w-0">
               <h2 id="bot-title" className="text-2xl font-bold mb-1">Bot de Telegram</h2>
               <p className="text-muted-foreground text-sm mb-4">
-                Consulta paradas, configura alertas y recibe avisos cuando un bus esté a punto de llegar. Únete al canal{" "}
-                <code className="px-1.5 py-0.5 rounded bg-background border border-border text-xs">@arroyobus</code>.
+                Consulta paradas, configura alertas y recibe avisos cuando un bus esté a punto de llegar. Habla con{" "}
+                <a href="https://t.me/arroyobus_bot" target="_blank" rel="noopener noreferrer" className="px-1.5 py-0.5 rounded bg-background border border-border text-xs font-mono hover:bg-accent">@arroyobus_bot</a>.
               </p>
+              <a
+                href="https://t.me/arroyobus_bot"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-4 py-2 mb-4 rounded-lg bg-primary text-primary-foreground text-sm font-semibold hover:opacity-90"
+              >
+                <Send className="w-4 h-4" /> Abrir bot en Telegram
+              </a>
               <div className="flex flex-wrap gap-2 text-xs">
                 <code className="px-2 py-1 rounded-md bg-background border border-border">/parada 100</code>
                 <code className="px-2 py-1 rounded-md bg-background border border-border">/buscar Camino</code>
@@ -326,6 +346,10 @@ function Index() {
             {" · "}
             <Link to="/contacto" className="underline hover:text-foreground transition-colors">
               Contacto
+            </Link>
+            {" · "}
+            <Link to="/avisos/san-antonio" className="underline hover:text-foreground transition-colors text-amber-600 dark:text-amber-400">
+              ⚠ Avisos San Antonio
             </Link>
           </p>
         </footer>
