@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState, useCallback } from "react";
 import { RefreshCw } from "lucide-react";
 import stops from "@/data/stops.json";
+import { stopSanAntonioStatus } from "@/lib/sanAntonio";
+import { slugForStop } from "@/data/stop-slugs";
 
 interface VehicleEntity {
   id: string;
@@ -144,6 +146,19 @@ export default function BusMap() {
           if (!res.ok) return `<div style="font-family:system-ui;font-size:13px"><strong>${stopName}</strong><br/><span style="color:#888">Sin datos</span></div>`;
           const data = await res.json();
           const list = (data.arrivals || []) as Array<any>;
+          const sa = stopSanAntonioStatus(stopId);
+          let saHtml = "";
+          if (sa.kind === "plaza-espana" || sa.kind === "flecha-suspended") {
+            saHtml = `<div style="margin:4px 0 6px;padding:6px 8px;border-radius:8px;background:#fee2e2;color:#991b1b;font-size:11px;font-weight:600">⚠ Parada suspendida (Fiestas San Antonio)</div>`;
+          } else if (sa.kind === "canazo") {
+            saHtml = `<div style="margin:4px 0 6px;padding:6px 8px;border-radius:8px;background:#fef3c7;color:#92400e;font-size:11px;font-weight:600">★ Única parada activa en La Flecha (10–14 jun)</div>`;
+          } else if (sa.kind === "buho-fiestas") {
+            saHtml = `<div style="margin:4px 0 6px;padding:6px 8px;border-radius:8px;background:#e0e7ff;color:#3730a3;font-size:11px;font-weight:600">🌙 Salida Búho Fiestas (gratuito, 10–13 jun)</div>`;
+          }
+          const slug = slugForStop(stopId);
+          const linkHtml = slug
+            ? `<a href="/parada/${slug}" style="display:inline-block;margin-top:6px;padding:4px 8px;background:#1d4ed8;color:#fff;font-size:11px;font-weight:600;border-radius:6px;text-decoration:none">Abrir parada →</a>`
+            : "";
           const rows = list.length
             ? list.map((a) => {
                 const color = a.routeColor ? `#${a.routeColor}` : "hsl(221,83%,53%)";
@@ -166,11 +181,13 @@ export default function BusMap() {
           return `<div style="font-family:system-ui;min-width:240px">
             <div style="font-weight:600;font-size:13px;margin-bottom:6px">${stopName}</div>
             <div style="font-size:11px;color:#888;margin-bottom:4px">Parada ${stopId}</div>
+            ${saHtml}
             <table style="border-collapse:collapse;width:100%">${rows}</table>
             <div style="margin-top:6px;font-size:10px;color:#888;display:flex;gap:8px">
               <span><span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:#10b981;vertical-align:middle"></span> En vivo (GPS)</span>
               <span><span style="vertical-align:middle">⏱</span> Horario</span>
             </div>
+            ${linkHtml}
           </div>`;
         } catch {
           return `<div style="font-family:system-ui;font-size:13px"><strong>${stopName}</strong><br/><span style="color:#888">Error</span></div>`;
