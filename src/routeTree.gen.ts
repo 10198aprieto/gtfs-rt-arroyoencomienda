@@ -17,6 +17,7 @@ import { Route as AsistentesRouteImport } from './routes/asistentes'
 import { Route as AppRouteImport } from './routes/app'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ParadaSlugRouteImport } from './routes/parada/$slug'
 import { Route as AvisosSanAntonioRouteImport } from './routes/avisos.san-antonio'
 import { Route as ApiStopsIndexRouteImport } from './routes/api/stops/index'
 import { Route as ApiStopsStopIdRouteImport } from './routes/api/stops/$stopId'
@@ -67,6 +68,11 @@ const AdminRoute = AdminRouteImport.update({
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ParadaSlugRoute = ParadaSlugRouteImport.update({
+  id: '/parada/$slug',
+  path: '/parada/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AvisosSanAntonioRoute = AvisosSanAntonioRouteImport.update({
@@ -139,6 +145,7 @@ export interface FileRoutesByFullPath {
   '/politica-cookies': typeof PoliticaCookiesRoute
   '/politica-privacidad': typeof PoliticaPrivacidadRoute
   '/avisos/san-antonio': typeof AvisosSanAntonioRoute
+  '/parada/$slug': typeof ParadaSlugRoute
   '/api/gtfs-rt/trip-updates': typeof ApiGtfsRtTripUpdatesRoute
   '/api/gtfs-rt/vehicle-positions': typeof ApiGtfsRtVehiclePositionsRoute
   '/api/stops/$stopId': typeof ApiStopsStopIdRoute
@@ -160,6 +167,7 @@ export interface FileRoutesByTo {
   '/politica-cookies': typeof PoliticaCookiesRoute
   '/politica-privacidad': typeof PoliticaPrivacidadRoute
   '/avisos/san-antonio': typeof AvisosSanAntonioRoute
+  '/parada/$slug': typeof ParadaSlugRoute
   '/api/gtfs-rt/trip-updates': typeof ApiGtfsRtTripUpdatesRoute
   '/api/gtfs-rt/vehicle-positions': typeof ApiGtfsRtVehiclePositionsRoute
   '/api/stops/$stopId': typeof ApiStopsStopIdRoute
@@ -182,6 +190,7 @@ export interface FileRoutesById {
   '/politica-cookies': typeof PoliticaCookiesRoute
   '/politica-privacidad': typeof PoliticaPrivacidadRoute
   '/avisos/san-antonio': typeof AvisosSanAntonioRoute
+  '/parada/$slug': typeof ParadaSlugRoute
   '/api/gtfs-rt/trip-updates': typeof ApiGtfsRtTripUpdatesRoute
   '/api/gtfs-rt/vehicle-positions': typeof ApiGtfsRtVehiclePositionsRoute
   '/api/stops/$stopId': typeof ApiStopsStopIdRoute
@@ -205,6 +214,7 @@ export interface FileRouteTypes {
     | '/politica-cookies'
     | '/politica-privacidad'
     | '/avisos/san-antonio'
+    | '/parada/$slug'
     | '/api/gtfs-rt/trip-updates'
     | '/api/gtfs-rt/vehicle-positions'
     | '/api/stops/$stopId'
@@ -226,6 +236,7 @@ export interface FileRouteTypes {
     | '/politica-cookies'
     | '/politica-privacidad'
     | '/avisos/san-antonio'
+    | '/parada/$slug'
     | '/api/gtfs-rt/trip-updates'
     | '/api/gtfs-rt/vehicle-positions'
     | '/api/stops/$stopId'
@@ -247,6 +258,7 @@ export interface FileRouteTypes {
     | '/politica-cookies'
     | '/politica-privacidad'
     | '/avisos/san-antonio'
+    | '/parada/$slug'
     | '/api/gtfs-rt/trip-updates'
     | '/api/gtfs-rt/vehicle-positions'
     | '/api/stops/$stopId'
@@ -269,6 +281,7 @@ export interface RootRouteChildren {
   PoliticaCookiesRoute: typeof PoliticaCookiesRoute
   PoliticaPrivacidadRoute: typeof PoliticaPrivacidadRoute
   AvisosSanAntonioRoute: typeof AvisosSanAntonioRoute
+  ParadaSlugRoute: typeof ParadaSlugRoute
   ApiGtfsRtTripUpdatesRoute: typeof ApiGtfsRtTripUpdatesRoute
   ApiGtfsRtVehiclePositionsRoute: typeof ApiGtfsRtVehiclePositionsRoute
   ApiStopsStopIdRoute: typeof ApiStopsStopIdRoute
@@ -337,6 +350,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/parada/$slug': {
+      id: '/parada/$slug'
+      path: '/parada/$slug'
+      fullPath: '/parada/$slug'
+      preLoaderRoute: typeof ParadaSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/avisos/san-antonio': {
@@ -429,6 +449,7 @@ const rootRouteChildren: RootRouteChildren = {
   PoliticaCookiesRoute: PoliticaCookiesRoute,
   PoliticaPrivacidadRoute: PoliticaPrivacidadRoute,
   AvisosSanAntonioRoute: AvisosSanAntonioRoute,
+  ParadaSlugRoute: ParadaSlugRoute,
   ApiGtfsRtTripUpdatesRoute: ApiGtfsRtTripUpdatesRoute,
   ApiGtfsRtVehiclePositionsRoute: ApiGtfsRtVehiclePositionsRoute,
   ApiStopsStopIdRoute: ApiStopsStopIdRoute,
@@ -443,12 +464,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { createStart } from '@tanstack/react-start'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-  }
-}

@@ -1,4 +1,6 @@
 import type { ArrivalData } from "@/lib/gtfsrt/fetch-arrivals";
+import { stopSanAntonioStatus, isSanAntonioActive } from "@/lib/sanAntonio";
+import { slugForStop } from "@/data/stop-slugs";
 
 export function escapeHtml(s: string): string {
   return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
@@ -11,7 +13,23 @@ export function minutesAway(estimatedArrival: number): number {
 
 export function formatArrivalsMessage(stopId: string, stopName: string, arrivals: ArrivalData[]): string {
   const head = `🚏 <b>${escapeHtml(stopName || `Parada ${stopId}`)}</b>\n<i>Parada ${escapeHtml(stopId)}</i>\n`;
-  if (!arrivals.length) return `${head}\nSin llegadas próximas.`;
+  const sa = stopSanAntonioStatus(stopId);
+  let warn = "";
+  if (sa.kind === "plaza-espana" || sa.kind === "flecha-suspended") {
+    warn = `\n⚠️ <b>Parada suspendida</b> por Fiestas San Antonio.\n`;
+  } else if (sa.kind === "canazo") {
+    warn = `\n★ Única parada activa en La Flecha (10–14 jun).\n`;
+  } else if (sa.kind === "buho-fiestas") {
+    warn = `\n🌙 Cabecera del <b>Búho Fiestas</b> (gratuito, 10–13 jun).\n`;
+  }
+  const slug = slugForStop(stopId);
+  const linkFooter = slug
+    ? `\n\n🔗 https://arroyobus.lovable.app/parada/${slug}`
+    : "";
+  const sanAntonioFooter = isSanAntonioActive()
+    ? `\n\n⚠️ <a href="https://arroyobus.lovable.app/avisos/san-antonio">Avisos Fiestas San Antonio</a>`
+    : "";
+  if (!arrivals.length) return `${head}${warn}\nSin llegadas próximas.${linkFooter}${sanAntonioFooter}`;
   const lines = arrivals.slice(0, 6).map((a) => {
     const min = minutesAway(a.estimatedArrival);
     const when = min === 0 ? "Ahora" : `${min} min`;
@@ -19,7 +37,7 @@ export function formatArrivalsMessage(stopId: string, stopName: string, arrivals
     const head2 = a.tripHeadsign ? ` → ${escapeHtml(a.tripHeadsign)}` : "";
     return `🚍 <b>L${escapeHtml(route)}</b>${head2} · <b>${when}</b>`;
   });
-  return `${head}\n${lines.join("\n")}`;
+  return `${head}${warn}\n${lines.join("\n")}${linkFooter}${sanAntonioFooter}`;
 }
 
 export function gmapsLink(lat: number, lon: number): string {

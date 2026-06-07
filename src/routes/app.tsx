@@ -5,6 +5,11 @@ import QRCode from "qrcode";
 import stopsData from "@/data/stops.json";
 import { loadCards, addCard, removeCard, updateCard, type BuscylCard } from "@/lib/buscyl-cards";
 import SanAntonioBanner from "@/components/SanAntonioBanner";
+import StopSanAntonioNotice from "@/components/StopSanAntonioNotice";
+import StopScheduleViewer from "@/components/StopScheduleViewer";
+import { slugForStop } from "@/data/stop-slugs";
+import { stopSanAntonioStatus } from "@/lib/sanAntonio";
+import { AlertTriangle, ExternalLink } from "lucide-react";
 
 interface Stop { id: string; name: string; desc: string; lat: number; lon: number }
 interface Arrival {
@@ -126,6 +131,7 @@ function AppPage() {
         </li>
         {filtered.map((s) => {
           const dist = userPos ? distance(userPos, s) : null;
+          const sa = stopSanAntonioStatus(s.id);
           return (
             <li key={s.id}>
               <button
@@ -138,6 +144,17 @@ function AppPage() {
                 <div className="min-w-0 flex-1">
                   <p className="text-sm font-medium truncate">{s.name}</p>
                   <p className="text-xs text-muted-foreground truncate">{s.desc}</p>
+                  {sa.kind !== "none" && (
+                    <p className={`text-[10px] font-semibold mt-0.5 inline-flex items-center gap-1 ${
+                      sa.kind === "plaza-espana" || sa.kind === "flecha-suspended"
+                        ? "text-red-600 dark:text-red-400"
+                        : sa.kind === "buho-fiestas"
+                        ? "text-indigo-600 dark:text-indigo-400"
+                        : "text-amber-600 dark:text-amber-400"
+                    }`}>
+                      {sa.kind === "plaza-espana" || sa.kind === "flecha-suspended" ? "⚠ Suspendida" : sa.kind === "buho-fiestas" ? "🌙 Búho Fiestas" : "★ Hub La Flecha"}
+                    </p>
+                  )}
                 </div>
                 {dist != null && (
                   <span className="text-xs text-muted-foreground tabular-nums shrink-0">
@@ -220,6 +237,20 @@ function StopDetail({ stop, onBack, userPos }: { stop: Stop; onBack: () => void;
         {dist != null && <span>{dist < 1000 ? `${Math.round(dist)} m` : `${(dist / 1000).toFixed(1)} km`}</span>}
       </div>
 
+      <div className="px-3 space-y-2">
+        <StopSanAntonioNotice stopId={stop.id} compact />
+        {slugForStop(stop.id) && (
+          <Link
+            to="/parada/$slug"
+            params={{ slug: slugForStop(stop.id)! }}
+            className="block text-center px-3 py-2 rounded-lg bg-primary/10 text-primary text-xs font-semibold hover:bg-primary/20"
+          >
+            <ExternalLink className="w-3 h-3 inline mr-1" />
+            Ver página completa de la parada (ubicación, Street View, horario)
+          </Link>
+        )}
+      </div>
+
       <ul className="flex-1 divide-y divide-border">
         {loading && !arrivals && (
           <li className="px-4 py-8 text-center text-sm text-muted-foreground">Cargando llegadas…</li>
@@ -272,6 +303,10 @@ function StopDetail({ stop, onBack, userPos }: { stop: Stop; onBack: () => void;
           );
         })}
       </ul>
+
+      <div className="px-3 pb-4">
+        <StopScheduleViewer stopId={stop.id} />
+      </div>
     </div>
   );
 }
