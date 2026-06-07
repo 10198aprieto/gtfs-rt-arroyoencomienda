@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowLeft, AlertTriangle, Bus, Clock, MapPin, Moon, PartyPopper } from "lucide-react";
+import { ArrowLeft, AlertTriangle, Bus, Clock, MapPin, Moon, PartyPopper, FileText, Download } from "lucide-react";
 
 export const Route = createFileRoute("/avisos/san-antonio")({
   component: SanAntonioPage,
@@ -172,6 +172,43 @@ function SanAntonioPage() {
             Comunicado oficial
           </a>
         </div>
+
+        <section className="rounded-2xl border border-border bg-card p-5 space-y-3">
+          <h2 className="flex items-center gap-2 text-lg font-bold">
+            <FileText className="w-5 h-5 text-primary" />
+            Documentos oficiales (PDF)
+          </h2>
+          <div className="grid sm:grid-cols-2 gap-3">
+            <div className="rounded-xl border border-border p-4 flex flex-col gap-2">
+              <p className="text-sm font-semibold">Aviso oficial San Antonio</p>
+              <p className="text-xs text-muted-foreground">Supresión y modificación de paradas y recorridos.</p>
+              <div className="flex gap-2 mt-1">
+                <a href="/avisos/avisos-san-antonio.pdf" target="_blank" rel="noopener noreferrer"
+                  className="flex-1 inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-lg bg-primary text-primary-foreground text-xs font-semibold hover:opacity-90">
+                  <FileText className="w-3.5 h-3.5" /> Abrir
+                </a>
+                <a href="/avisos/avisos-san-antonio.pdf" download
+                  className="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg border border-border text-xs font-semibold hover:bg-accent">
+                  <Download className="w-3.5 h-3.5" /> Descargar
+                </a>
+              </div>
+            </div>
+            <div className="rounded-xl border border-border p-4 flex flex-col gap-2">
+              <p className="text-sm font-semibold">Servicio especial de fiestas</p>
+              <p className="text-xs text-muted-foreground">Horarios y recorridos del Búho Fiestas gratuito.</p>
+              <div className="flex gap-2 mt-1">
+                <a href="/avisos/servicio-especial-fiestas.pdf" target="_blank" rel="noopener noreferrer"
+                  className="flex-1 inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-lg bg-primary text-primary-foreground text-xs font-semibold hover:opacity-90">
+                  <FileText className="w-3.5 h-3.5" /> Abrir
+                </a>
+                <a href="/avisos/servicio-especial-fiestas.pdf" download
+                  className="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg border border-border text-xs font-semibold hover:bg-accent">
+                  <Download className="w-3.5 h-3.5" /> Descargar
+                </a>
+              </div>
+            </div>
+          </div>
+        </section>
       </main>
     </div>
   );
