@@ -5,6 +5,7 @@ import { lazy, Suspense, useEffect, useState } from "react";
 const BusMap = lazy(() => import("@/components/BusMap"));
 import SanAntonioBanner from "@/components/SanAntonioBanner";
 import PresenceBadge from "@/components/PresenceBadge";
+import { Typewriter } from "@/components/ui/typewriter";
 
 export const Route = createFileRoute("/")({
   component: Index,
@@ -131,8 +132,20 @@ function Index() {
             Arroyo<span className="text-amber-300">Bus</span>
           </h1>
           <p className="text-lg sm:text-xl text-white/90 max-w-2xl mb-8 leading-relaxed">
-            Sigue los autobuses de <strong>Arroyo de la Encomienda</strong> en tiempo real.
-            Llegadas, posiciones GPS y un feed GTFS-RT abierto para toda la comunidad.
+            Sigue los autobuses de <strong>Arroyo de la Encomienda</strong> en tiempo real.{" "}
+            <Typewriter
+              text={[
+                "Llegadas al minuto.",
+                "Posiciones GPS en vivo.",
+                "Feed GTFS-RT abierto.",
+                "Bot de Telegram incluido.",
+              ]}
+              speed={45}
+              deleteSpeed={25}
+              waitTime={1800}
+              className="text-amber-200 font-semibold"
+              cursorClassName="ml-0.5 text-amber-200"
+            />
           </p>
 
           <div className="flex flex-wrap gap-3">

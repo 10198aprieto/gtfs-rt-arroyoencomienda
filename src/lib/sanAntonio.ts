@@ -7,15 +7,14 @@ export function isSanAntonioActive(now: number = Date.now()): boolean {
   return now < SAN_ANTONIO_END_TS;
 }
 
-/** IDs de paradas suspendidas en La Flecha (excepto Glorieta del Cañazo) desde el 10 jun 17:00 al 14 jun. */
+/** IDs de paradas suspendidas desde el mié 10 jun 17:00 (zona Zaratán / Clavel / Almendrera). */
 export const FLECHA_SUSPENDED_STOP_IDS = new Set<string>([
-  // Plaza de España (suspendida 8–19 jun)
-  "31", "45",
-  // La Flecha (suspendidas mié 10 17:00 → dom 14)
-  "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19",
-  "20", "21", "22", "23", "26", "27", "28", "29",
-  "50", "51", "52", "53", "54", "55", "56", "57", "58", "59",
-  "68", "69", "70", "71", "72", "73",
+  // C/ Camino de Zaratán 40A, 22 (x2), 2 (x2)
+  "34", "35", "36", "40", "41",
+  // C/ Clavel 10 y Clavel (Casa de Cultura)
+  "42", "43",
+  // C/ Almendrera 16 (Casa de Cultura) y Almendrera (CEIP Raimundo de Blas) (x2)
+  "32", "33", "44",
 ]);
 
 /** Sólo Plaza de España (suspendida del 8 al 19 jun). */
