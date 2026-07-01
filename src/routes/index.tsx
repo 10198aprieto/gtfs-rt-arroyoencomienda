@@ -6,6 +6,7 @@ const BusMap = lazy(() => import("@/components/BusMap"));
 import SanAntonioBanner from "@/components/SanAntonioBanner";
 import PresenceBadge from "@/components/PresenceBadge";
 import { Typewriter } from "@/components/ui/typewriter";
+import VaporizeTextCycle, { Tag as VaporTag } from "@/components/ui/vapour-text-effect";
 
 export const Route = createFileRoute("/")({
   component: Index,
