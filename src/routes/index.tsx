@@ -206,6 +206,35 @@ function Index() {
           </Suspense>
         </section>
 
+        {/* Vapour text hero band */}
+        <section
+          aria-label="Marca"
+          className="relative overflow-hidden rounded-2xl border border-border h-56 sm:h-64 flex items-center justify-center"
+          style={{ background: "var(--gradient-hero)" }}
+        >
+          <div
+            className="absolute inset-0 opacity-30"
+            style={{
+              backgroundImage:
+                "radial-gradient(circle at 20% 30%, rgba(255,255,255,0.35), transparent 45%), radial-gradient(circle at 80% 70%, rgba(255,255,255,0.2), transparent 50%)",
+            }}
+            aria-hidden
+          />
+          <div className="relative w-full h-full">
+            <VaporizeTextCycle
+              texts={["ArroyoBus", "Tiempo real", "Línea Roja", "Línea Azul", "GTFS-RT"]}
+              font={{ fontFamily: "Inter, system-ui, sans-serif", fontSize: "72px", fontWeight: 800 }}
+              color="rgb(255, 220, 120)"
+              spread={4}
+              density={6}
+              animation={{ vaporizeDuration: 1.8, fadeInDuration: 0.8, waitDuration: 1.2 }}
+              direction="left-to-right"
+              alignment="center"
+              tag={VaporTag.H2}
+            />
+          </div>
+        </section>
+
         {/* Bot Telegram destacado */}
         <section
           aria-labelledby="bot-title"
