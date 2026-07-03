@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as PoliticaPrivacidadRouteImport } from './routes/politica-privacidad'
 import { Route as PoliticaCookiesRouteImport } from './routes/politica-cookies'
 import { Route as ContactoRouteImport } from './routes/contacto'
+import { Route as AvisosRouteImport } from './routes/avisos'
 import { Route as AvisoLegalRouteImport } from './routes/aviso-legal'
 import { Route as AsistentesRouteImport } from './routes/asistentes'
 import { Route as AppRouteImport } from './routes/app'
@@ -45,6 +46,11 @@ const ContactoRoute = ContactoRouteImport.update({
   path: '/contacto',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AvisosRoute = AvisosRouteImport.update({
+  id: '/avisos',
+  path: '/avisos',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AvisoLegalRoute = AvisoLegalRouteImport.update({
   id: '/aviso-legal',
   path: '/aviso-legal',
@@ -76,9 +82,9 @@ const ParadaSlugRoute = ParadaSlugRouteImport.update({
   getParentRoute: () => rootRouteImport,
 } as any)
 const AvisosSanAntonioRoute = AvisosSanAntonioRouteImport.update({
-  id: '/avisos/san-antonio',
-  path: '/avisos/san-antonio',
-  getParentRoute: () => rootRouteImport,
+  id: '/san-antonio',
+  path: '/san-antonio',
+  getParentRoute: () => AvisosRoute,
 } as any)
 const ApiStopsIndexRoute = ApiStopsIndexRouteImport.update({
   id: '/api/stops/',
@@ -141,6 +147,7 @@ export interface FileRoutesByFullPath {
   '/app': typeof AppRoute
   '/asistentes': typeof AsistentesRoute
   '/aviso-legal': typeof AvisoLegalRoute
+  '/avisos': typeof AvisosRouteWithChildren
   '/contacto': typeof ContactoRoute
   '/politica-cookies': typeof PoliticaCookiesRoute
   '/politica-privacidad': typeof PoliticaPrivacidadRoute
@@ -163,6 +170,7 @@ export interface FileRoutesByTo {
   '/app': typeof AppRoute
   '/asistentes': typeof AsistentesRoute
   '/aviso-legal': typeof AvisoLegalRoute
+  '/avisos': typeof AvisosRouteWithChildren
   '/contacto': typeof ContactoRoute
   '/politica-cookies': typeof PoliticaCookiesRoute
   '/politica-privacidad': typeof PoliticaPrivacidadRoute
@@ -186,6 +194,7 @@ export interface FileRoutesById {
   '/app': typeof AppRoute
   '/asistentes': typeof AsistentesRoute
   '/aviso-legal': typeof AvisoLegalRoute
+  '/avisos': typeof AvisosRouteWithChildren
   '/contacto': typeof ContactoRoute
   '/politica-cookies': typeof PoliticaCookiesRoute
   '/politica-privacidad': typeof PoliticaPrivacidadRoute
@@ -210,6 +219,7 @@ export interface FileRouteTypes {
     | '/app'
     | '/asistentes'
     | '/aviso-legal'
+    | '/avisos'
     | '/contacto'
     | '/politica-cookies'
     | '/politica-privacidad'
@@ -232,6 +242,7 @@ export interface FileRouteTypes {
     | '/app'
     | '/asistentes'
     | '/aviso-legal'
+    | '/avisos'
     | '/contacto'
     | '/politica-cookies'
     | '/politica-privacidad'
@@ -254,6 +265,7 @@ export interface FileRouteTypes {
     | '/app'
     | '/asistentes'
     | '/aviso-legal'
+    | '/avisos'
     | '/contacto'
     | '/politica-cookies'
     | '/politica-privacidad'
@@ -277,10 +289,10 @@ export interface RootRouteChildren {
   AppRoute: typeof AppRoute
   AsistentesRoute: typeof AsistentesRoute
   AvisoLegalRoute: typeof AvisoLegalRoute
+  AvisosRoute: typeof AvisosRouteWithChildren
   ContactoRoute: typeof ContactoRoute
   PoliticaCookiesRoute: typeof PoliticaCookiesRoute
   PoliticaPrivacidadRoute: typeof PoliticaPrivacidadRoute
-  AvisosSanAntonioRoute: typeof AvisosSanAntonioRoute
   ParadaSlugRoute: typeof ParadaSlugRoute
   ApiGtfsRtTripUpdatesRoute: typeof ApiGtfsRtTripUpdatesRoute
   ApiGtfsRtVehiclePositionsRoute: typeof ApiGtfsRtVehiclePositionsRoute
@@ -315,6 +327,13 @@ declare module '@tanstack/react-router' {
       path: '/contacto'
       fullPath: '/contacto'
       preLoaderRoute: typeof ContactoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/avisos': {
+      id: '/avisos'
+      path: '/avisos'
+      fullPath: '/avisos'
+      preLoaderRoute: typeof AvisosRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/aviso-legal': {
@@ -361,10 +380,10 @@ declare module '@tanstack/react-router' {
     }
     '/avisos/san-antonio': {
       id: '/avisos/san-antonio'
-      path: '/avisos/san-antonio'
+      path: '/san-antonio'
       fullPath: '/avisos/san-antonio'
       preLoaderRoute: typeof AvisosSanAntonioRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AvisosRoute
     }
     '/api/stops/': {
       id: '/api/stops/'
@@ -439,16 +458,27 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface AvisosRouteChildren {
+  AvisosSanAntonioRoute: typeof AvisosSanAntonioRoute
+}
+
+const AvisosRouteChildren: AvisosRouteChildren = {
+  AvisosSanAntonioRoute: AvisosSanAntonioRoute,
+}
+
+const AvisosRouteWithChildren =
+  AvisosRoute._addFileChildren(AvisosRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AdminRoute: AdminRoute,
   AppRoute: AppRoute,
   AsistentesRoute: AsistentesRoute,
   AvisoLegalRoute: AvisoLegalRoute,
+  AvisosRoute: AvisosRouteWithChildren,
   ContactoRoute: ContactoRoute,
   PoliticaCookiesRoute: PoliticaCookiesRoute,
   PoliticaPrivacidadRoute: PoliticaPrivacidadRoute,
-  AvisosSanAntonioRoute: AvisosSanAntonioRoute,
   ParadaSlugRoute: ParadaSlugRoute,
   ApiGtfsRtTripUpdatesRoute: ApiGtfsRtTripUpdatesRoute,
   ApiGtfsRtVehiclePositionsRoute: ApiGtfsRtVehiclePositionsRoute,

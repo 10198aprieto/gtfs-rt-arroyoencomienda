@@ -33,6 +33,7 @@ export const Route = createRootRoute({
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
+      { name: "google-site-verification", content: "cS_rG7SsHrlvv4jHeuOtAE0YF70QWplwNVSxG4mm61I" },
       { title: "ArroyoBus" },
       { name: "description", content: "ArroyoBus — sigue en tiempo real los autobuses de Arroyo de la Encomienda. Llegadas, posiciones GPS y tu tarjeta Buscyl en el bolsillo." },
       { name: "author", content: "Lovable" },
