@@ -391,8 +391,8 @@ function Index() {
               Contacto
             </Link>
             {" · "}
-            <Link to="/avisos/san-antonio" className="underline hover:text-foreground transition-colors text-amber-600 dark:text-amber-400">
-              ⚠ Avisos San Antonio
+            <Link to="/avisos" className="underline hover:text-foreground transition-colors text-amber-600 dark:text-amber-400">
+              ⚠ Avisos
             </Link>
           </p>
         </footer>
