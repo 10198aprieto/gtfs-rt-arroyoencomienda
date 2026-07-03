@@ -75,3 +75,11 @@ export const STOP_SLUGS: Record<string,string> = {
   "73": "calle-arnaldo-vilanova-junto-ceip-kantica-73",
 };
 export const SLUG_TO_STOP_ID: Record<string,string> = Object.fromEntries(Object.entries(STOP_SLUGS).map(([k,v])=>[v,k]));
+
+// Back-compat helpers
+export function slugForStop(stopId: string): string {
+  return STOP_SLUGS[stopId] ?? stopId;
+}
+export function stopIdForSlug(slug: string): string | null {
+  return SLUG_TO_STOP_ID[slug] ?? null;
+}
