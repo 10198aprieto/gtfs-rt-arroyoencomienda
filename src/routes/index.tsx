@@ -61,7 +61,7 @@ function LiveStats() {
   const stats = [
     { label: "Buses en circulación", value: vehicles == null ? "—" : vehicles, icon: Bus, live: true },
     { label: "Paradas", value: "73", icon: MapPin, live: false },
-    { label: "Líneas", value: "2", icon: Activity, live: false },
+    { label: "Líneas", value: "4", icon: Activity, live: false },
   ];
 
   return (
@@ -185,11 +185,11 @@ function Index() {
         <div className="flex flex-wrap items-center gap-3">
           <PresenceBadge />
           <Link
-            to="/avisos/san-antonio"
+            to="/avisos"
             className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-amber-500/15 text-amber-700 dark:text-amber-300 text-xs font-semibold hover:bg-amber-500/25 transition-colors"
           >
             <AlertTriangle className="w-3.5 h-3.5" />
-            Avisos Fiestas San Antonio
+            Avisos y alertas
           </Link>
         </div>
 
@@ -222,7 +222,7 @@ function Index() {
           />
           <div className="relative w-full h-full">
             <VaporizeTextCycle
-              texts={["ArroyoBus", "Tiempo real", "Línea Roja", "Línea Azul", "GTFS-RT"]}
+              texts={["ArroyoBus", "Tiempo real", "Línea Roja", "Línea Azul", "Línea Verde", "Búho", "GTFS-RT"]}
               font={{ fontFamily: "Inter, system-ui, sans-serif", fontSize: "72px", fontWeight: 800 }}
               color="rgb(255, 220, 120)"
               spread={4}
@@ -391,8 +391,8 @@ function Index() {
               Contacto
             </Link>
             {" · "}
-            <Link to="/avisos/san-antonio" className="underline hover:text-foreground transition-colors text-amber-600 dark:text-amber-400">
-              ⚠ Avisos San Antonio
+            <Link to="/avisos" className="underline hover:text-foreground transition-colors text-amber-600 dark:text-amber-400">
+              ⚠ Avisos
             </Link>
           </p>
         </footer>

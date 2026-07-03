@@ -53,6 +53,54 @@ export type Database = {
         }
         Relationships: []
       }
+      service_alerts: {
+        Row: {
+          active: boolean
+          cause: string
+          created_at: string
+          description: string
+          effect: string
+          ends_at: string | null
+          header: string
+          id: string
+          route_ids: string[]
+          starts_at: string
+          stop_ids: string[]
+          updated_at: string
+          url: string | null
+        }
+        Insert: {
+          active?: boolean
+          cause?: string
+          created_at?: string
+          description?: string
+          effect?: string
+          ends_at?: string | null
+          header: string
+          id?: string
+          route_ids?: string[]
+          starts_at?: string
+          stop_ids?: string[]
+          updated_at?: string
+          url?: string | null
+        }
+        Update: {
+          active?: boolean
+          cause?: string
+          created_at?: string
+          description?: string
+          effect?: string
+          ends_at?: string | null
+          header?: string
+          id?: string
+          route_ids?: string[]
+          starts_at?: string
+          stop_ids?: string[]
+          updated_at?: string
+          url?: string | null
+        }
+        Relationships: []
+      }
       telegram_processed_updates: {
         Row: {
           processed_at: string
