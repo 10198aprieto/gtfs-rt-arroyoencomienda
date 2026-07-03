@@ -1,6 +1,7 @@
 import { Outlet, Link, createRootRoute, HeadContent, Scripts } from "@tanstack/react-router";
 import CookieBanner from "@/components/CookieBanner";
 import MarqueeBanner from "@/components/MarqueeBanner";
+import FeedbackPopup from "@/components/FeedbackPopup";
 
 import appCss from "../styles.css?url";
 
@@ -79,6 +80,7 @@ function RootComponent() {
       <MarqueeBanner />
       <Outlet />
       <CookieBanner />
+      <FeedbackPopup />
     </>
   );
 }
