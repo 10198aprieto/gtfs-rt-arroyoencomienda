@@ -235,40 +235,84 @@ function Index() {
           </div>
         </section>
 
-        {/* Bot Telegram destacado */}
-        <section
-          aria-labelledby="bot-title"
-          className="relative overflow-hidden rounded-2xl p-8 border border-border"
-          style={{ background: "var(--gradient-card)", boxShadow: "var(--shadow-elegant)" }}
-        >
-          <div className="flex items-start gap-4">
-            <div
-              className="flex-shrink-0 w-14 h-14 rounded-2xl flex items-center justify-center text-white"
-              style={{ background: "var(--gradient-hero)" }}
+        {/* Canales y bot */}
+        <section aria-labelledby="canales-title" className="space-y-4">
+          <h2 id="canales-title" className="text-2xl font-bold tracking-tight">Canales y bot</h2>
+          <div className="grid gap-4 md:grid-cols-3">
+            {/* Canal de Telegram */}
+            <a
+              href="https://t.me/arroyobus_avisos"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group rounded-2xl border border-sky-200 dark:border-sky-900 bg-sky-50/70 dark:bg-sky-950/30 p-6 hover:shadow-lg hover:-translate-y-0.5 transition-all"
             >
-              <Send className="w-6 h-6" />
-            </div>
-            <div className="flex-1 min-w-0">
-              <h2 id="bot-title" className="text-2xl font-bold mb-1">Bot de Telegram</h2>
-              <p className="text-muted-foreground text-sm mb-4">
-                Consulta paradas, configura alertas y recibe avisos cuando un bus esté a punto de llegar. Habla con{" "}
-                <a href="https://t.me/arroyobus_bot" target="_blank" rel="noopener noreferrer" className="px-1.5 py-0.5 rounded bg-background border border-border text-xs font-mono hover:bg-accent">@arroyobus_bot</a>.
-              </p>
-              <a
-                href="https://t.me/arroyobus_bot"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-4 py-2 mb-4 rounded-lg bg-primary text-primary-foreground text-sm font-semibold hover:opacity-90"
-              >
-                <Send className="w-4 h-4" /> Abrir bot en Telegram
-              </a>
-              <div className="flex flex-wrap gap-2 text-xs">
-                <code className="px-2 py-1 rounded-md bg-background border border-border">/parada 100</code>
-                <code className="px-2 py-1 rounded-md bg-background border border-border">/buscar Camino</code>
-                <code className="px-2 py-1 rounded-md bg-background border border-border">/alertar 100 5</code>
-                <code className="px-2 py-1 rounded-md bg-background border border-border">/recordar 100 08:30</code>
+              <div className="flex items-start gap-4">
+                <div className="flex-shrink-0 w-12 h-12 rounded-2xl flex items-center justify-center text-white bg-gradient-to-br from-sky-400 to-blue-600 shadow-md">
+                  <Send className="w-5 h-5" />
+                </div>
+                <div className="min-w-0">
+                  <h3 className="text-lg font-bold text-foreground mb-1">Canal de Telegram</h3>
+                  <p className="text-sm text-muted-foreground mb-3">
+                    Suscríbete para recibir avisos, incidencias y novedades del servicio.
+                  </p>
+                  <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-sky-600 text-white text-xs font-semibold">
+                    <Send className="w-3.5 h-3.5" /> Unirse al canal
+                  </span>
+                </div>
               </div>
-            </div>
+            </a>
+
+            {/* Canal de WhatsApp */}
+            <a
+              href="https://whatsapp.com/channel/arroyobus"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group rounded-2xl border border-emerald-200 dark:border-emerald-900 bg-emerald-50/70 dark:bg-emerald-950/30 p-6 hover:shadow-lg hover:-translate-y-0.5 transition-all"
+            >
+              <div className="flex items-start gap-4">
+                <div className="flex-shrink-0 w-12 h-12 rounded-2xl flex items-center justify-center text-white bg-gradient-to-br from-emerald-400 to-green-600 shadow-md">
+                  <svg viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6"><path d="M17.5 14.4c-.3-.1-1.7-.8-2-.9-.3-.1-.5-.1-.7.1-.2.3-.7.9-.9 1.1-.2.2-.3.2-.6.1-1.7-.8-2.8-1.5-3.9-3.4-.3-.5.3-.5.8-1.5.1-.2 0-.4 0-.5 0-.1-.7-1.6-.9-2.2-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.4s1.1 2.8 1.2 3c.2.2 2.1 3.2 5 4.5 1.8.7 2.5.8 3.4.7.6-.1 1.7-.7 2-1.4.2-.7.2-1.3.2-1.4-.1-.1-.3-.2-.5-.3zM12 2C6.5 2 2 6.5 2 12c0 1.9.5 3.7 1.5 5.3L2 22l4.9-1.5c1.6.9 3.3 1.3 5.1 1.3 5.5 0 10-4.5 10-10S17.5 2 12 2zm0 18.3c-1.6 0-3.1-.4-4.4-1.2l-.3-.2-3.3 1 .9-3.2-.2-.3C4 15 3.5 13.5 3.5 12 3.5 7.3 7.3 3.5 12 3.5S20.5 7.3 20.5 12 16.7 20.3 12 20.3z"/></svg>
+                </div>
+                <div className="min-w-0">
+                  <h3 className="text-lg font-bold text-foreground mb-1">Canal de WhatsApp</h3>
+                  <p className="text-sm text-muted-foreground mb-3">
+                    Recibe los mismos avisos directamente en WhatsApp, sin instalar nada.
+                  </p>
+                  <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-emerald-600 text-white text-xs font-semibold">
+                    Seguir canal
+                  </span>
+                </div>
+              </div>
+            </a>
+
+            {/* Bot de Telegram */}
+            <a
+              href="https://t.me/arroyobus_bot"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group rounded-2xl border border-indigo-200 dark:border-indigo-900 bg-indigo-50/70 dark:bg-indigo-950/30 p-6 hover:shadow-lg hover:-translate-y-0.5 transition-all"
+            >
+              <div className="flex items-start gap-4">
+                <div className="flex-shrink-0 w-12 h-12 rounded-2xl flex items-center justify-center text-white bg-gradient-to-br from-indigo-400 via-blue-500 to-cyan-400 shadow-md">
+                  <Send className="w-5 h-5" />
+                </div>
+                <div className="min-w-0">
+                  <h3 className="text-lg font-bold text-foreground mb-1">Bot de Telegram</h3>
+                  <p className="text-sm text-muted-foreground mb-3">
+                    Consulta paradas, configura alertas y recibe avisos cuando un bus esté a punto de llegar.
+                  </p>
+                  <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-indigo-600 text-white text-xs font-semibold">
+                    <Send className="w-3.5 h-3.5" /> Abrir @arroyobus_bot
+                  </span>
+                </div>
+              </div>
+            </a>
+          </div>
+          <div className="flex flex-wrap gap-2 text-xs">
+            <code className="px-2 py-1 rounded-md bg-background border border-border">/parada 100</code>
+            <code className="px-2 py-1 rounded-md bg-background border border-border">/buscar Camino</code>
+            <code className="px-2 py-1 rounded-md bg-background border border-border">/alertar 100 5</code>
+            <code className="px-2 py-1 rounded-md bg-background border border-border">/recordar 100 08:30</code>
           </div>
         </section>
 
