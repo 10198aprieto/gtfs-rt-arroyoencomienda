@@ -241,7 +241,7 @@ function Index() {
           <div className="grid gap-4 md:grid-cols-3">
             {/* Canal de Telegram */}
             <a
-              href="https://t.me/arroyobus_avisos"
+              href="https://t.me/arroyobus"
               target="_blank"
               rel="noopener noreferrer"
               className="group rounded-2xl border border-sky-200 dark:border-sky-900 bg-sky-50/70 dark:bg-sky-950/30 p-6 hover:shadow-lg hover:-translate-y-0.5 transition-all"
@@ -264,7 +264,7 @@ function Index() {
 
             {/* Canal de WhatsApp */}
             <a
-              href="https://whatsapp.com/channel/arroyobus"
+              href="https://whatsapp.com/channel/0029Vb8UC0KCBtx7VxjSsq2m"
               target="_blank"
               rel="noopener noreferrer"
               className="group rounded-2xl border border-emerald-200 dark:border-emerald-900 bg-emerald-50/70 dark:bg-emerald-950/30 p-6 hover:shadow-lg hover:-translate-y-0.5 transition-all"
