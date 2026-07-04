@@ -1,0 +1,94 @@
+{
+  "version": 1,
+  "sdk_version": "0.20.0",
+  "path": "/mcp",
+  "auth": {
+    "type": "none"
+  },
+  "mcp": {
+    "server": {
+      "name": "arroyobus-mcp",
+      "version": "0.1.0",
+      "title": "ArroyoBus"
+    },
+    "tools": [
+      {
+        "name": "search_stops",
+        "title": "Buscar paradas",
+        "description": "Busca paradas de ArroyoBus por número o nombre. Devuelve id, nombre y coordenadas.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {
+            "query": {
+              "type": "string",
+              "minLength": 1,
+              "description": "Número de parada o texto del nombre."
+            },
+            "limit": {
+              "description": "Máximo de resultados (por defecto 8).",
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 20
+            }
+          },
+          "required": [
+            "query"
+          ]
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "next_arrivals",
+        "title": "Próximas llegadas",
+        "description": "Devuelve las próximas llegadas de autobús a una parada de ArroyoBus (Arroyo de la Encomienda). Acepta número o nombre.",
+        "annotations": {
+          "readOnlyHint": true,
+          "openWorldHint": true
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {
+            "stop": {
+              "type": "string",
+              "minLength": 1,
+              "description": "Número o nombre de parada. Ej: '100' o 'Plaza España'."
+            }
+          },
+          "required": [
+            "stop"
+          ]
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "active_alerts",
+        "title": "Avisos activos",
+        "description": "Lista los avisos de servicio activos de ArroyoBus (incidencias, desvíos, paradas suspendidas).",
+        "annotations": {
+          "readOnlyHint": true,
+          "openWorldHint": true
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {
+            "limit": {
+              "description": "Máximo de avisos (por defecto 20).",
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 50
+            }
+          }
+        },
+        "outputSchema": null
+      }
+    ]
+  }
+}
