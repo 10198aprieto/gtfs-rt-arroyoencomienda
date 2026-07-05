@@ -2,6 +2,7 @@ import { Outlet, Link, createRootRoute, HeadContent, Scripts } from "@tanstack/r
 import CookieBanner from "@/components/CookieBanner";
 import MarqueeBanner from "@/components/MarqueeBanner";
 import FeedbackPopup from "@/components/FeedbackPopup";
+import AnalyticsLoader from "@/components/AnalyticsLoader";
 
 import appCss from "../styles.css?url";
 
@@ -90,6 +91,7 @@ function RootComponent() {
       <Outlet />
       <CookieBanner />
       <FeedbackPopup />
+      <AnalyticsLoader />
     </>
   );
 }
