@@ -23,6 +23,9 @@ export default function CookieBanner() {
         JSON.stringify({ value, ts: Date.now() })
       );
     } catch {}
+    try {
+      window.dispatchEvent(new CustomEvent("arroyobus:consent-changed", { detail: { value } }));
+    } catch {}
     setVisible(false);
   };
 
