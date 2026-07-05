@@ -48,9 +48,10 @@ function PoliticaCookies() {
           <section>
             <h2 className="text-xl font-semibold mb-3">2. Cookies utilizadas en ArroyoBus</h2>
             <p className="text-muted-foreground mb-3">
-              ArroyoBus es un sitio minimalista que <strong className="text-foreground">no utiliza
-              cookies publicitarias ni de seguimiento de terceros</strong>. Las únicas tecnologías
-              de almacenamiento que se emplean son:
+              ArroyoBus <strong className="text-foreground">no utiliza cookies publicitarias</strong>.
+              Se emplean cookies y almacenamiento local estrictamente necesarios para el
+              funcionamiento del sitio y, si el usuario lo autoriza, una cookie analítica de
+              Google Analytics con IP anonimizada. Detalle:
             </p>
             <div className="overflow-x-auto border border-border rounded-lg">
               <table className="w-full text-xs">
@@ -81,13 +82,20 @@ function PoliticaCookies() {
                     <td className="p-3">Permitir el acceso al panel privado de administración.</td>
                     <td className="p-3">Sesión</td>
                   </tr>
+                  <tr>
+                    <td className="p-3 font-mono">_ga, _ga_QB86L2QP32</td>
+                    <td className="p-3">Analítica · 3ª parte (Google Analytics 4)</td>
+                    <td className="p-3">Medir de forma agregada el uso del sitio (páginas vistas, sesiones). Solo se carga si el usuario acepta el banner. IP anonimizada.</td>
+                    <td className="p-3">Hasta 24 meses</td>
+                  </tr>
                 </tbody>
               </table>
             </div>
             <p className="text-muted-foreground mt-3">
-              Todas estas son <strong className="text-foreground">cookies técnicas o estrictamente
+              Las tres primeras son <strong className="text-foreground">cookies técnicas o estrictamente
               necesarias</strong>, exentas del deber de consentimiento conforme al artículo 22.2 LSSI-CE
-              y a las directrices de la AEPD.
+              y a las directrices de la AEPD. Las cookies de Google Analytics son de finalidad
+              analítica y requieren consentimiento previo, que se solicita mediante el banner de cookies.
             </p>
           </section>
 
@@ -95,19 +103,38 @@ function PoliticaCookies() {
             <h2 className="text-xl font-semibold mb-3">3. Servicios de terceros</h2>
             <p className="text-muted-foreground">
               El mapa interactivo carga imágenes de mosaicos (tiles) desde los servidores de
-              OpenStreetMap. OpenStreetMap puede registrar la dirección IP del visitante con
-              fines técnicos. ArroyoBus no instala cookies de terceros con fines analíticos
-              ni publicitarios.
+              OpenStreetMap, que puede registrar la dirección IP del visitante con fines técnicos.
+              Si el usuario acepta las cookies analíticas, se carga <strong className="text-foreground">Google
+              Analytics 4</strong> (Google Ireland Limited) con IP anonimizada y sin señales de
+              publicidad. Puede haber transferencias internacionales de datos amparadas por las
+              cláusulas contractuales tipo de la Comisión Europea. ArroyoBus no instala cookies
+              publicitarias ni de terceros con fines de perfilado.
             </p>
           </section>
 
           <section>
             <h2 className="text-xl font-semibold mb-3">4. Gestión y revocación del consentimiento</h2>
             <p className="text-muted-foreground">
-              El usuario puede aceptar, rechazar o revocar en cualquier momento su consentimiento
-              borrando las cookies desde la configuración de su navegador o eliminando la entrada
-              <code className="bg-muted px-1.5 py-0.5 rounded text-xs mx-1">arroyobus_cookie_consent</code>
-              de localStorage. Los principales navegadores ofrecen guías para gestionar cookies:
+              El usuario puede aceptar o rechazar las cookies analíticas al entrar en el sitio y
+              revocar en cualquier momento su decisión con el botón de abajo o borrándolas desde
+              la configuración del navegador. Al revocar, se detendrá la carga de Google Analytics
+              en las siguientes navegaciones.
+            </p>
+            <button
+              type="button"
+              onClick={() => {
+                try {
+                  localStorage.removeItem("arroyobus_cookie_consent");
+                  window.dispatchEvent(new CustomEvent("arroyobus:consent-changed"));
+                } catch {}
+                window.location.reload();
+              }}
+              className="mt-3 px-4 py-2 rounded-lg border border-border text-xs font-semibold hover:bg-accent transition-colors"
+            >
+              Revocar consentimiento y volver a mostrar el banner
+            </button>
+            <p className="text-muted-foreground mt-3">
+              Los principales navegadores ofrecen guías para gestionar cookies:
             </p>
             <ul className="list-disc list-inside text-muted-foreground mt-2 space-y-1">
               <li>Google Chrome, Mozilla Firefox, Safari, Microsoft Edge, Opera y Brave.</li>
