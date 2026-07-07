@@ -7,8 +7,11 @@ export const Route = createFileRoute("/api/buses/")({
       GET: async ({ request }) => {
         try {
           const vehicles = await fetchAllVehiclePositions();
-          const url = new URL(request.url);
-          const origin = `${url.protocol}//${url.host}`;
+          const fwdHost = request.headers.get("x-forwarded-host");
+          const fwdProto = request.headers.get("x-forwarded-proto");
+          const host = fwdHost ?? request.headers.get("host") ?? new URL(request.url).host;
+          const proto = fwdProto ?? (host.includes("localhost") ? "http" : "https");
+          const origin = `${proto}://${host}`;
           const list = vehicles
             .filter((v) => v.vehicleId)
             .map((v) => ({
