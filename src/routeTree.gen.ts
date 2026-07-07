@@ -13,6 +13,7 @@ import { Route as PoliticaPrivacidadRouteImport } from './routes/politica-privac
 import { Route as PoliticaCookiesRouteImport } from './routes/politica-cookies'
 import { Route as McpRouteImport } from './routes/mcp'
 import { Route as ContactoRouteImport } from './routes/contacto'
+import { Route as BusesRouteImport } from './routes/buses'
 import { Route as AvisosRouteImport } from './routes/avisos'
 import { Route as AvisoLegalRouteImport } from './routes/aviso-legal'
 import { Route as AsistentesRouteImport } from './routes/asistentes'
@@ -55,6 +56,11 @@ const McpRoute = McpRouteImport.update({
 const ContactoRoute = ContactoRouteImport.update({
   id: '/contacto',
   path: '/contacto',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BusesRoute = BusesRouteImport.update({
+  id: '/buses',
+  path: '/buses',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AvisosRoute = AvisosRouteImport.update({
@@ -187,6 +193,7 @@ export interface FileRoutesByFullPath {
   '/asistentes': typeof AsistentesRoute
   '/aviso-legal': typeof AvisoLegalRoute
   '/avisos': typeof AvisosRouteWithChildren
+  '/buses': typeof BusesRoute
   '/contacto': typeof ContactoRoute
   '/mcp': typeof McpRoute
   '/politica-cookies': typeof PoliticaCookiesRoute
@@ -216,6 +223,7 @@ export interface FileRoutesByTo {
   '/asistentes': typeof AsistentesRoute
   '/aviso-legal': typeof AvisoLegalRoute
   '/avisos': typeof AvisosRouteWithChildren
+  '/buses': typeof BusesRoute
   '/contacto': typeof ContactoRoute
   '/mcp': typeof McpRoute
   '/politica-cookies': typeof PoliticaCookiesRoute
@@ -246,6 +254,7 @@ export interface FileRoutesById {
   '/asistentes': typeof AsistentesRoute
   '/aviso-legal': typeof AvisoLegalRoute
   '/avisos': typeof AvisosRouteWithChildren
+  '/buses': typeof BusesRoute
   '/contacto': typeof ContactoRoute
   '/mcp': typeof McpRoute
   '/politica-cookies': typeof PoliticaCookiesRoute
@@ -277,6 +286,7 @@ export interface FileRouteTypes {
     | '/asistentes'
     | '/aviso-legal'
     | '/avisos'
+    | '/buses'
     | '/contacto'
     | '/mcp'
     | '/politica-cookies'
@@ -306,6 +316,7 @@ export interface FileRouteTypes {
     | '/asistentes'
     | '/aviso-legal'
     | '/avisos'
+    | '/buses'
     | '/contacto'
     | '/mcp'
     | '/politica-cookies'
@@ -335,6 +346,7 @@ export interface FileRouteTypes {
     | '/asistentes'
     | '/aviso-legal'
     | '/avisos'
+    | '/buses'
     | '/contacto'
     | '/mcp'
     | '/politica-cookies'
@@ -365,6 +377,7 @@ export interface RootRouteChildren {
   AsistentesRoute: typeof AsistentesRoute
   AvisoLegalRoute: typeof AvisoLegalRoute
   AvisosRoute: typeof AvisosRouteWithChildren
+  BusesRoute: typeof BusesRoute
   ContactoRoute: typeof ContactoRoute
   McpRoute: typeof McpRoute
   PoliticaCookiesRoute: typeof PoliticaCookiesRoute
@@ -415,6 +428,13 @@ declare module '@tanstack/react-router' {
       path: '/contacto'
       fullPath: '/contacto'
       preLoaderRoute: typeof ContactoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/buses': {
+      id: '/buses'
+      path: '/buses'
+      fullPath: '/buses'
+      preLoaderRoute: typeof BusesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/avisos': {
@@ -599,6 +619,7 @@ const rootRouteChildren: RootRouteChildren = {
   AsistentesRoute: AsistentesRoute,
   AvisoLegalRoute: AvisoLegalRoute,
   AvisosRoute: AvisosRouteWithChildren,
+  BusesRoute: BusesRoute,
   ContactoRoute: ContactoRoute,
   McpRoute: McpRoute,
   PoliticaCookiesRoute: PoliticaCookiesRoute,
