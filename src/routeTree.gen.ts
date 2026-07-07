@@ -13,6 +13,7 @@ import { Route as PoliticaPrivacidadRouteImport } from './routes/politica-privac
 import { Route as PoliticaCookiesRouteImport } from './routes/politica-cookies'
 import { Route as McpRouteImport } from './routes/mcp'
 import { Route as ContactoRouteImport } from './routes/contacto'
+import { Route as BusesRouteImport } from './routes/buses'
 import { Route as AvisosRouteImport } from './routes/avisos'
 import { Route as AvisoLegalRouteImport } from './routes/aviso-legal'
 import { Route as AsistentesRouteImport } from './routes/asistentes'
@@ -24,9 +25,11 @@ import { Route as AvisosSanAntonioRouteImport } from './routes/avisos.san-antoni
 import { Route as Char91DotwellKnownChar93OauthProtectedResourceRouteImport } from './routes/[.well-known]/oauth-protected-resource'
 import { Route as Char91DotmcpChar93ListToolsRouteImport } from './routes/[.mcp]/list-tools'
 import { Route as ApiStopsIndexRouteImport } from './routes/api/stops/index'
+import { Route as ApiBusesIndexRouteImport } from './routes/api/buses/index'
 import { Route as ApiStopsStopIdRouteImport } from './routes/api/stops/$stopId'
 import { Route as ApiGtfsRtVehiclePositionsRouteImport } from './routes/api/gtfs-rt/vehicle-positions'
 import { Route as ApiGtfsRtTripUpdatesRouteImport } from './routes/api/gtfs-rt/trip-updates'
+import { Route as ApiBusesVehicleIdRouteImport } from './routes/api/buses/$vehicleId'
 import { Route as Char91DotmcpChar93InvokeToolToolRouteImport } from './routes/[.mcp]/invoke-tool/$tool'
 import { Route as ApiPublicWhatsappWebhookRouteImport } from './routes/api/public/whatsapp/webhook'
 import { Route as ApiPublicVoiceStopRouteImport } from './routes/api/public/voice/stop'
@@ -53,6 +56,11 @@ const McpRoute = McpRouteImport.update({
 const ContactoRoute = ContactoRouteImport.update({
   id: '/contacto',
   path: '/contacto',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BusesRoute = BusesRouteImport.update({
+  id: '/buses',
+  path: '/buses',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AvisosRoute = AvisosRouteImport.update({
@@ -112,6 +120,11 @@ const ApiStopsIndexRoute = ApiStopsIndexRouteImport.update({
   path: '/api/stops/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiBusesIndexRoute = ApiBusesIndexRouteImport.update({
+  id: '/api/buses/',
+  path: '/api/buses/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiStopsStopIdRoute = ApiStopsStopIdRouteImport.update({
   id: '/api/stops/$stopId',
   path: '/api/stops/$stopId',
@@ -126,6 +139,11 @@ const ApiGtfsRtVehiclePositionsRoute =
 const ApiGtfsRtTripUpdatesRoute = ApiGtfsRtTripUpdatesRouteImport.update({
   id: '/api/gtfs-rt/trip-updates',
   path: '/api/gtfs-rt/trip-updates',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiBusesVehicleIdRoute = ApiBusesVehicleIdRouteImport.update({
+  id: '/api/buses/$vehicleId',
+  path: '/api/buses/$vehicleId',
   getParentRoute: () => rootRouteImport,
 } as any)
 const Char91DotmcpChar93InvokeToolToolRoute =
@@ -175,6 +193,7 @@ export interface FileRoutesByFullPath {
   '/asistentes': typeof AsistentesRoute
   '/aviso-legal': typeof AvisoLegalRoute
   '/avisos': typeof AvisosRouteWithChildren
+  '/buses': typeof BusesRoute
   '/contacto': typeof ContactoRoute
   '/mcp': typeof McpRoute
   '/politica-cookies': typeof PoliticaCookiesRoute
@@ -184,9 +203,11 @@ export interface FileRoutesByFullPath {
   '/avisos/san-antonio': typeof AvisosSanAntonioRoute
   '/parada/$slug': typeof ParadaSlugRoute
   '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
+  '/api/buses/$vehicleId': typeof ApiBusesVehicleIdRoute
   '/api/gtfs-rt/trip-updates': typeof ApiGtfsRtTripUpdatesRoute
   '/api/gtfs-rt/vehicle-positions': typeof ApiGtfsRtVehiclePositionsRoute
   '/api/stops/$stopId': typeof ApiStopsStopIdRoute
+  '/api/buses/': typeof ApiBusesIndexRoute
   '/api/stops/': typeof ApiStopsIndexRoute
   '/api/public/alexa/skill': typeof ApiPublicAlexaSkillRoute
   '/api/public/telegram/broadcast': typeof ApiPublicTelegramBroadcastRoute
@@ -202,6 +223,7 @@ export interface FileRoutesByTo {
   '/asistentes': typeof AsistentesRoute
   '/aviso-legal': typeof AvisoLegalRoute
   '/avisos': typeof AvisosRouteWithChildren
+  '/buses': typeof BusesRoute
   '/contacto': typeof ContactoRoute
   '/mcp': typeof McpRoute
   '/politica-cookies': typeof PoliticaCookiesRoute
@@ -211,9 +233,11 @@ export interface FileRoutesByTo {
   '/avisos/san-antonio': typeof AvisosSanAntonioRoute
   '/parada/$slug': typeof ParadaSlugRoute
   '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
+  '/api/buses/$vehicleId': typeof ApiBusesVehicleIdRoute
   '/api/gtfs-rt/trip-updates': typeof ApiGtfsRtTripUpdatesRoute
   '/api/gtfs-rt/vehicle-positions': typeof ApiGtfsRtVehiclePositionsRoute
   '/api/stops/$stopId': typeof ApiStopsStopIdRoute
+  '/api/buses': typeof ApiBusesIndexRoute
   '/api/stops': typeof ApiStopsIndexRoute
   '/api/public/alexa/skill': typeof ApiPublicAlexaSkillRoute
   '/api/public/telegram/broadcast': typeof ApiPublicTelegramBroadcastRoute
@@ -230,6 +254,7 @@ export interface FileRoutesById {
   '/asistentes': typeof AsistentesRoute
   '/aviso-legal': typeof AvisoLegalRoute
   '/avisos': typeof AvisosRouteWithChildren
+  '/buses': typeof BusesRoute
   '/contacto': typeof ContactoRoute
   '/mcp': typeof McpRoute
   '/politica-cookies': typeof PoliticaCookiesRoute
@@ -239,9 +264,11 @@ export interface FileRoutesById {
   '/avisos/san-antonio': typeof AvisosSanAntonioRoute
   '/parada/$slug': typeof ParadaSlugRoute
   '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
+  '/api/buses/$vehicleId': typeof ApiBusesVehicleIdRoute
   '/api/gtfs-rt/trip-updates': typeof ApiGtfsRtTripUpdatesRoute
   '/api/gtfs-rt/vehicle-positions': typeof ApiGtfsRtVehiclePositionsRoute
   '/api/stops/$stopId': typeof ApiStopsStopIdRoute
+  '/api/buses/': typeof ApiBusesIndexRoute
   '/api/stops/': typeof ApiStopsIndexRoute
   '/api/public/alexa/skill': typeof ApiPublicAlexaSkillRoute
   '/api/public/telegram/broadcast': typeof ApiPublicTelegramBroadcastRoute
@@ -259,6 +286,7 @@ export interface FileRouteTypes {
     | '/asistentes'
     | '/aviso-legal'
     | '/avisos'
+    | '/buses'
     | '/contacto'
     | '/mcp'
     | '/politica-cookies'
@@ -268,9 +296,11 @@ export interface FileRouteTypes {
     | '/avisos/san-antonio'
     | '/parada/$slug'
     | '/.mcp/invoke-tool/$tool'
+    | '/api/buses/$vehicleId'
     | '/api/gtfs-rt/trip-updates'
     | '/api/gtfs-rt/vehicle-positions'
     | '/api/stops/$stopId'
+    | '/api/buses/'
     | '/api/stops/'
     | '/api/public/alexa/skill'
     | '/api/public/telegram/broadcast'
@@ -286,6 +316,7 @@ export interface FileRouteTypes {
     | '/asistentes'
     | '/aviso-legal'
     | '/avisos'
+    | '/buses'
     | '/contacto'
     | '/mcp'
     | '/politica-cookies'
@@ -295,9 +326,11 @@ export interface FileRouteTypes {
     | '/avisos/san-antonio'
     | '/parada/$slug'
     | '/.mcp/invoke-tool/$tool'
+    | '/api/buses/$vehicleId'
     | '/api/gtfs-rt/trip-updates'
     | '/api/gtfs-rt/vehicle-positions'
     | '/api/stops/$stopId'
+    | '/api/buses'
     | '/api/stops'
     | '/api/public/alexa/skill'
     | '/api/public/telegram/broadcast'
@@ -313,6 +346,7 @@ export interface FileRouteTypes {
     | '/asistentes'
     | '/aviso-legal'
     | '/avisos'
+    | '/buses'
     | '/contacto'
     | '/mcp'
     | '/politica-cookies'
@@ -322,9 +356,11 @@ export interface FileRouteTypes {
     | '/avisos/san-antonio'
     | '/parada/$slug'
     | '/.mcp/invoke-tool/$tool'
+    | '/api/buses/$vehicleId'
     | '/api/gtfs-rt/trip-updates'
     | '/api/gtfs-rt/vehicle-positions'
     | '/api/stops/$stopId'
+    | '/api/buses/'
     | '/api/stops/'
     | '/api/public/alexa/skill'
     | '/api/public/telegram/broadcast'
@@ -341,6 +377,7 @@ export interface RootRouteChildren {
   AsistentesRoute: typeof AsistentesRoute
   AvisoLegalRoute: typeof AvisoLegalRoute
   AvisosRoute: typeof AvisosRouteWithChildren
+  BusesRoute: typeof BusesRoute
   ContactoRoute: typeof ContactoRoute
   McpRoute: typeof McpRoute
   PoliticaCookiesRoute: typeof PoliticaCookiesRoute
@@ -349,9 +386,11 @@ export interface RootRouteChildren {
   Char91DotwellKnownChar93OauthProtectedResourceRoute: typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   ParadaSlugRoute: typeof ParadaSlugRoute
   Char91DotmcpChar93InvokeToolToolRoute: typeof Char91DotmcpChar93InvokeToolToolRoute
+  ApiBusesVehicleIdRoute: typeof ApiBusesVehicleIdRoute
   ApiGtfsRtTripUpdatesRoute: typeof ApiGtfsRtTripUpdatesRoute
   ApiGtfsRtVehiclePositionsRoute: typeof ApiGtfsRtVehiclePositionsRoute
   ApiStopsStopIdRoute: typeof ApiStopsStopIdRoute
+  ApiBusesIndexRoute: typeof ApiBusesIndexRoute
   ApiStopsIndexRoute: typeof ApiStopsIndexRoute
   ApiPublicAlexaSkillRoute: typeof ApiPublicAlexaSkillRoute
   ApiPublicTelegramBroadcastRoute: typeof ApiPublicTelegramBroadcastRoute
@@ -389,6 +428,13 @@ declare module '@tanstack/react-router' {
       path: '/contacto'
       fullPath: '/contacto'
       preLoaderRoute: typeof ContactoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/buses': {
+      id: '/buses'
+      path: '/buses'
+      fullPath: '/buses'
+      preLoaderRoute: typeof BusesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/avisos': {
@@ -468,6 +514,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiStopsIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/buses/': {
+      id: '/api/buses/'
+      path: '/api/buses'
+      fullPath: '/api/buses/'
+      preLoaderRoute: typeof ApiBusesIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/stops/$stopId': {
       id: '/api/stops/$stopId'
       path: '/api/stops/$stopId'
@@ -487,6 +540,13 @@ declare module '@tanstack/react-router' {
       path: '/api/gtfs-rt/trip-updates'
       fullPath: '/api/gtfs-rt/trip-updates'
       preLoaderRoute: typeof ApiGtfsRtTripUpdatesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/buses/$vehicleId': {
+      id: '/api/buses/$vehicleId'
+      path: '/api/buses/$vehicleId'
+      fullPath: '/api/buses/$vehicleId'
+      preLoaderRoute: typeof ApiBusesVehicleIdRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/.mcp/invoke-tool/$tool': {
@@ -559,6 +619,7 @@ const rootRouteChildren: RootRouteChildren = {
   AsistentesRoute: AsistentesRoute,
   AvisoLegalRoute: AvisoLegalRoute,
   AvisosRoute: AvisosRouteWithChildren,
+  BusesRoute: BusesRoute,
   ContactoRoute: ContactoRoute,
   McpRoute: McpRoute,
   PoliticaCookiesRoute: PoliticaCookiesRoute,
@@ -568,9 +629,11 @@ const rootRouteChildren: RootRouteChildren = {
     Char91DotwellKnownChar93OauthProtectedResourceRoute,
   ParadaSlugRoute: ParadaSlugRoute,
   Char91DotmcpChar93InvokeToolToolRoute: Char91DotmcpChar93InvokeToolToolRoute,
+  ApiBusesVehicleIdRoute: ApiBusesVehicleIdRoute,
   ApiGtfsRtTripUpdatesRoute: ApiGtfsRtTripUpdatesRoute,
   ApiGtfsRtVehiclePositionsRoute: ApiGtfsRtVehiclePositionsRoute,
   ApiStopsStopIdRoute: ApiStopsStopIdRoute,
+  ApiBusesIndexRoute: ApiBusesIndexRoute,
   ApiStopsIndexRoute: ApiStopsIndexRoute,
   ApiPublicAlexaSkillRoute: ApiPublicAlexaSkillRoute,
   ApiPublicTelegramBroadcastRoute: ApiPublicTelegramBroadcastRoute,
