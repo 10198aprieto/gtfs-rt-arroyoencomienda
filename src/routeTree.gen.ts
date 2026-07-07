@@ -24,6 +24,7 @@ import { Route as AvisosSanAntonioRouteImport } from './routes/avisos.san-antoni
 import { Route as Char91DotwellKnownChar93OauthProtectedResourceRouteImport } from './routes/[.well-known]/oauth-protected-resource'
 import { Route as Char91DotmcpChar93ListToolsRouteImport } from './routes/[.mcp]/list-tools'
 import { Route as ApiStopsIndexRouteImport } from './routes/api/stops/index'
+import { Route as ApiBusesIndexRouteImport } from './routes/api/buses/index'
 import { Route as ApiStopsStopIdRouteImport } from './routes/api/stops/$stopId'
 import { Route as ApiGtfsRtVehiclePositionsRouteImport } from './routes/api/gtfs-rt/vehicle-positions'
 import { Route as ApiGtfsRtTripUpdatesRouteImport } from './routes/api/gtfs-rt/trip-updates'
@@ -112,6 +113,11 @@ const ApiStopsIndexRoute = ApiStopsIndexRouteImport.update({
   path: '/api/stops/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiBusesIndexRoute = ApiBusesIndexRouteImport.update({
+  id: '/api/buses/',
+  path: '/api/buses/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiStopsStopIdRoute = ApiStopsStopIdRouteImport.update({
   id: '/api/stops/$stopId',
   path: '/api/stops/$stopId',
@@ -187,6 +193,7 @@ export interface FileRoutesByFullPath {
   '/api/gtfs-rt/trip-updates': typeof ApiGtfsRtTripUpdatesRoute
   '/api/gtfs-rt/vehicle-positions': typeof ApiGtfsRtVehiclePositionsRoute
   '/api/stops/$stopId': typeof ApiStopsStopIdRoute
+  '/api/buses/': typeof ApiBusesIndexRoute
   '/api/stops/': typeof ApiStopsIndexRoute
   '/api/public/alexa/skill': typeof ApiPublicAlexaSkillRoute
   '/api/public/telegram/broadcast': typeof ApiPublicTelegramBroadcastRoute
@@ -214,6 +221,7 @@ export interface FileRoutesByTo {
   '/api/gtfs-rt/trip-updates': typeof ApiGtfsRtTripUpdatesRoute
   '/api/gtfs-rt/vehicle-positions': typeof ApiGtfsRtVehiclePositionsRoute
   '/api/stops/$stopId': typeof ApiStopsStopIdRoute
+  '/api/buses': typeof ApiBusesIndexRoute
   '/api/stops': typeof ApiStopsIndexRoute
   '/api/public/alexa/skill': typeof ApiPublicAlexaSkillRoute
   '/api/public/telegram/broadcast': typeof ApiPublicTelegramBroadcastRoute
@@ -242,6 +250,7 @@ export interface FileRoutesById {
   '/api/gtfs-rt/trip-updates': typeof ApiGtfsRtTripUpdatesRoute
   '/api/gtfs-rt/vehicle-positions': typeof ApiGtfsRtVehiclePositionsRoute
   '/api/stops/$stopId': typeof ApiStopsStopIdRoute
+  '/api/buses/': typeof ApiBusesIndexRoute
   '/api/stops/': typeof ApiStopsIndexRoute
   '/api/public/alexa/skill': typeof ApiPublicAlexaSkillRoute
   '/api/public/telegram/broadcast': typeof ApiPublicTelegramBroadcastRoute
@@ -271,6 +280,7 @@ export interface FileRouteTypes {
     | '/api/gtfs-rt/trip-updates'
     | '/api/gtfs-rt/vehicle-positions'
     | '/api/stops/$stopId'
+    | '/api/buses/'
     | '/api/stops/'
     | '/api/public/alexa/skill'
     | '/api/public/telegram/broadcast'
@@ -298,6 +308,7 @@ export interface FileRouteTypes {
     | '/api/gtfs-rt/trip-updates'
     | '/api/gtfs-rt/vehicle-positions'
     | '/api/stops/$stopId'
+    | '/api/buses'
     | '/api/stops'
     | '/api/public/alexa/skill'
     | '/api/public/telegram/broadcast'
@@ -325,6 +336,7 @@ export interface FileRouteTypes {
     | '/api/gtfs-rt/trip-updates'
     | '/api/gtfs-rt/vehicle-positions'
     | '/api/stops/$stopId'
+    | '/api/buses/'
     | '/api/stops/'
     | '/api/public/alexa/skill'
     | '/api/public/telegram/broadcast'
@@ -352,6 +364,7 @@ export interface RootRouteChildren {
   ApiGtfsRtTripUpdatesRoute: typeof ApiGtfsRtTripUpdatesRoute
   ApiGtfsRtVehiclePositionsRoute: typeof ApiGtfsRtVehiclePositionsRoute
   ApiStopsStopIdRoute: typeof ApiStopsStopIdRoute
+  ApiBusesIndexRoute: typeof ApiBusesIndexRoute
   ApiStopsIndexRoute: typeof ApiStopsIndexRoute
   ApiPublicAlexaSkillRoute: typeof ApiPublicAlexaSkillRoute
   ApiPublicTelegramBroadcastRoute: typeof ApiPublicTelegramBroadcastRoute
@@ -468,6 +481,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiStopsIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/buses/': {
+      id: '/api/buses/'
+      path: '/api/buses'
+      fullPath: '/api/buses/'
+      preLoaderRoute: typeof ApiBusesIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/stops/$stopId': {
       id: '/api/stops/$stopId'
       path: '/api/stops/$stopId'
@@ -571,6 +591,7 @@ const rootRouteChildren: RootRouteChildren = {
   ApiGtfsRtTripUpdatesRoute: ApiGtfsRtTripUpdatesRoute,
   ApiGtfsRtVehiclePositionsRoute: ApiGtfsRtVehiclePositionsRoute,
   ApiStopsStopIdRoute: ApiStopsStopIdRoute,
+  ApiBusesIndexRoute: ApiBusesIndexRoute,
   ApiStopsIndexRoute: ApiStopsIndexRoute,
   ApiPublicAlexaSkillRoute: ApiPublicAlexaSkillRoute,
   ApiPublicTelegramBroadcastRoute: ApiPublicTelegramBroadcastRoute,
