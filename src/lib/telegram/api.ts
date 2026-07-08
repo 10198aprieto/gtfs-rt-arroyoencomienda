@@ -33,10 +33,29 @@ export function sendLocation(chatId: number | string, latitude: number, longitud
   return call("sendLocation", { chat_id: chatId, latitude, longitude, ...opts });
 }
 
+export function editMessageText(chatId: number | string, messageId: number, text: string, opts: Record<string, unknown> = {}) {
+  return call("editMessageText", {
+    chat_id: chatId,
+    message_id: messageId,
+    text,
+    parse_mode: "HTML",
+    disable_web_page_preview: true,
+    ...opts,
+  });
+}
+
+export function answerCallbackQuery(id: string, text?: string, showAlert = false) {
+  return call("answerCallbackQuery", {
+    callback_query_id: id,
+    ...(text ? { text } : {}),
+    show_alert: showAlert,
+  });
+}
+
 export function setWebhook(url: string, secretToken?: string) {
   return call("setWebhook", {
     url,
-    allowed_updates: ["message"],
+    allowed_updates: ["message", "edited_message", "callback_query"],
     ...(secretToken ? { secret_token: secretToken } : {}),
   });
 }
