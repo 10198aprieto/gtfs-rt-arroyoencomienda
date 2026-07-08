@@ -22,6 +22,7 @@ import {
   upsertUser,
 } from "./db.server";
 import { COMBINAR_TEXT, TARIFAS_TEXT } from "./tarifas";
+import { slugForStop } from "@/data/stop-slugs";
 
 const HELP = [
   "🚍 <b>ArroyoBus Bot</b>",
@@ -60,6 +61,10 @@ async function arrivalsForStop(stopId: string): Promise<ArrivalData[]> {
 }
 
 function stopKeyboard(stopId: string, isFavorite: boolean) {
+  const slug = slugForStop(stopId);
+  const mapUrl = slug
+    ? `https://arroyobus.lovable.app/parada/${slug}`
+    : `https://arroyobus.lovable.app/app`;
   return {
     inline_keyboard: [
       [
@@ -70,7 +75,7 @@ function stopKeyboard(stopId: string, isFavorite: boolean) {
       ],
       [
         { text: "🔔 Alerta 5 min", callback_data: `a5:${stopId}` },
-        { text: "🗺️ Ver en mapa", url: `https://arroyobus.lovable.app/parada/${stopId}` },
+        { text: "🗺️ Ver en mapa", url: mapUrl },
       ],
     ],
   };
