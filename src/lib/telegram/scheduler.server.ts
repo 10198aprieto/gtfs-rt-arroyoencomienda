@@ -3,15 +3,19 @@ import { sendLocation, sendMessage } from "./api";
 import { escapeHtml, formatArrivalsMessage, formatVehicleLocation, minutesAway } from "./format";
 import { getStopById } from "./stops";
 import {
+  chatAlreadyNotified,
+  listActiveServiceAlerts,
+  listAlertOptInChatIds,
   listAllActiveReminders,
   listAllActiveSubscriptions,
+  markAlertNotified,
   markReminderSent,
   markSubscriptionNotified,
 } from "./db.server";
 
 const COOLDOWN_MS = 10 * 60 * 1000;
 
-export async function runTick(): Promise<{ alerts: number; reminders: number }> {
+export async function runTick(): Promise<{ alerts: number; reminders: number; serviceAlerts: number }> {
   const arrivals = await fetchAllArrivals();
   const now = Math.floor(Date.now() / 1000);
 
@@ -84,5 +88,32 @@ export async function runTick(): Promise<{ alerts: number; reminders: number }> 
     }
   }
 
-  return { alerts: alertsSent, reminders: remindersSent };
+  // ---- Avisos de servicio (broadcast) ----
+  let serviceAlertsSent = 0;
+  try {
+    const alerts = await listActiveServiceAlerts();
+    if (alerts.length) {
+      const chatIds = await listAlertOptInChatIds();
+      for (const alert of alerts) {
+        const header = alert.header ? escapeHtml(alert.header) : "Aviso";
+        const desc = alert.description ? `\n${escapeHtml(alert.description)}` : "";
+        const url = alert.url ? `\n\n🔗 <a href="${alert.url}">Más información</a>` : "";
+        const body = `📢 <b>Aviso ArroyoBus</b>\n<b>${header}</b>${desc}${url}`;
+        for (const chatId of chatIds) {
+          try {
+            if (await chatAlreadyNotified(chatId, alert.id)) continue;
+            await sendMessage(chatId, body);
+            await markAlertNotified(chatId, alert.id);
+            serviceAlertsSent++;
+          } catch (e) {
+            console.error("service alert send error", chatId, alert.id, e);
+          }
+        }
+      }
+    }
+  } catch (e) {
+    console.error("service alerts tick error", e);
+  }
+
+  return { alerts: alertsSent, reminders: remindersSent, serviceAlerts: serviceAlertsSent };
 }

@@ -101,6 +101,59 @@ export type Database = {
         }
         Relationships: []
       }
+      telegram_alert_notified: {
+        Row: {
+          alert_id: string
+          chat_id: number
+          id: string
+          sent_at: string
+        }
+        Insert: {
+          alert_id: string
+          chat_id: number
+          id?: string
+          sent_at?: string
+        }
+        Update: {
+          alert_id?: string
+          chat_id?: number
+          id?: string
+          sent_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "telegram_alert_notified_alert_id_fkey"
+            columns: ["alert_id"]
+            isOneToOne: false
+            referencedRelation: "service_alerts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      telegram_favorites: {
+        Row: {
+          alias: string | null
+          chat_id: number
+          created_at: string
+          id: string
+          stop_id: string
+        }
+        Insert: {
+          alias?: string | null
+          chat_id: number
+          created_at?: string
+          id?: string
+          stop_id: string
+        }
+        Update: {
+          alias?: string | null
+          chat_id?: number
+          created_at?: string
+          id?: string
+          stop_id?: string
+        }
+        Relationships: []
+      }
       telegram_processed_updates: {
         Row: {
           processed_at: string
@@ -206,6 +259,7 @@ export type Database = {
       }
       telegram_users: {
         Row: {
+          alerts_opt_in: boolean
           chat_id: number
           created_at: string
           first_name: string | null
@@ -214,6 +268,7 @@ export type Database = {
           username: string | null
         }
         Insert: {
+          alerts_opt_in?: boolean
           chat_id: number
           created_at?: string
           first_name?: string | null
@@ -222,6 +277,7 @@ export type Database = {
           username?: string | null
         }
         Update: {
+          alerts_opt_in?: boolean
           chat_id?: number
           created_at?: string
           first_name?: string | null
