@@ -18,6 +18,8 @@ export const Route = createFileRoute("/api/public/telegram/webhook")({
           return Response.json({ ok: true, ignored: true });
         }
 
+        // Responder rápido al callback_query en paralelo (Telegram muestra el spinner del botón)
+
         // Idempotencia: Telegram reenvía si no respondemos rápido
         if (await isUpdateProcessed(updateId)) {
           return Response.json({ ok: true, duplicate: true });
