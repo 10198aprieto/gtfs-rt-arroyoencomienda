@@ -1,6 +1,26 @@
 // Contenido estático de tarifas y transbordos AUVASA.
 // Fuentes: web ArroyoBus, Junta CyL (BusCyL), AUVASA.
 
+export const TARIFAS_TEXT = [
+  "🎫 <b>Tarifas y títulos de transporte</b>",
+  "",
+  "<b>Billete sencillo</b>",
+  "• Compra a bordo. Consulta el precio actualizado en <a href=\"https://arroyobus.lovable.app\">arroyobus.lovable.app</a>.",
+  "",
+  "<b>Tarjeta BusCyL</b> 💳",
+  "Sustituye a los antiguos carnés de transporte gratuito y abonos metropolitanos de la Junta de Castilla y León.",
+  "• <b>Gratuita</b> para jóvenes (&lt;25), mayores de 65, personas con discapacidad y familias numerosas (según baremos).",
+  "• Descuentos generales para el resto de usuarios.",
+  "• <b>Transbordo gratuito</b> con AUVASA (Valladolid) dentro de 60 minutos.",
+  "• Solicítala en <a href=\"https://buscyl.jcyl.es\">buscyl.jcyl.es</a> o en oficinas de la Junta.",
+  "",
+  "<b>Cómo usarla</b>",
+  "1. Acerca la tarjeta al validador al subir.",
+  "2. Si haces transbordo, vuelve a validar en el segundo bus (el sistema aplica la gratuidad automáticamente).",
+  "",
+  "ℹ️ Escribe /combinar para ver nodos de transbordo con AUVASA.",
+].join("\n");
+
 export const COMBINAR_TEXT = [
   "🔁 <b>Combinar con AUVASA (Valladolid)</b>",
   "",
