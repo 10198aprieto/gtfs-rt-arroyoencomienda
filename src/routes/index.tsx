@@ -67,7 +67,7 @@ function LiveStats() {
   return (
     <div className="grid grid-cols-3 gap-3 sm:gap-4">
       {stats.map((s) => (
-        <div key={s.label} className="relative p-4 rounded-xl border border-border bg-card overflow-hidden group hover:border-primary/40 transition-all">
+        <div key={s.label} className="ios-press glass relative p-4 rounded-2xl overflow-hidden group hover:border-primary/40 transition-all">
           <div className="flex items-center justify-between mb-2">
             <s.icon className="w-4 h-4 text-primary" />
             {s.live && (
