@@ -319,7 +319,7 @@ function Index() {
         {/* Ayuda */}
         <section
           aria-labelledby="ayuda-title"
-          className="rounded-2xl p-6 border border-border bg-card flex flex-col sm:flex-row items-start sm:items-center gap-4"
+          className="glass rounded-2xl p-6 flex flex-col sm:flex-row items-start sm:items-center gap-4"
         >
           <div className="w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center flex-shrink-0">
             <HelpCircle className="w-5 h-5" />
@@ -352,7 +352,7 @@ function Index() {
             {endpoints.map((ep) => (
               <article
                 key={ep.title}
-                className="group relative border border-border rounded-2xl p-6 bg-card hover:border-primary/40 hover:shadow-lg transition-all"
+                className="group ios-press glass relative rounded-2xl p-6 hover:border-primary/40 hover:shadow-lg transition-all"
               >
                 <div className="flex items-center gap-2 mb-2">
                   <div className="w-9 h-9 rounded-lg bg-primary/10 text-primary flex items-center justify-center">
@@ -391,7 +391,7 @@ function Index() {
         {/* GTFS Static */}
         <section
           aria-labelledby="static-title"
-          className="rounded-2xl p-6 border border-border bg-card flex flex-col sm:flex-row items-start sm:items-center gap-4"
+          className="glass rounded-2xl p-6 flex flex-col sm:flex-row items-start sm:items-center gap-4"
         >
           <div className="w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center flex-shrink-0">
             <Download className="w-5 h-5" />
