@@ -244,7 +244,7 @@ function Index() {
               href="https://t.me/arroyobus"
               target="_blank"
               rel="noopener noreferrer"
-              className="group rounded-2xl border border-sky-200 dark:border-sky-900 bg-sky-50/70 dark:bg-sky-950/30 p-6 hover:shadow-lg hover:-translate-y-0.5 transition-all"
+              className="group ios-press glass rounded-2xl border-sky-200/70 dark:border-sky-900/70 bg-sky-50/60 dark:bg-sky-950/30 p-6 hover:shadow-lg hover:-translate-y-0.5 transition-all"
             >
               <div className="flex items-start gap-4">
                 <div className="flex-shrink-0 w-12 h-12 rounded-2xl flex items-center justify-center text-white bg-gradient-to-br from-sky-400 to-blue-600 shadow-md">
@@ -267,7 +267,7 @@ function Index() {
               href="https://whatsapp.com/channel/0029Vb8UC0KCBtx7VxjSsq2m"
               target="_blank"
               rel="noopener noreferrer"
-              className="group rounded-2xl border border-emerald-200 dark:border-emerald-900 bg-emerald-50/70 dark:bg-emerald-950/30 p-6 hover:shadow-lg hover:-translate-y-0.5 transition-all"
+              className="group ios-press glass rounded-2xl border-emerald-200/70 dark:border-emerald-900/70 bg-emerald-50/60 dark:bg-emerald-950/30 p-6 hover:shadow-lg hover:-translate-y-0.5 transition-all"
             >
               <div className="flex items-start gap-4">
                 <div className="flex-shrink-0 w-12 h-12 rounded-2xl flex items-center justify-center text-white bg-gradient-to-br from-emerald-400 to-green-600 shadow-md">
@@ -290,7 +290,7 @@ function Index() {
               href="https://t.me/arroyobus_bot"
               target="_blank"
               rel="noopener noreferrer"
-              className="group rounded-2xl border border-indigo-200 dark:border-indigo-900 bg-indigo-50/70 dark:bg-indigo-950/30 p-6 hover:shadow-lg hover:-translate-y-0.5 transition-all"
+              className="group ios-press glass rounded-2xl border-indigo-200/70 dark:border-indigo-900/70 bg-indigo-50/60 dark:bg-indigo-950/30 p-6 hover:shadow-lg hover:-translate-y-0.5 transition-all"
             >
               <div className="flex items-start gap-4">
                 <div className="flex-shrink-0 w-12 h-12 rounded-2xl flex items-center justify-center text-white bg-gradient-to-br from-indigo-400 via-blue-500 to-cyan-400 shadow-md">
