@@ -10,6 +10,7 @@ import StopScheduleViewer from "@/components/StopScheduleViewer";
 import { slugForStop } from "@/data/stop-slugs";
 import { stopSanAntonioStatus } from "@/lib/sanAntonio";
 import { AlertTriangle, ExternalLink } from "lucide-react";
+import { useIsIOS, haptic } from "@/hooks/use-platform";
 
 interface Stop { id: string; name: string; desc: string; lat: number; lon: number }
 interface Arrival {
