@@ -102,6 +102,18 @@
   --sidebar-ring: oklch(0.704 0.04 256.788);
 }
 
+/* ── Liquid Glass tokens (light) ────────────────────────────── */
+:root {
+  --glass-bg: oklch(1 0 0 / 0.55);
+  --glass-bg-strong: oklch(1 0 0 / 0.72);
+  --glass-border: oklch(1 0 0 / 0.55);
+  --glass-highlight: oklch(1 0 0 / 0.85);
+  --glass-shadow: 0 8px 32px -8px oklch(0.2 0.05 260 / 0.25);
+  --glass-blur: 18px;
+  --glass-saturate: 180%;
+  --ease-ios: cubic-bezier(0.32, 0.72, 0, 1);
+}
+
 .dark {
   --background: oklch(0.129 0.042 264.695);
   --foreground: oklch(0.984 0.003 247.858);
