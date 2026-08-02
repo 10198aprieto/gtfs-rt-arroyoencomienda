@@ -100,7 +100,7 @@ function AppPage() {
 
   return (
     <div className="min-h-screen bg-background text-foreground flex flex-col" style={{ paddingBottom: "env(safe-area-inset-bottom)" }}>
-      <header className="sticky top-0 z-10 bg-background/95 backdrop-blur border-b border-border" style={{ paddingTop: "env(safe-area-inset-top)" }}>
+      <header className="sticky top-0 z-10 glass-strong border-x-0 border-t-0" style={{ paddingTop: "env(safe-area-inset-top)" }}>
         <div className="px-4 py-3 flex items-center gap-2">
           <Bus className="w-6 h-6 text-primary" />
           <h1 className="text-lg font-semibold">ArroyoBus</h1>
@@ -115,7 +115,7 @@ function AppPage() {
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder="Buscar parada por nombre o número…"
-              className="w-full pl-9 pr-3 py-2.5 rounded-xl border border-border bg-card text-sm focus:outline-none focus:ring-2 focus:ring-primary/40"
+              className="w-full pl-9 pr-3 py-2.5 rounded-2xl glass text-sm focus:outline-none focus:ring-2 focus:ring-primary/40"
               inputMode="search"
             />
           </div>
@@ -127,7 +127,7 @@ function AppPage() {
         </div>}
       </header>
 
-      {tab === "stops" ? <ul className="flex-1 divide-y divide-border">
+      {tab === "stops" ? <ul className={`flex-1 divide-y divide-border ${isIOS ? "pb-28" : ""}`}>
         <li className="px-3 py-3">
           <SanAntonioBanner compact />
         </li>
@@ -137,8 +137,8 @@ function AppPage() {
           return (
             <li key={s.id}>
               <button
-                onClick={() => setSelected(s)}
-                className="w-full text-left px-4 py-3 flex items-center gap-3 active:bg-accent transition-colors"
+                onClick={() => { haptic(); setSelected(s); }}
+                className="ios-press w-full text-left px-4 py-3 flex items-center gap-3 active:bg-accent transition-colors"
               >
                 <div className="w-9 h-9 rounded-full bg-primary/10 text-primary flex items-center justify-center text-xs font-semibold shrink-0">
                   {s.id}
@@ -172,21 +172,48 @@ function AppPage() {
             No hay paradas que coincidan
           </li>
         )}
-      </ul> : <CardsView />}
+      </ul> : <div className={isIOS ? "flex-1 pb-28" : "contents"}><CardsView /></div>}
 
-      <nav className="sticky bottom-0 border-t border-border bg-background/95 backdrop-blur">
-        <div className="grid grid-cols-3">
-          <button onClick={() => setTab("stops")} className={`py-3 text-xs font-medium flex flex-col items-center gap-0.5 ${tab === "stops" ? "text-primary" : "text-muted-foreground"}`}>
-            <Bus className="w-5 h-5" /> Paradas
-          </button>
-          <button onClick={() => setTab("cards")} className={`py-3 text-xs font-medium flex flex-col items-center gap-0.5 ${tab === "cards" ? "text-primary" : "text-muted-foreground"}`}>
-            <CreditCard className="w-5 h-5" /> Buscyl
-          </button>
-          <Link to="/" className="py-3 text-xs font-medium text-muted-foreground flex flex-col items-center gap-0.5">
-            <MapIcon className="w-5 h-5" /> Mapa
-          </Link>
-        </div>
-      </nav>
+      {isIOS ? (
+        /* iPhone: dock flotante Liquid Glass (estilo iOS 26) */
+        <nav
+          className="fixed inset-x-0 z-20 px-6 pointer-events-none"
+          style={{ bottom: "calc(0.75rem + env(safe-area-inset-bottom))" }}
+          aria-label="Navegación"
+        >
+          <div className="ios-dock glass-strong pointer-events-auto mx-auto max-w-sm grid grid-cols-3 p-1.5">
+            <button
+              onClick={() => { haptic(); setTab("stops"); }}
+              className={`ios-press rounded-full py-2 text-[11px] font-semibold flex flex-col items-center gap-0.5 ${tab === "stops" ? "text-primary bg-primary/10" : "text-muted-foreground"}`}
+            >
+              <Bus className="w-5 h-5" /> Paradas
+            </button>
+            <button
+              onClick={() => { haptic(); setTab("cards"); }}
+              className={`ios-press rounded-full py-2 text-[11px] font-semibold flex flex-col items-center gap-0.5 ${tab === "cards" ? "text-primary bg-primary/10" : "text-muted-foreground"}`}
+            >
+              <CreditCard className="w-5 h-5" /> Buscyl
+            </button>
+            <Link to="/" className="ios-press rounded-full py-2 text-[11px] font-semibold text-muted-foreground flex flex-col items-center gap-0.5">
+              <MapIcon className="w-5 h-5" /> Mapa
+            </Link>
+          </div>
+        </nav>
+      ) : (
+        <nav className="sticky bottom-0 border-t border-border bg-background/95 backdrop-blur">
+          <div className="grid grid-cols-3">
+            <button onClick={() => setTab("stops")} className={`py-3 text-xs font-medium flex flex-col items-center gap-0.5 ${tab === "stops" ? "text-primary" : "text-muted-foreground"}`}>
+              <Bus className="w-5 h-5" /> Paradas
+            </button>
+            <button onClick={() => setTab("cards")} className={`py-3 text-xs font-medium flex flex-col items-center gap-0.5 ${tab === "cards" ? "text-primary" : "text-muted-foreground"}`}>
+              <CreditCard className="w-5 h-5" /> Buscyl
+            </button>
+            <Link to="/" className="py-3 text-xs font-medium text-muted-foreground flex flex-col items-center gap-0.5">
+              <MapIcon className="w-5 h-5" /> Mapa
+            </Link>
+          </div>
+        </nav>
+      )}
     </div>
   );
 }
