@@ -7,6 +7,7 @@ import SanAntonioBanner from "@/components/SanAntonioBanner";
 import PresenceBadge from "@/components/PresenceBadge";
 import { Typewriter } from "@/components/ui/typewriter";
 import VaporizeTextCycle, { Tag as VaporTag } from "@/components/ui/vapour-text-effect";
+import { useIsIOS } from "@/hooks/use-platform";
 
 export const Route = createFileRoute("/")({
   component: Index,
@@ -86,6 +87,7 @@ function LiveStats() {
 }
 
 function Index() {
+  const isIOS = useIsIOS();
   const endpoints = [
     {
       title: "Trip Updates",
@@ -152,7 +154,7 @@ function Index() {
           <div className="flex flex-wrap gap-3">
             <Link
               to="/app"
-              className="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-white text-primary font-semibold text-sm hover:scale-[1.02] active:scale-[0.98] transition-transform shadow-lg"
+              className="ios-press inline-flex items-center gap-2 px-5 py-3 rounded-2xl bg-white text-primary font-semibold text-sm hover:scale-[1.02] active:scale-[0.98] transition-transform shadow-lg"
             >
               <Smartphone className="w-4 h-4" />
               Abrir app
@@ -173,6 +175,13 @@ function Index() {
               Ver mapa en vivo →
             </a>
           </div>
+
+          {isIOS && (
+            <p className="mt-5 inline-flex items-center gap-2 px-3 py-2 rounded-full bg-white/15 backdrop-blur-md border border-white/25 text-white/90 text-xs">
+              <Smartphone className="w-3.5 h-3.5" />
+              Consejo iPhone: pulsa <span className="font-semibold">Compartir</span> → <span className="font-semibold">Añadir a pantalla de inicio</span>
+            </p>
+          )}
         </div>
       </header>
 
