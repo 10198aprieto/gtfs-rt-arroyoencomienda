@@ -5,6 +5,7 @@ import { lazy, Suspense, useEffect, useState } from "react";
 const BusMap = lazy(() => import("@/components/BusMap"));
 import SanAntonioBanner from "@/components/SanAntonioBanner";
 import PresenceBadge from "@/components/PresenceBadge";
+import AirQualityBadge from "@/components/AirQualityBadge";
 import { Typewriter } from "@/components/ui/typewriter";
 import VaporizeTextCycle, { Tag as VaporTag } from "@/components/ui/vapour-text-effect";
 import { useIsIOS } from "@/hooks/use-platform";
@@ -193,6 +194,7 @@ function Index() {
 
         <div className="flex flex-wrap items-center gap-3">
           <PresenceBadge />
+          <AirQualityBadge />
           <Link
             to="/avisos"
             className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-amber-500/15 text-amber-700 dark:text-amber-300 text-xs font-semibold hover:bg-amber-500/25 transition-colors"
