@@ -62,6 +62,7 @@ function AppPage() {
   const [selected, setSelected] = useState<Stop | null>(null);
   const [userPos, setUserPos] = useState<{ lat: number; lon: number } | null>(null);
   const [tab, setTab] = useState<"stops" | "cards">("stops");
+  const isIOS = useIsIOS();
 
   useEffect(() => {
     if (typeof navigator === "undefined" || !navigator.geolocation) return;
