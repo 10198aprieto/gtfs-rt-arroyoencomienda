@@ -39,7 +39,7 @@ export default function CookieBanner() {
       className="fixed inset-x-0 bottom-0 z-[1000] p-3 sm:p-4 pointer-events-none"
       style={{ paddingBottom: "calc(0.75rem + env(safe-area-inset-bottom))" }}
     >
-      <div className="pointer-events-auto max-w-3xl mx-auto rounded-2xl border border-border bg-card/95 backdrop-blur shadow-2xl p-4 sm:p-5">
+      <div className="pointer-events-auto glass-strong max-w-3xl mx-auto rounded-3xl p-4 sm:p-5">
         <div className="flex items-start gap-3">
           <div className="w-10 h-10 rounded-xl bg-primary/10 text-primary flex items-center justify-center flex-shrink-0">
             <Cookie className="w-5 h-5" />
@@ -63,13 +63,13 @@ export default function CookieBanner() {
             <div className="mt-3 flex flex-wrap gap-2">
               <button
                 onClick={() => decide("accepted")}
-                className="px-4 py-2 rounded-lg bg-primary text-primary-foreground text-xs font-semibold hover:opacity-90 transition-opacity"
+                className="ios-press px-4 py-2 rounded-full bg-primary text-primary-foreground text-xs font-semibold hover:opacity-90 transition-opacity"
               >
                 Aceptar
               </button>
               <button
                 onClick={() => decide("rejected")}
-                className="px-4 py-2 rounded-lg border border-border text-xs font-semibold hover:bg-accent transition-colors"
+                className="ios-press px-4 py-2 rounded-full border border-border text-xs font-semibold hover:bg-accent transition-colors"
               >
                 Rechazar
               </button>
