@@ -35,6 +35,66 @@ export type Database = {
         }
         Relationships: []
       }
+      air_quality_cache: {
+        Row: {
+          categoria: string | null
+          co_mg_m3: number | null
+          created_at: string
+          estacion: string
+          fecha_dato: string
+          id: string
+          indice: number | null
+          latitud: number | null
+          longitud: number | null
+          no_ug_m3: number | null
+          no2_ug_m3: number | null
+          o3_ug_m3: number | null
+          pm10_ug_m3: number | null
+          pm25_ug_m3: number | null
+          provincia: string | null
+          so2_ug_m3: number | null
+          updated_at: string
+        }
+        Insert: {
+          categoria?: string | null
+          co_mg_m3?: number | null
+          created_at?: string
+          estacion: string
+          fecha_dato: string
+          id?: string
+          indice?: number | null
+          latitud?: number | null
+          longitud?: number | null
+          no_ug_m3?: number | null
+          no2_ug_m3?: number | null
+          o3_ug_m3?: number | null
+          pm10_ug_m3?: number | null
+          pm25_ug_m3?: number | null
+          provincia?: string | null
+          so2_ug_m3?: number | null
+          updated_at?: string
+        }
+        Update: {
+          categoria?: string | null
+          co_mg_m3?: number | null
+          created_at?: string
+          estacion?: string
+          fecha_dato?: string
+          id?: string
+          indice?: number | null
+          latitud?: number | null
+          longitud?: number | null
+          no_ug_m3?: number | null
+          no2_ug_m3?: number | null
+          o3_ug_m3?: number | null
+          pm10_ug_m3?: number | null
+          pm25_ug_m3?: number | null
+          provincia?: string | null
+          so2_ug_m3?: number | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       app_settings: {
         Row: {
           key: string

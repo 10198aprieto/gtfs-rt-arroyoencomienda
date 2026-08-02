@@ -37,6 +37,7 @@ import { Route as ApiPublicTelegramWebhookRouteImport } from './routes/api/publi
 import { Route as ApiPublicTelegramTickRouteImport } from './routes/api/public/telegram/tick'
 import { Route as ApiPublicTelegramBroadcastRouteImport } from './routes/api/public/telegram/broadcast'
 import { Route as ApiPublicAlexaSkillRouteImport } from './routes/api/public/alexa/skill'
+import { Route as ApiPublicAirQualityRefreshRouteImport } from './routes/api/public/air-quality/refresh'
 
 const PoliticaPrivacidadRoute = PoliticaPrivacidadRouteImport.update({
   id: '/politica-privacidad',
@@ -185,6 +186,12 @@ const ApiPublicAlexaSkillRoute = ApiPublicAlexaSkillRouteImport.update({
   path: '/api/public/alexa/skill',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiPublicAirQualityRefreshRoute =
+  ApiPublicAirQualityRefreshRouteImport.update({
+    id: '/api/public/air-quality/refresh',
+    path: '/api/public/air-quality/refresh',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -209,6 +216,7 @@ export interface FileRoutesByFullPath {
   '/api/stops/$stopId': typeof ApiStopsStopIdRoute
   '/api/buses/': typeof ApiBusesIndexRoute
   '/api/stops/': typeof ApiStopsIndexRoute
+  '/api/public/air-quality/refresh': typeof ApiPublicAirQualityRefreshRoute
   '/api/public/alexa/skill': typeof ApiPublicAlexaSkillRoute
   '/api/public/telegram/broadcast': typeof ApiPublicTelegramBroadcastRoute
   '/api/public/telegram/tick': typeof ApiPublicTelegramTickRoute
@@ -239,6 +247,7 @@ export interface FileRoutesByTo {
   '/api/stops/$stopId': typeof ApiStopsStopIdRoute
   '/api/buses': typeof ApiBusesIndexRoute
   '/api/stops': typeof ApiStopsIndexRoute
+  '/api/public/air-quality/refresh': typeof ApiPublicAirQualityRefreshRoute
   '/api/public/alexa/skill': typeof ApiPublicAlexaSkillRoute
   '/api/public/telegram/broadcast': typeof ApiPublicTelegramBroadcastRoute
   '/api/public/telegram/tick': typeof ApiPublicTelegramTickRoute
@@ -270,6 +279,7 @@ export interface FileRoutesById {
   '/api/stops/$stopId': typeof ApiStopsStopIdRoute
   '/api/buses/': typeof ApiBusesIndexRoute
   '/api/stops/': typeof ApiStopsIndexRoute
+  '/api/public/air-quality/refresh': typeof ApiPublicAirQualityRefreshRoute
   '/api/public/alexa/skill': typeof ApiPublicAlexaSkillRoute
   '/api/public/telegram/broadcast': typeof ApiPublicTelegramBroadcastRoute
   '/api/public/telegram/tick': typeof ApiPublicTelegramTickRoute
@@ -302,6 +312,7 @@ export interface FileRouteTypes {
     | '/api/stops/$stopId'
     | '/api/buses/'
     | '/api/stops/'
+    | '/api/public/air-quality/refresh'
     | '/api/public/alexa/skill'
     | '/api/public/telegram/broadcast'
     | '/api/public/telegram/tick'
@@ -332,6 +343,7 @@ export interface FileRouteTypes {
     | '/api/stops/$stopId'
     | '/api/buses'
     | '/api/stops'
+    | '/api/public/air-quality/refresh'
     | '/api/public/alexa/skill'
     | '/api/public/telegram/broadcast'
     | '/api/public/telegram/tick'
@@ -362,6 +374,7 @@ export interface FileRouteTypes {
     | '/api/stops/$stopId'
     | '/api/buses/'
     | '/api/stops/'
+    | '/api/public/air-quality/refresh'
     | '/api/public/alexa/skill'
     | '/api/public/telegram/broadcast'
     | '/api/public/telegram/tick'
@@ -392,6 +405,7 @@ export interface RootRouteChildren {
   ApiStopsStopIdRoute: typeof ApiStopsStopIdRoute
   ApiBusesIndexRoute: typeof ApiBusesIndexRoute
   ApiStopsIndexRoute: typeof ApiStopsIndexRoute
+  ApiPublicAirQualityRefreshRoute: typeof ApiPublicAirQualityRefreshRoute
   ApiPublicAlexaSkillRoute: typeof ApiPublicAlexaSkillRoute
   ApiPublicTelegramBroadcastRoute: typeof ApiPublicTelegramBroadcastRoute
   ApiPublicTelegramTickRoute: typeof ApiPublicTelegramTickRoute
@@ -598,6 +612,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiPublicAlexaSkillRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/public/air-quality/refresh': {
+      id: '/api/public/air-quality/refresh'
+      path: '/api/public/air-quality/refresh'
+      fullPath: '/api/public/air-quality/refresh'
+      preLoaderRoute: typeof ApiPublicAirQualityRefreshRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -635,6 +656,7 @@ const rootRouteChildren: RootRouteChildren = {
   ApiStopsStopIdRoute: ApiStopsStopIdRoute,
   ApiBusesIndexRoute: ApiBusesIndexRoute,
   ApiStopsIndexRoute: ApiStopsIndexRoute,
+  ApiPublicAirQualityRefreshRoute: ApiPublicAirQualityRefreshRoute,
   ApiPublicAlexaSkillRoute: ApiPublicAlexaSkillRoute,
   ApiPublicTelegramBroadcastRoute: ApiPublicTelegramBroadcastRoute,
   ApiPublicTelegramTickRoute: ApiPublicTelegramTickRoute,
