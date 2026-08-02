@@ -246,7 +246,7 @@ function StopDetail({ stop, onBack, userPos }: { stop: Stop; onBack: () => void;
 
   return (
     <div className="min-h-screen bg-background text-foreground flex flex-col" style={{ paddingBottom: "env(safe-area-inset-bottom)" }}>
-      <header className="sticky top-0 z-10 bg-background/95 backdrop-blur border-b border-border" style={{ paddingTop: "env(safe-area-inset-top)" }}>
+      <header className="sticky top-0 z-10 glass-strong border-x-0 border-t-0" style={{ paddingTop: "env(safe-area-inset-top)" }}>
         <div className="px-3 py-3 flex items-center gap-2">
           <button onClick={onBack} className="p-2 -ml-2 rounded-lg active:bg-accent">
             <ArrowLeft className="w-5 h-5" />
