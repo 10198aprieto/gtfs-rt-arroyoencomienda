@@ -7,6 +7,7 @@ import SanAntonioBanner from "@/components/SanAntonioBanner";
 import PresenceBadge from "@/components/PresenceBadge";
 import { Typewriter } from "@/components/ui/typewriter";
 import VaporizeTextCycle, { Tag as VaporTag } from "@/components/ui/vapour-text-effect";
+import { useIsIOS } from "@/hooks/use-platform";
 
 export const Route = createFileRoute("/")({
   component: Index,
@@ -67,7 +68,7 @@ function LiveStats() {
   return (
     <div className="grid grid-cols-3 gap-3 sm:gap-4">
       {stats.map((s) => (
-        <div key={s.label} className="relative p-4 rounded-xl border border-border bg-card overflow-hidden group hover:border-primary/40 transition-all">
+        <div key={s.label} className="ios-press glass relative p-4 rounded-2xl overflow-hidden group hover:border-primary/40 transition-all">
           <div className="flex items-center justify-between mb-2">
             <s.icon className="w-4 h-4 text-primary" />
             {s.live && (
@@ -86,6 +87,7 @@ function LiveStats() {
 }
 
 function Index() {
+  const isIOS = useIsIOS();
   const endpoints = [
     {
       title: "Trip Updates",
@@ -152,7 +154,7 @@ function Index() {
           <div className="flex flex-wrap gap-3">
             <Link
               to="/app"
-              className="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-white text-primary font-semibold text-sm hover:scale-[1.02] active:scale-[0.98] transition-transform shadow-lg"
+              className="ios-press inline-flex items-center gap-2 px-5 py-3 rounded-2xl bg-white text-primary font-semibold text-sm hover:scale-[1.02] active:scale-[0.98] transition-transform shadow-lg"
             >
               <Smartphone className="w-4 h-4" />
               Abrir app
@@ -173,6 +175,13 @@ function Index() {
               Ver mapa en vivo →
             </a>
           </div>
+
+          {isIOS && (
+            <p className="mt-5 inline-flex items-center gap-2 px-3 py-2 rounded-full bg-white/15 backdrop-blur-md border border-white/25 text-white/90 text-xs">
+              <Smartphone className="w-3.5 h-3.5" />
+              Consejo iPhone: pulsa <span className="font-semibold">Compartir</span> → <span className="font-semibold">Añadir a pantalla de inicio</span>
+            </p>
+          )}
         </div>
       </header>
 
@@ -244,7 +253,7 @@ function Index() {
               href="https://t.me/arroyobus"
               target="_blank"
               rel="noopener noreferrer"
-              className="group rounded-2xl border border-sky-200 dark:border-sky-900 bg-sky-50/70 dark:bg-sky-950/30 p-6 hover:shadow-lg hover:-translate-y-0.5 transition-all"
+              className="group ios-press glass rounded-2xl border-sky-200/70 dark:border-sky-900/70 bg-sky-50/60 dark:bg-sky-950/30 p-6 hover:shadow-lg hover:-translate-y-0.5 transition-all"
             >
               <div className="flex items-start gap-4">
                 <div className="flex-shrink-0 w-12 h-12 rounded-2xl flex items-center justify-center text-white bg-gradient-to-br from-sky-400 to-blue-600 shadow-md">
@@ -267,7 +276,7 @@ function Index() {
               href="https://whatsapp.com/channel/0029Vb8UC0KCBtx7VxjSsq2m"
               target="_blank"
               rel="noopener noreferrer"
-              className="group rounded-2xl border border-emerald-200 dark:border-emerald-900 bg-emerald-50/70 dark:bg-emerald-950/30 p-6 hover:shadow-lg hover:-translate-y-0.5 transition-all"
+              className="group ios-press glass rounded-2xl border-emerald-200/70 dark:border-emerald-900/70 bg-emerald-50/60 dark:bg-emerald-950/30 p-6 hover:shadow-lg hover:-translate-y-0.5 transition-all"
             >
               <div className="flex items-start gap-4">
                 <div className="flex-shrink-0 w-12 h-12 rounded-2xl flex items-center justify-center text-white bg-gradient-to-br from-emerald-400 to-green-600 shadow-md">
@@ -290,7 +299,7 @@ function Index() {
               href="https://t.me/arroyobus_bot"
               target="_blank"
               rel="noopener noreferrer"
-              className="group rounded-2xl border border-indigo-200 dark:border-indigo-900 bg-indigo-50/70 dark:bg-indigo-950/30 p-6 hover:shadow-lg hover:-translate-y-0.5 transition-all"
+              className="group ios-press glass rounded-2xl border-indigo-200/70 dark:border-indigo-900/70 bg-indigo-50/60 dark:bg-indigo-950/30 p-6 hover:shadow-lg hover:-translate-y-0.5 transition-all"
             >
               <div className="flex items-start gap-4">
                 <div className="flex-shrink-0 w-12 h-12 rounded-2xl flex items-center justify-center text-white bg-gradient-to-br from-indigo-400 via-blue-500 to-cyan-400 shadow-md">
@@ -319,7 +328,7 @@ function Index() {
         {/* Ayuda */}
         <section
           aria-labelledby="ayuda-title"
-          className="rounded-2xl p-6 border border-border bg-card flex flex-col sm:flex-row items-start sm:items-center gap-4"
+          className="glass rounded-2xl p-6 flex flex-col sm:flex-row items-start sm:items-center gap-4"
         >
           <div className="w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center flex-shrink-0">
             <HelpCircle className="w-5 h-5" />
@@ -352,7 +361,7 @@ function Index() {
             {endpoints.map((ep) => (
               <article
                 key={ep.title}
-                className="group relative border border-border rounded-2xl p-6 bg-card hover:border-primary/40 hover:shadow-lg transition-all"
+                className="group ios-press glass relative rounded-2xl p-6 hover:border-primary/40 hover:shadow-lg transition-all"
               >
                 <div className="flex items-center gap-2 mb-2">
                   <div className="w-9 h-9 rounded-lg bg-primary/10 text-primary flex items-center justify-center">
@@ -391,7 +400,7 @@ function Index() {
         {/* GTFS Static */}
         <section
           aria-labelledby="static-title"
-          className="rounded-2xl p-6 border border-border bg-card flex flex-col sm:flex-row items-start sm:items-center gap-4"
+          className="glass rounded-2xl p-6 flex flex-col sm:flex-row items-start sm:items-center gap-4"
         >
           <div className="w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center flex-shrink-0">
             <Download className="w-5 h-5" />

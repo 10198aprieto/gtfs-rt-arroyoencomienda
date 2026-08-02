@@ -102,6 +102,18 @@
   --sidebar-ring: oklch(0.704 0.04 256.788);
 }
 
+/* ── Liquid Glass tokens (light) ────────────────────────────── */
+:root {
+  --glass-bg: oklch(1 0 0 / 0.55);
+  --glass-bg-strong: oklch(1 0 0 / 0.72);
+  --glass-border: oklch(1 0 0 / 0.55);
+  --glass-highlight: oklch(1 0 0 / 0.85);
+  --glass-shadow: 0 8px 32px -8px oklch(0.2 0.05 260 / 0.25);
+  --glass-blur: 18px;
+  --glass-saturate: 180%;
+  --ease-ios: cubic-bezier(0.32, 0.72, 0, 1);
+}
+
 .dark {
   --background: oklch(0.129 0.042 264.695);
   --foreground: oklch(0.984 0.003 247.858);
@@ -143,6 +155,15 @@
   --sidebar-ring: oklch(0.551 0.027 264.364);
 }
 
+/* ── Liquid Glass tokens (dark) ─────────────────────────────── */
+.dark {
+  --glass-bg: oklch(0.22 0.04 265 / 0.55);
+  --glass-bg-strong: oklch(0.2 0.04 265 / 0.75);
+  --glass-border: oklch(1 0 0 / 0.14);
+  --glass-highlight: oklch(1 0 0 / 0.22);
+  --glass-shadow: 0 8px 32px -8px oklch(0 0 0 / 0.6);
+}
+
 @layer base {
   * {
     border-color: var(--color-border);
@@ -152,4 +173,76 @@
     background-color: var(--color-background);
     color: var(--color-foreground);
   }
+}
+
+/* ── Liquid Glass surfaces ──────────────────────────────────────
+ * Base: subtle translucency everywhere (cheap, safe on Android).
+ * .is-ios upgrades: deeper blur, specular highlight, spring easing.
+ * ------------------------------------------------------------- */
+@layer components {
+  .glass {
+    background-color: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--glass-shadow);
+  }
+
+  .glass-strong {
+    background-color: var(--glass-bg-strong);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--glass-shadow);
+  }
+
+  @supports (backdrop-filter: blur(1px)) {
+    .glass,
+    .glass-strong {
+      backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+    }
+  }
+
+  /* Specular top highlight — the "liquid" edge, iOS only */
+  .is-ios .glass,
+  .is-ios .glass-strong {
+    position: relative;
+    isolation: isolate;
+    --glass-blur: 28px;
+    --glass-saturate: 200%;
+  }
+
+  .is-ios .glass::before,
+  .is-ios .glass-strong::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    z-index: -1;
+    background:
+      linear-gradient(180deg, var(--glass-highlight) 0%, transparent 45%),
+      radial-gradient(120% 80% at 15% -10%, var(--glass-highlight) 0%, transparent 60%);
+    opacity: 0.55;
+  }
+
+  /* Springy press feedback (iOS-only, like WhatsApp/Instagram tiles) */
+  .ios-press {
+    transition: transform 0.35s var(--ease-ios), opacity 0.2s ease;
+  }
+  .is-ios .ios-press:active {
+    transform: scale(0.965);
+  }
+
+  /* Floating glass dock */
+  .ios-dock {
+    border-radius: 9999px;
+    animation: ios-dock-in 0.5s var(--ease-ios) both;
+  }
+
+  @keyframes ios-dock-in {
+    from { transform: translateY(24px) scale(0.96); opacity: 0; }
+    to { transform: translateY(0) scale(1); opacity: 1; }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ios-dock { animation: none; }
+  .is-ios .ios-press:active { transform: none; }
 }
