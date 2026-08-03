@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { Bus, MapPin, Clock, ExternalLink, Download, Smartphone, Send, Copy, Check, Activity, Radio, HelpCircle, AlertTriangle } from "lucide-react";
+import { Bus, MapPin, Clock, ExternalLink, Download, Smartphone, Send, Copy, Check, Activity, Radio, HelpCircle, AlertTriangle, Phone } from "lucide-react";
 import { lazy, Suspense, useEffect, useState } from "react";
 
 const BusMap = lazy(() => import("@/components/BusMap"));
