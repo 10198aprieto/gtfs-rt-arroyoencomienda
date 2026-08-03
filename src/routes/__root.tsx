@@ -55,6 +55,13 @@ export const Route = createRootRoute({
         href: appCss,
       },
     ],
+    scripts: [
+      {
+        src: "https://arsys.ai-voicereceptionist.com/widget/v1/embed.js",
+        "data-agent-id": "7a40ddf6-aa38-49c2-89e4-8cb43d4b0813",
+        defer: true,
+      },
+    ],
   }),
   shellComponent: RootShell,
   component: RootComponent,
