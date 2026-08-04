@@ -57,6 +57,11 @@ export const Route = createRootRoute({
     ],
     scripts: [
       {
+        src: "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7982425877279613",
+        async: true,
+        crossOrigin: "anonymous",
+      },
+      {
         src: "https://arsys.ai-voicereceptionist.com/widget/v1/embed.js",
         "data-agent-id": "7a40ddf6-aa38-49c2-89e4-8cb43d4b0813",
         defer: true,
