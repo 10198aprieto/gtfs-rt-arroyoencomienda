@@ -16,6 +16,38 @@ export const Route = createFileRoute("/")({
     meta: [
       { title: "ArroyoBus — Autobuses en tiempo real" },
       { name: "description", content: "Sigue en tiempo real los autobuses de Arroyo de la Encomienda. Llegadas, posiciones GPS, feed GTFS-RT y bot de Telegram." },
+      { property: "og:title", content: "ArroyoBus — Autobuses de Arroyo en tiempo real" },
+      { property: "og:description", content: "Mapa en vivo, próximas llegadas por parada, avisos del servicio y feed GTFS-RT abierto de Arroyo de la Encomienda." },
+      { property: "og:url", content: "https://arroyobus.lovable.app/" },
+      { property: "og:type", content: "website" },
+      { name: "twitter:title", content: "ArroyoBus — Autobuses de Arroyo en tiempo real" },
+      { name: "twitter:description", content: "Mapa en vivo, próximas llegadas por parada, avisos del servicio y feed GTFS-RT abierto." },
+    ],
+    links: [{ rel: "canonical", href: "https://arroyobus.lovable.app/" }],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "Service",
+          name: "ArroyoBus — seguimiento de autobuses en tiempo real",
+          serviceType: "Información de transporte público en tiempo real",
+          url: "https://arroyobus.lovable.app/",
+          areaServed: {
+            "@type": "City",
+            name: "Arroyo de la Encomienda",
+            address: {
+              "@type": "PostalAddress",
+              addressLocality: "Arroyo de la Encomienda",
+              addressRegion: "Valladolid",
+              addressCountry: "ES",
+            },
+          },
+          provider: { "@type": "Organization", name: "ArroyoBus", url: "https://arroyobus.lovable.app" },
+          description:
+            "Llegadas al minuto, posiciones GPS de las líneas Roja, Azul, Verde y Búho, avisos del servicio y feed GTFS-RT abierto.",
+        }),
+      },
     ],
   }),
 });
@@ -134,6 +166,9 @@ function Index() {
 
           <h1 className="text-5xl sm:text-7xl font-black tracking-tight text-white mb-4 leading-[0.95]">
             Arroyo<span className="text-amber-300">Bus</span>
+            <span className="block mt-2 text-xl sm:text-3xl font-bold text-white/90">
+              Autobuses de Arroyo de la Encomienda en tiempo real
+            </span>
           </h1>
           <p className="text-lg sm:text-xl text-white/90 max-w-2xl mb-8 leading-relaxed">
             Sigue los autobuses de <strong>Arroyo de la Encomienda</strong> en tiempo real.{" "}

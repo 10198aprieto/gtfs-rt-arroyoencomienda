@@ -12,7 +12,16 @@ export const Route = createFileRoute("/asistentes")({
         content:
           "Consulta los autobuses de Arroyo de la Encomienda desde WhatsApp, Siri (Atajos) y Amazon Alexa.",
       },
+      { property: "og:title", content: "Asistentes de voz y mensajería — ArroyoBus" },
+      {
+        property: "og:description",
+        content:
+          "Configura WhatsApp, Siri (Atajos) y Amazon Alexa para preguntar por tus próximas llegadas de autobús en Arroyo de la Encomienda.",
+      },
+      { property: "og:url", content: "https://arroyobus.lovable.app/asistentes" },
+      { property: "og:type", content: "website" },
     ],
+    links: [{ rel: "canonical", href: "https://arroyobus.lovable.app/asistentes" }],
   }),
 });
 
