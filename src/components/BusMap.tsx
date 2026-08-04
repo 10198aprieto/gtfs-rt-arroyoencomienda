@@ -251,6 +251,7 @@ export default function BusMap() {
             onClick={fetchVehicles}
             className="p-1.5 rounded-md hover:bg-accent transition-colors"
             title="Actualizar"
+            aria-label="Actualizar posiciones de los autobuses"
           >
             <RefreshCw className="w-3.5 h-3.5 text-muted-foreground" />
           </button>
