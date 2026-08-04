@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as PoliticaPrivacidadRouteImport } from './routes/politica-privacidad'
 import { Route as PoliticaCookiesRouteImport } from './routes/politica-cookies'
 import { Route as McpRouteImport } from './routes/mcp'
@@ -39,6 +40,11 @@ import { Route as ApiPublicTelegramBroadcastRouteImport } from './routes/api/pub
 import { Route as ApiPublicAlexaSkillRouteImport } from './routes/api/public/alexa/skill'
 import { Route as ApiPublicAirQualityRefreshRouteImport } from './routes/api/public/air-quality/refresh'
 
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const PoliticaPrivacidadRoute = PoliticaPrivacidadRouteImport.update({
   id: '/politica-privacidad',
   path: '/politica-privacidad',
@@ -205,6 +211,7 @@ export interface FileRoutesByFullPath {
   '/mcp': typeof McpRoute
   '/politica-cookies': typeof PoliticaCookiesRoute
   '/politica-privacidad': typeof PoliticaPrivacidadRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/.mcp/list-tools': typeof Char91DotmcpChar93ListToolsRoute
   '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   '/avisos/san-antonio': typeof AvisosSanAntonioRoute
@@ -236,6 +243,7 @@ export interface FileRoutesByTo {
   '/mcp': typeof McpRoute
   '/politica-cookies': typeof PoliticaCookiesRoute
   '/politica-privacidad': typeof PoliticaPrivacidadRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/.mcp/list-tools': typeof Char91DotmcpChar93ListToolsRoute
   '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   '/avisos/san-antonio': typeof AvisosSanAntonioRoute
@@ -268,6 +276,7 @@ export interface FileRoutesById {
   '/mcp': typeof McpRoute
   '/politica-cookies': typeof PoliticaCookiesRoute
   '/politica-privacidad': typeof PoliticaPrivacidadRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/.mcp/list-tools': typeof Char91DotmcpChar93ListToolsRoute
   '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   '/avisos/san-antonio': typeof AvisosSanAntonioRoute
@@ -301,6 +310,7 @@ export interface FileRouteTypes {
     | '/mcp'
     | '/politica-cookies'
     | '/politica-privacidad'
+    | '/sitemap.xml'
     | '/.mcp/list-tools'
     | '/.well-known/oauth-protected-resource'
     | '/avisos/san-antonio'
@@ -332,6 +342,7 @@ export interface FileRouteTypes {
     | '/mcp'
     | '/politica-cookies'
     | '/politica-privacidad'
+    | '/sitemap.xml'
     | '/.mcp/list-tools'
     | '/.well-known/oauth-protected-resource'
     | '/avisos/san-antonio'
@@ -363,6 +374,7 @@ export interface FileRouteTypes {
     | '/mcp'
     | '/politica-cookies'
     | '/politica-privacidad'
+    | '/sitemap.xml'
     | '/.mcp/list-tools'
     | '/.well-known/oauth-protected-resource'
     | '/avisos/san-antonio'
@@ -395,6 +407,7 @@ export interface RootRouteChildren {
   McpRoute: typeof McpRoute
   PoliticaCookiesRoute: typeof PoliticaCookiesRoute
   PoliticaPrivacidadRoute: typeof PoliticaPrivacidadRoute
+  SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   Char91DotmcpChar93ListToolsRoute: typeof Char91DotmcpChar93ListToolsRoute
   Char91DotwellKnownChar93OauthProtectedResourceRoute: typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   ParadaSlugRoute: typeof ParadaSlugRoute
@@ -416,6 +429,13 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/sitemap.xml': {
+      id: '/sitemap.xml'
+      path: '/sitemap.xml'
+      fullPath: '/sitemap.xml'
+      preLoaderRoute: typeof SitemapDotxmlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/politica-privacidad': {
       id: '/politica-privacidad'
       path: '/politica-privacidad'
@@ -645,6 +665,7 @@ const rootRouteChildren: RootRouteChildren = {
   McpRoute: McpRoute,
   PoliticaCookiesRoute: PoliticaCookiesRoute,
   PoliticaPrivacidadRoute: PoliticaPrivacidadRoute,
+  SitemapDotxmlRoute: SitemapDotxmlRoute,
   Char91DotmcpChar93ListToolsRoute: Char91DotmcpChar93ListToolsRoute,
   Char91DotwellKnownChar93OauthProtectedResourceRoute:
     Char91DotwellKnownChar93OauthProtectedResourceRoute,
