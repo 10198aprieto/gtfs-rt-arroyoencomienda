@@ -1,0 +1,19 @@
+# ArroyoBus
+
+> Seguimiento en tiempo real de los autobuses urbanos de Arroyo de la Encomienda (Valladolid): llegadas, posiciones GPS, avisos del servicio y feed GTFS-RT abierto.
+
+ArroyoBus es un proyecto independiente que publica los datos del transporte urbano de Arroyo de la Encomienda en tiempo real, con líneas Roja, Azul, Verde y Búho, mapa en vivo, canal y bot de Telegram, canal de WhatsApp y asistente telefónico por voz.
+
+## Pages
+
+- [Inicio](/): Mapa en vivo, buses en circulación y accesos rápidos.
+- [App de paradas](/app): Próximas llegadas por parada y tarjetas Buscyl.
+- [Avisos](/avisos): Incidencias, desvíos y cambios de servicio activos.
+- [Buses en servicio](/buses): Directorio en tiempo real de vehículos activos.
+- [Contacto](/contacto): Formulario para sugerencias e incidencias.
+
+## Optional
+
+- [Aviso legal](/aviso-legal): Condiciones de uso del sitio.
+- [Política de privacidad](/politica-privacidad): Tratamiento de datos.
+- [Política de cookies](/politica-cookies): Cookies y consentimiento.
