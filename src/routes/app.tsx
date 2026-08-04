@@ -103,7 +103,7 @@ function AppPage() {
       <header className="sticky top-0 z-10 glass-strong border-x-0 border-t-0" style={{ paddingTop: "env(safe-area-inset-top)" }}>
         <div className="px-4 py-3 flex items-center gap-2">
           <Bus className="w-6 h-6 text-primary" />
-          <h1 className="text-lg font-semibold">ArroyoBus</h1>
+          <h1 className="text-lg font-semibold">ArroyoBus — Próximas llegadas</h1>
           <Link to="/" className="ml-auto text-xs text-muted-foreground underline">
             Web
           </Link>
@@ -248,7 +248,7 @@ function StopDetail({ stop, onBack, userPos }: { stop: Stop; onBack: () => void;
     <div className="min-h-screen bg-background text-foreground flex flex-col" style={{ paddingBottom: "env(safe-area-inset-bottom)" }}>
       <header className="sticky top-0 z-10 glass-strong border-x-0 border-t-0" style={{ paddingTop: "env(safe-area-inset-top)" }}>
         <div className="px-3 py-3 flex items-center gap-2">
-          <button onClick={onBack} className="p-2 -ml-2 rounded-lg active:bg-accent">
+          <button onClick={onBack} className="p-2 -ml-2 rounded-lg active:bg-accent" aria-label="Volver">
             <ArrowLeft className="w-5 h-5" />
           </button>
           <div className="min-w-0 flex-1">
@@ -360,7 +360,7 @@ function CardsView() {
           <div className="w-16 h-16 rounded-2xl bg-primary/10 text-primary flex items-center justify-center">
             <CreditCard className="w-8 h-8" />
           </div>
-          <h3 className="text-base font-semibold">Tus tarjetas Buscyl</h3>
+              <h2 className="text-base font-semibold">Tus tarjetas Buscyl</h2>
           <p className="text-sm text-muted-foreground max-w-xs">
             Guarda el QR de tu tarjeta Buscyl en el dispositivo para enseñarlo en el bus sin conexión.
           </p>
@@ -461,8 +461,8 @@ function CardEditor({
         style={{ paddingBottom: "calc(1.25rem + env(safe-area-inset-bottom))" }}
       >
         <div className="flex items-center gap-2">
-          <h3 className="text-base font-semibold flex-1">{initial ? "Editar tarjeta" : "Nueva tarjeta Buscyl"}</h3>
-          <button onClick={onClose} className="p-1.5 rounded-lg active:bg-accent">
+          <h2 className="text-base font-semibold flex-1">{initial ? "Editar tarjeta" : "Nueva tarjeta Buscyl"}</h2>
+          <button onClick={onClose} className="p-1.5 rounded-lg active:bg-accent" aria-label="Cerrar">
             <X className="w-4 h-4" />
           </button>
         </div>
@@ -618,7 +618,7 @@ function QrScanner({ onClose, onResult }: { onClose: () => void; onResult: (text
         <button onClick={onClose} className="p-2 rounded-lg active:bg-white/10" aria-label="Cerrar">
           <X className="w-5 h-5" />
         </button>
-        <h3 className="text-sm font-semibold flex-1">Escanear QR Buscyl</h3>
+        <h2 className="text-sm font-semibold flex-1">Escanear QR Buscyl</h2>
       </header>
 
       <div className="relative flex-1 overflow-hidden">
@@ -695,10 +695,10 @@ function CardViewer({
         style={{ paddingTop: "env(safe-area-inset-top)", paddingBottom: "env(safe-area-inset-bottom)" }}
       >
         <header className="flex items-center gap-2 px-3 py-3 text-white">
-          <button onClick={onClose} className="p-2 rounded-lg active:bg-white/10">
+          <button onClick={onClose} className="p-2 rounded-lg active:bg-white/10" aria-label="Volver">
             <ArrowLeft className="w-5 h-5" />
           </button>
-          <h3 className="text-sm font-semibold flex-1 truncate">{card.label}</h3>
+          <h2 className="text-sm font-semibold flex-1 truncate">{card.label}</h2>
           <button onClick={onEdit} className="p-2 rounded-lg active:bg-white/10" aria-label="Editar">
             <Pencil className="w-4 h-4" />
           </button>
