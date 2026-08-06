@@ -24,7 +24,7 @@ export const adminLogin = createServerFn({ method: "POST" })
         error: `Faltan variables de entorno en este despliegue: ${missing.join(", ")}. Añádelas en Vercel → Settings → Environment Variables y vuelve a desplegar.`,
       };
     }
-    const ok = safeEq(data.username, u) && safeEq(data.password, p);
+    const ok = safeEq(data.username, u!) && safeEq(data.password, p!);
     if (!ok) {
       await new Promise((r) => setTimeout(r, 400));
       return { ok: false as const, error: "Credenciales incorrectas" };
