@@ -323,6 +323,7 @@ function ConnectorsPanel() {
     { title: "Google Maps Platform", desc: "Conector para embeds, geocoding y Street View.", url: "https://console.cloud.google.com/google/maps-apis/overview", icon: Map },
     { title: "Google Search Console", desc: "Indexación y rendimiento SEO.", url: "https://search.google.com/search-console", icon: Search },
     { title: "Estado del feed GTFS-RT", desc: "Comprueba ahora mismo si llegan posiciones.", url: "/api/gtfs-rt/vehicle-positions?format=json", icon: Activity },
+    { title: "Feed GTFS-RT ServiceAlerts", desc: "Avisos publicados aquí, en formato GTFS-Realtime (añade ?format=json).", url: "/api/gtfs-rt/service-alerts?format=json", icon: Radio, primary: true },
   ];
   return (
     <div className="rounded-xl border border-border bg-card p-6 shadow-sm space-y-3">
