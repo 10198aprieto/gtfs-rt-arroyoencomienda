@@ -30,7 +30,7 @@ export const Route = createFileRoute("/api/gtfs-rt/service-alerts")({
         }
 
         const body = buildServiceAlertsFeed(alerts);
-        return new Response(body, {
+        return new Response(body.buffer as ArrayBuffer, {
           headers: {
             "Content-Type": "application/x-protobuf",
             "Cache-Control": "public, max-age=15",
