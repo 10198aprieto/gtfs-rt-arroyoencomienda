@@ -1,6 +1,11 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { requireAdmin } from "./session.server";
+import { sendMessage } from "@/lib/telegram/api";
+
+function escapeHtml(s: string) {
+  return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+}
 
 export const CAUSES = [
   "UNKNOWN_CAUSE","OTHER_CAUSE","TECHNICAL_PROBLEM","STRIKE","DEMONSTRATION",
@@ -54,7 +59,30 @@ export const createAlert = createServerFn({ method: "POST" })
       active: true,
     }).select().single();
     if (error) return { ok: false as const, error: error.message };
-    return { ok: true as const, id: row.id };
+
+    // Difusión al canal de Telegram (TELEGRAM_ALERTS_CHAT_ID)
+    let channel: { ok: boolean; error?: string } = { ok: false, error: "TELEGRAM_ALERTS_CHAT_ID no configurado" };
+    const chatId = process.env.TELEGRAM_ALERTS_CHAT_ID;
+    if (chatId) {
+      const lines = [
+        `⚠️ <b>${escapeHtml(data.header)}</b>`,
+        data.description ? `\n${escapeHtml(data.description)}` : "",
+        `\n<b>Causa:</b> ${CAUSE_LABELS[data.cause] || data.cause}`,
+        `<b>Efecto:</b> ${EFFECT_LABELS[data.effect] || data.effect}`,
+        data.route_ids.length ? `<b>Líneas:</b> ${escapeHtml(data.route_ids.join(", "))}` : "",
+        data.ends_at ? `<b>Hasta:</b> ${new Date(data.ends_at).toLocaleString("es-ES")}` : "",
+        data.url ? `\n${escapeHtml(data.url)}` : "",
+        `\nhttps://arroyobus.lovable.app/avisos`,
+      ].filter(Boolean);
+      try {
+        const res = await sendMessage(chatId, lines.join("\n"));
+        channel = res?.ok ? { ok: true } : { ok: false, error: res?.description || "Telegram rechazó el mensaje" };
+      } catch (e) {
+        channel = { ok: false, error: (e as Error).message };
+      }
+    }
+
+    return { ok: true as const, id: row.id, channel };
   });
 
 export const listAlertsAdmin = createServerFn({ method: "GET" }).handler(async () => {
