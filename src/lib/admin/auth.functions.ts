@@ -12,8 +12,17 @@ export const adminLogin = createServerFn({ method: "POST" })
   .handler(async ({ data }) => {
     const u = process.env.ADMIN_USERNAME;
     const p = process.env.ADMIN_PASSWORD;
-    if (!u || !p) {
-      return { ok: false as const, error: "Admin no configurado en el servidor" };
+    const s = process.env.SESSION_SECRET;
+    const missing = [
+      !u && "ADMIN_USERNAME",
+      !p && "ADMIN_PASSWORD",
+      (!s || s.length < 32) && "SESSION_SECRET (mín. 32 caracteres)",
+    ].filter(Boolean) as string[];
+    if (missing.length > 0) {
+      return {
+        ok: false as const,
+        error: `Faltan variables de entorno en este despliegue: ${missing.join(", ")}. Añádelas en Vercel → Settings → Environment Variables y vuelve a desplegar.`,
+      };
     }
     const ok = safeEq(data.username, u) && safeEq(data.password, p);
     if (!ok) {
