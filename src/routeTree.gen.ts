@@ -30,6 +30,7 @@ import { Route as ApiBusesIndexRouteImport } from './routes/api/buses/index'
 import { Route as ApiStopsStopIdRouteImport } from './routes/api/stops/$stopId'
 import { Route as ApiGtfsRtVehiclePositionsRouteImport } from './routes/api/gtfs-rt/vehicle-positions'
 import { Route as ApiGtfsRtTripUpdatesRouteImport } from './routes/api/gtfs-rt/trip-updates'
+import { Route as ApiGtfsRtServiceAlertsRouteImport } from './routes/api/gtfs-rt/service-alerts'
 import { Route as ApiBusesVehicleIdRouteImport } from './routes/api/buses/$vehicleId'
 import { Route as Char91DotmcpChar93InvokeToolToolRouteImport } from './routes/[.mcp]/invoke-tool/$tool'
 import { Route as ApiPublicWhatsappWebhookRouteImport } from './routes/api/public/whatsapp/webhook'
@@ -148,6 +149,11 @@ const ApiGtfsRtTripUpdatesRoute = ApiGtfsRtTripUpdatesRouteImport.update({
   path: '/api/gtfs-rt/trip-updates',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiGtfsRtServiceAlertsRoute = ApiGtfsRtServiceAlertsRouteImport.update({
+  id: '/api/gtfs-rt/service-alerts',
+  path: '/api/gtfs-rt/service-alerts',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiBusesVehicleIdRoute = ApiBusesVehicleIdRouteImport.update({
   id: '/api/buses/$vehicleId',
   path: '/api/buses/$vehicleId',
@@ -218,6 +224,7 @@ export interface FileRoutesByFullPath {
   '/parada/$slug': typeof ParadaSlugRoute
   '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
   '/api/buses/$vehicleId': typeof ApiBusesVehicleIdRoute
+  '/api/gtfs-rt/service-alerts': typeof ApiGtfsRtServiceAlertsRoute
   '/api/gtfs-rt/trip-updates': typeof ApiGtfsRtTripUpdatesRoute
   '/api/gtfs-rt/vehicle-positions': typeof ApiGtfsRtVehiclePositionsRoute
   '/api/stops/$stopId': typeof ApiStopsStopIdRoute
@@ -250,6 +257,7 @@ export interface FileRoutesByTo {
   '/parada/$slug': typeof ParadaSlugRoute
   '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
   '/api/buses/$vehicleId': typeof ApiBusesVehicleIdRoute
+  '/api/gtfs-rt/service-alerts': typeof ApiGtfsRtServiceAlertsRoute
   '/api/gtfs-rt/trip-updates': typeof ApiGtfsRtTripUpdatesRoute
   '/api/gtfs-rt/vehicle-positions': typeof ApiGtfsRtVehiclePositionsRoute
   '/api/stops/$stopId': typeof ApiStopsStopIdRoute
@@ -283,6 +291,7 @@ export interface FileRoutesById {
   '/parada/$slug': typeof ParadaSlugRoute
   '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
   '/api/buses/$vehicleId': typeof ApiBusesVehicleIdRoute
+  '/api/gtfs-rt/service-alerts': typeof ApiGtfsRtServiceAlertsRoute
   '/api/gtfs-rt/trip-updates': typeof ApiGtfsRtTripUpdatesRoute
   '/api/gtfs-rt/vehicle-positions': typeof ApiGtfsRtVehiclePositionsRoute
   '/api/stops/$stopId': typeof ApiStopsStopIdRoute
@@ -317,6 +326,7 @@ export interface FileRouteTypes {
     | '/parada/$slug'
     | '/.mcp/invoke-tool/$tool'
     | '/api/buses/$vehicleId'
+    | '/api/gtfs-rt/service-alerts'
     | '/api/gtfs-rt/trip-updates'
     | '/api/gtfs-rt/vehicle-positions'
     | '/api/stops/$stopId'
@@ -349,6 +359,7 @@ export interface FileRouteTypes {
     | '/parada/$slug'
     | '/.mcp/invoke-tool/$tool'
     | '/api/buses/$vehicleId'
+    | '/api/gtfs-rt/service-alerts'
     | '/api/gtfs-rt/trip-updates'
     | '/api/gtfs-rt/vehicle-positions'
     | '/api/stops/$stopId'
@@ -381,6 +392,7 @@ export interface FileRouteTypes {
     | '/parada/$slug'
     | '/.mcp/invoke-tool/$tool'
     | '/api/buses/$vehicleId'
+    | '/api/gtfs-rt/service-alerts'
     | '/api/gtfs-rt/trip-updates'
     | '/api/gtfs-rt/vehicle-positions'
     | '/api/stops/$stopId'
@@ -413,6 +425,7 @@ export interface RootRouteChildren {
   ParadaSlugRoute: typeof ParadaSlugRoute
   Char91DotmcpChar93InvokeToolToolRoute: typeof Char91DotmcpChar93InvokeToolToolRoute
   ApiBusesVehicleIdRoute: typeof ApiBusesVehicleIdRoute
+  ApiGtfsRtServiceAlertsRoute: typeof ApiGtfsRtServiceAlertsRoute
   ApiGtfsRtTripUpdatesRoute: typeof ApiGtfsRtTripUpdatesRoute
   ApiGtfsRtVehiclePositionsRoute: typeof ApiGtfsRtVehiclePositionsRoute
   ApiStopsStopIdRoute: typeof ApiStopsStopIdRoute
@@ -576,6 +589,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiGtfsRtTripUpdatesRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/gtfs-rt/service-alerts': {
+      id: '/api/gtfs-rt/service-alerts'
+      path: '/api/gtfs-rt/service-alerts'
+      fullPath: '/api/gtfs-rt/service-alerts'
+      preLoaderRoute: typeof ApiGtfsRtServiceAlertsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/buses/$vehicleId': {
       id: '/api/buses/$vehicleId'
       path: '/api/buses/$vehicleId'
@@ -672,6 +692,7 @@ const rootRouteChildren: RootRouteChildren = {
   ParadaSlugRoute: ParadaSlugRoute,
   Char91DotmcpChar93InvokeToolToolRoute: Char91DotmcpChar93InvokeToolToolRoute,
   ApiBusesVehicleIdRoute: ApiBusesVehicleIdRoute,
+  ApiGtfsRtServiceAlertsRoute: ApiGtfsRtServiceAlertsRoute,
   ApiGtfsRtTripUpdatesRoute: ApiGtfsRtTripUpdatesRoute,
   ApiGtfsRtVehiclePositionsRoute: ApiGtfsRtVehiclePositionsRoute,
   ApiStopsStopIdRoute: ApiStopsStopIdRoute,
