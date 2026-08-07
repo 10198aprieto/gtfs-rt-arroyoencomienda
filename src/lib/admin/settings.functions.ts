@@ -66,7 +66,7 @@ export const listSecretsStatus = createServerFn({ method: "GET" }).handler(async
   await requireAdmin();
   const names = [
     "ACTIOSAE_API_KEY", "ACTIOSAE_PROXY_URL", "TELEGRAM_BOT_TOKEN",
-    "TELEGRAM_ADMIN_TOKEN", "TELEGRAM_ALERTS_CHAT_ID", "LOVABLE_API_KEY",
+    "TELEGRAM_ADMIN_TOKEN", "TELEGRAM_ALERTS_CHAT_ID",
     "SESSION_SECRET", "ADMIN_USERNAME", "ADMIN_PASSWORD",
   ];
   return names.map((n) => ({ name: n, present: !!process.env[n] }));
