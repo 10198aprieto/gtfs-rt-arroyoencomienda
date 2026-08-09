@@ -101,6 +101,19 @@ function PoliticaCookies() {
 
           <section>
             <h2 className="text-xl font-semibold mb-3">4. Servicios de terceros</h2>
+            <p className="text-muted-foreground mb-3">
+              <strong className="text-foreground">Tipos de cookies según su titularidad:</strong>{" "}
+              <em>propias</em>, enviadas desde equipos o dominios gestionados por ArroyoBus, y{" "}
+              <em>de terceros</em>, enviadas desde equipos o dominios gestionados por otra entidad.{" "}
+              <strong className="text-foreground">Según su plazo:</strong> <em>de sesión</em>,
+              diseñadas para recabar y almacenar datos mientras el Usuario navega, y{" "}
+              <em>persistentes</em>, cuyos datos siguen almacenados y pueden ser tratados durante un
+              periodo definido por el responsable.{" "}
+              <strong className="text-foreground">Según su finalidad:</strong> <em>técnicas</em>,
+              <em> de personalización</em>, <em>de análisis</em>, <em>publicitarias</em> y{" "}
+              <em>de publicidad comportamental</em>. ArroyoBus solo utiliza cookies técnicas y, previo
+              consentimiento, analíticas.
+            </p>
             <p className="text-muted-foreground">
               El mapa interactivo carga imágenes de mosaicos (tiles) desde los servidores de
               OpenStreetMap, que puede registrar la dirección IP del visitante con fines técnicos.
