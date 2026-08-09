@@ -38,8 +38,58 @@ function PoliticaPrivacidad() {
             <p className="text-muted-foreground">
               El responsable del tratamiento de los datos personales que pudieran recogerse a
               través de este sitio web es <strong className="text-foreground">Mateo Fernández Prieto</strong>,
-              titular del proyecto ArroyoBus. Puede contactar a través del formulario disponible
-              en la página de <Link to="/contacto" className="text-primary underline">contacto</Link>.
+              titular del proyecto ArroyoBus - Autobuses en Tiempo Real. Datos de contacto:
+            </p>
+            <ul className="list-disc list-inside text-muted-foreground mt-2 space-y-1">
+              <li><strong className="text-foreground">NIF:</strong> 71572693-M.</li>
+              <li><strong className="text-foreground">Dirección:</strong> C/ San Quince, nº 7, Chalet, 47195 — Arroyo de la Encomienda (Valladolid).</li>
+              <li><strong className="text-foreground">Teléfono:</strong> <a href="tel:983182117" className="text-primary underline">983 182 117</a>.</li>
+              <li><strong className="text-foreground">Email:</strong> <a href="mailto:arroyobusmaps@gmail.com" className="text-primary underline">arroyobusmaps@gmail.com</a>.</li>
+              <li><strong className="text-foreground">Sitios web:</strong> arroyobus.lovable.app y www.arroyobus.net.</li>
+              <li><strong className="text-foreground">Contacto adicional:</strong> formulario de <Link to="/contacto" className="text-primary underline">contacto</Link>.</li>
+            </ul>
+          </section>
+
+          <section>
+            <h2 className="text-xl font-semibold mb-3">1 bis. Normativa aplicable</h2>
+            <p className="text-muted-foreground mb-2">
+              Esta política está adaptada a la normativa española y europea vigente en materia de
+              protección de datos personales en internet. En concreto, respeta:
+            </p>
+            <ul className="list-disc list-inside text-muted-foreground space-y-1">
+              <li>Reglamento (UE) 2016/679, de 27 de abril de 2016 (RGPD).</li>
+              <li>Ley Orgánica 3/2018, de 5 de diciembre, de Protección de Datos Personales y garantía de los derechos digitales (LOPD-GDD).</li>
+              <li>Real Decreto 1720/2007, de 21 de diciembre (RDLOPD).</li>
+              <li>Ley 34/2002, de 11 de julio, de Servicios de la Sociedad de la Información y de Comercio Electrónico (LSSI-CE).</li>
+            </ul>
+            <p className="text-muted-foreground mt-2">
+              En cumplimiento del RGPD y la LOPD-GDD, los datos recabados mediante los formularios
+              del sitio quedarán incorporados y serán tratados con el fin de facilitar, agilizar y
+              cumplir los compromisos establecidos con el Usuario, o para atender su solicitud o
+              consulta. Salvo que resulte de aplicación la excepción del artículo 30.5 del RGPD, se
+              mantiene un registro de actividades de tratamiento.
+            </p>
+          </section>
+
+          <section>
+            <h2 className="text-xl font-semibold mb-3">1 ter. Principios aplicables al tratamiento</h2>
+            <p className="text-muted-foreground mb-2">
+              El tratamiento de los datos personales del Usuario se somete a los principios del
+              artículo 5 del RGPD y del artículo 4 y siguientes de la LOPD-GDD:
+            </p>
+            <ul className="list-disc list-inside text-muted-foreground space-y-1">
+              <li><strong className="text-foreground">Licitud, lealtad y transparencia:</strong> se requerirá el consentimiento previa información transparente de los fines.</li>
+              <li><strong className="text-foreground">Limitación de la finalidad:</strong> fines determinados, explícitos y legítimos.</li>
+              <li><strong className="text-foreground">Minimización de datos:</strong> únicamente los estrictamente necesarios.</li>
+              <li><strong className="text-foreground">Exactitud:</strong> datos exactos y actualizados.</li>
+              <li><strong className="text-foreground">Limitación del plazo de conservación:</strong> solo durante el tiempo necesario.</li>
+              <li><strong className="text-foreground">Integridad y confidencialidad:</strong> garantizando su seguridad.</li>
+              <li><strong className="text-foreground">Responsabilidad proactiva:</strong> el Responsable asegura el cumplimiento de los anteriores.</li>
+            </ul>
+            <p className="text-muted-foreground mt-2">
+              Las categorías de datos tratadas son únicamente <strong className="text-foreground">datos
+              identificativos</strong>. En ningún caso se tratan categorías especiales de datos
+              personales en el sentido del artículo 9 del RGPD.
             </p>
           </section>
 
