@@ -5,10 +5,10 @@ export const Route = createFileRoute("/aviso-legal")({
   component: AvisoLegal,
   head: () => ({
     meta: [
-      { title: "Aviso Legal y Términos de Uso — ArroyoBus GTFS-RT" },
-      { name: "description", content: "Aviso legal y términos de uso del servicio ArroyoBus GTFS-RT. Información sobre el origen de los datos y la propiedad intelectual del código." },
-      { property: "og:title", content: "Aviso Legal — ArroyoBus GTFS-RT" },
-      { property: "og:description", content: "Términos de uso y aviso legal del servicio ArroyoBus GTFS-RT." },
+      { title: "Aviso Legal y Condiciones Generales de Uso — ArroyoBus" },
+      { name: "description", content: "Aviso legal y condiciones generales de uso de ArroyoBus: titularidad, origen de los datos, propiedad intelectual, enlaces y jurisdicción." },
+      { property: "og:title", content: "Aviso Legal — ArroyoBus" },
+      { property: "og:description", content: "Condiciones generales de uso y aviso legal del servicio ArroyoBus." },
     ],
   }),
 });
