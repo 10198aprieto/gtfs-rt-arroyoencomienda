@@ -41,12 +41,65 @@ function AvisoLegal() {
               informa al usuario de los siguientes datos del titular del sitio web:
             </p>
             <ul className="list-disc list-inside text-muted-foreground mt-2 space-y-1">
-              <li><strong className="text-foreground">Titular:</strong> Mateo Fernández Prieto.</li>
+              <li><strong className="text-foreground">Titular:</strong> Mateo Fernández Prieto (en adelante, "ArroyoBus - Autobuses en Tiempo Real").</li>
+              <li><strong className="text-foreground">NIF:</strong> 71572693M.</li>
               <li><strong className="text-foreground">Actividad:</strong> proyecto personal sin ánimo de lucro de información sobre transporte público.</li>
-              <li><strong className="text-foreground">Domicilio:</strong> Arroyo de la Encomienda (Valladolid), España.</li>
-              <li><strong className="text-foreground">Contacto:</strong> a través del formulario disponible en la página de <Link to="/contacto" className="text-primary underline">contacto</Link>.</li>
-              <li><strong className="text-foreground">Dominio:</strong> arroyobus.lovable.app.</li>
+              <li><strong className="text-foreground">Domicilio:</strong> C/ San Quince, nº 7, Chalet, 47195 — Arroyo de la Encomienda (Valladolid), España.</li>
+              <li><strong className="text-foreground">Teléfono:</strong> <a href="tel:983182117" className="text-primary underline">983 182 117</a>.</li>
+              <li><strong className="text-foreground">Email:</strong> <a href="mailto:arroyobusmaps@gmail.com" className="text-primary underline">arroyobusmaps@gmail.com</a>.</li>
+              <li><strong className="text-foreground">Contacto adicional:</strong> formulario disponible en la página de <Link to="/contacto" className="text-primary underline">contacto</Link>.</li>
+              <li><strong className="text-foreground">Dominios:</strong> arroyobus.lovable.app y www.arroyobus.net.</li>
             </ul>
+          </section>
+
+          <section>
+            <h2 className="text-xl font-semibold mb-3">1 bis. Objeto de las condiciones: el Sitio Web</h2>
+            <p className="text-muted-foreground">
+              El objeto de las presentes Condiciones Generales de Uso (en adelante, Condiciones) es
+              regular el acceso y la utilización del Sitio Web. A estos efectos se entenderá como
+              Sitio Web la apariencia externa de los interfaces de pantalla, tanto de forma estática
+              como dinámica (el árbol de navegación), todos los elementos integrados en ellos
+              (Contenidos) y todos aquellos servicios o recursos en línea que en su caso se ofrezcan
+              a los Usuarios (Servicios).
+            </p>
+            <p className="text-muted-foreground mt-2">
+              ArroyoBus se reserva la facultad de modificar, en cualquier momento y sin aviso previo,
+              la presentación y configuración del Sitio Web y de los Contenidos y Servicios
+              incorporados, así como de interrumpir, desactivar y/o cancelar cualquiera de ellos.
+              El acceso al Sitio Web tiene carácter libre y gratuito, salvo el coste de la conexión
+              a través de la red de telecomunicaciones del proveedor de acceso contratado por el
+              Usuario. La utilización de determinados Contenidos o Servicios podrá requerir el
+              registro o suscripción previa del Usuario.
+            </p>
+          </section>
+
+          <section>
+            <h2 className="text-xl font-semibold mb-3">1 ter. El Usuario</h2>
+            <p className="text-muted-foreground">
+              El acceso, la navegación y el uso del Sitio Web, así como de los espacios habilitados
+              para interactuar (comentarios, formularios, canales de Telegram y WhatsApp, bot,
+              asistente telefónico), confiere la condición de Usuario, aceptándose desde el inicio de
+              la navegación todas las Condiciones aquí establecidas y sus ulteriores modificaciones.
+              Se recomienda leerlas cada vez que se visite el Sitio Web.
+            </p>
+            <p className="text-muted-foreground mt-2">El Usuario asume su responsabilidad de hacer un uso correcto del Sitio Web, que se extenderá a:</p>
+            <ul className="list-disc list-inside text-muted-foreground mt-2 space-y-1">
+              <li>Un uso de la información, Contenidos, Servicios y datos que no sea contrario a estas Condiciones, la Ley, la moral o el orden público, ni lesione derechos de terceros o el propio funcionamiento del Sitio Web.</li>
+              <li>La veracidad y licitud de las informaciones aportadas en los formularios. El Usuario notificará de forma inmediata cualquier hecho que permita el uso indebido de dicha información (robo, extravío o acceso no autorizado a identificadores y/o contraseñas) para proceder a su cancelación.</li>
+            </ul>
+            <p className="text-muted-foreground mt-2">
+              ArroyoBus se reserva el derecho a retirar los comentarios y aportaciones que vulneren la
+              ley, el respeto a la dignidad de la persona, o que sean discriminatorios, xenófobos,
+              racistas, pornográficos, spam, o atenten contra la juventud, la infancia, el orden o la
+              seguridad pública, sin ser responsable de las opiniones vertidas por los Usuarios. El
+              mero acceso al Sitio Web no supone entablar relación comercial alguna.
+            </p>
+            <p className="text-muted-foreground mt-2">
+              El Sitio Web se dirige a todas las personas y principalmente a Usuarios residentes en
+              España. No se asegura el cumplimiento de legislaciones de otros países; quien acceda
+              desde otro lugar lo hará bajo su propia responsabilidad y deberá asegurarse de cumplir
+              la legislación local aplicable.
+            </p>
           </section>
 
           <section>
