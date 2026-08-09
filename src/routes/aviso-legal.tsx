@@ -53,7 +53,7 @@ function AvisoLegal() {
           </section>
 
           <section>
-            <h2 className="text-xl font-semibold mb-3"2. Objeto de las condiciones: el Sitio Web</h2>
+            <h2 className="text-xl font-semibold mb-3">2. Objeto de las condiciones: el Sitio Web</h2>
             <p className="text-muted-foreground">
               El objeto de las presentes Condiciones Generales de Uso (en adelante, Condiciones) es
               regular el acceso y la utilización del Sitio Web. A estos efectos se entenderá como
@@ -74,7 +74,7 @@ function AvisoLegal() {
           </section>
 
           <section>
-            <h2 className="text-xl font-semibold mb-3"3. El Usuario</h2>
+            <h2 className="text-xl font-semibold mb-3">3. El Usuario</h2>
             <p className="text-muted-foreground">
               El acceso, la navegación y el uso del Sitio Web, así como de los espacios habilitados
               para interactuar (comentarios, formularios, canales de Telegram y WhatsApp, bot,
@@ -103,7 +103,7 @@ function AvisoLegal() {
           </section>
 
           <section>
-            <h2 className="text-xl font-semibold mb-3"4. Origen de los datos</h2>
+            <h2 className="text-xl font-semibold mb-3">4. Origen de los datos</h2>
             <p className="text-muted-foreground">
               Los datos de posiciones de vehículos, estimaciones de llegada y horarios mostrados
               en este servicio se obtienen de la <strong className="text-foreground">API pública de ActioSAE</strong>,
@@ -120,7 +120,7 @@ function AvisoLegal() {
           </section>
 
           <section>
-            <h2 className="text-xl font-semibold mb-3"5. Propiedad intelectual e industrial</h2>
+            <h2 className="text-xl font-semibold mb-3">5. Propiedad intelectual e industrial</h2>
             <p className="text-muted-foreground">
               El código fuente, diseño, implementación e infraestructura de este servicio son
               <strong className="text-foreground"> propiedad intelectual de Mateo Fernández Prieto</strong>,
@@ -137,7 +137,7 @@ function AvisoLegal() {
           </section>
 
           <section>
-            <h2 className="text-xl font-semibold mb-3"6. Condiciones de uso del sitio</h2>
+            <h2 className="text-xl font-semibold mb-3">6. Condiciones de uso del sitio</h2>
             <p className="text-muted-foreground">
               El acceso al sitio es libre y gratuito. El usuario se compromete a hacer un uso
               diligente del mismo, conforme a la ley, al presente aviso legal, a la moral y al
@@ -152,7 +152,7 @@ function AvisoLegal() {
           </section>
 
           <section>
-            <h2 className="text-xl font-semibold mb-3"7. Uso permitido del feed GTFS Realtime</h2>
+            <h2 className="text-xl font-semibold mb-3">7. Uso permitido del feed GTFS Realtime</h2>
             <p className="text-muted-foreground">
               Los endpoints GTFS Realtime (<code className="bg-muted px-1.5 py-0.5 rounded text-xs">/api/gtfs-rt/*</code>)
               y el archivo GTFS estático se ofrecen de forma gratuita para su consumo en
@@ -166,7 +166,7 @@ function AvisoLegal() {
           </section>
 
           <section>
-            <h2 className="text-xl font-semibold mb-3"8. Exención y limitación de responsabilidad</h2>
+            <h2 className="text-xl font-semibold mb-3">8. Exención y limitación de responsabilidad</h2>
             <p className="text-muted-foreground">
               La información se ofrece <strong className="text-foreground">"tal cual" y "según disponibilidad"</strong>,
               sin garantías de exactitud, completitud, puntualidad o disponibilidad. El titular
@@ -182,7 +182,7 @@ function AvisoLegal() {
           </section>
 
           <section>
-            <h2 className="text-xl font-semibold mb-3"9. Protección de datos personales</h2>
+            <h2 className="text-xl font-semibold mb-3">9. Protección de datos personales</h2>
             <p className="text-muted-foreground">
               El tratamiento de los datos personales que pudieran recabarse a través del sitio
               se rige por lo dispuesto en la <Link to="/politica-privacidad" className="text-primary underline">Política
@@ -197,7 +197,7 @@ function AvisoLegal() {
           </section>
 
           <section>
-            <h2 className="text-xl font-semibold mb-3"10. Marcas y nombres comerciales</h2>
+            <h2 className="text-xl font-semibold mb-3">10. Marcas y nombres comerciales</h2>
             <p className="text-muted-foreground">
               "ArroyoBus", "ActioSAE" y demás marcas mencionadas pertenecen a sus respectivos
               titulares y se citan con fines meramente informativos y descriptivos.
@@ -205,7 +205,7 @@ function AvisoLegal() {
           </section>
 
           <section>
-            <h2 className="text-xl font-semibold mb-3"11. Legislación aplicable y jurisdicción</h2>
+            <h2 className="text-xl font-semibold mb-3">11. Legislación aplicable y jurisdicción</h2>
             <p className="text-muted-foreground">
               El presente aviso legal se rige por la legislación española. Para cualquier
               controversia derivada del uso del servicio, y salvo que la normativa aplicable
@@ -216,7 +216,7 @@ function AvisoLegal() {
           </section>
 
           <section>
-            <h2 className="text-xl font-semibold mb-3"12. Modificación del aviso legal</h2>
+            <h2 className="text-xl font-semibold mb-3">12. Modificación del aviso legal</h2>
             <p className="text-muted-foreground">
               El titular se reserva el derecho a modificar el presente aviso legal en cualquier
               momento para adaptarlo a novedades legislativas, jurisprudenciales o a las
