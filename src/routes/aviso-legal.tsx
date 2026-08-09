@@ -205,7 +205,43 @@ function AvisoLegal() {
           </section>
 
           <section>
-            <h2 className="text-xl font-semibold mb-3">11. Legislación aplicable y jurisdicción</h2>
+            <h2 className="text-xl font-semibold mb-3">11. Política de enlaces</h2>
+            <p className="text-muted-foreground">
+              El Sitio Web pone o puede poner a disposición de los Usuarios medios de enlace
+              (links, banners, botones), directorios y motores de búsqueda que permiten acceder a
+              sitios web pertenecientes y/o gestionados por terceros. Su instalación tiene por objeto
+              facilitar la búsqueda y el acceso a la información disponible en Internet, sin que
+              pueda considerarse una sugerencia, recomendación o invitación a visitarlos.
+            </p>
+            <p className="text-muted-foreground mt-2">
+              ArroyoBus no ofrece ni comercializa, por sí ni por medio de terceros, los productos o
+              servicios disponibles en dichos sitios enlazados, ni garantiza su disponibilidad
+              técnica, exactitud, veracidad, validez o legalidad, ni revisa o controla sus
+              contenidos, no asumiendo responsabilidad alguna por los daños y perjuicios que
+              pudieran derivarse de su acceso o uso.
+            </p>
+            <p className="text-muted-foreground mt-2">
+              El Usuario o tercero que establezca un hipervínculo hacia este Sitio Web deberá saber que:
+            </p>
+            <ul className="list-disc list-inside text-muted-foreground mt-2 space-y-1">
+              <li>No se permite la reproducción, total o parcial, de ninguno de los Contenidos y/o Servicios del Sitio Web sin autorización expresa.</li>
+              <li>No se permite ninguna manifestación falsa, inexacta o incorrecta sobre el Sitio Web ni sobre sus Contenidos y/o Servicios.</li>
+              <li>Salvo el propio hipervínculo, el sitio enlazante no contendrá ningún elemento de este Sitio Web protegido como propiedad intelectual, salvo autorización expresa.</li>
+              <li>El establecimiento del hipervínculo no implica relación alguna entre ArroyoBus y el titular del sitio desde el que se realice, ni el conocimiento y aceptación de sus contenidos, servicios o actividades, y viceversa.</li>
+            </ul>
+          </section>
+
+          <section>
+            <h2 className="text-xl font-semibold mb-3">12. Acciones legales, legislación aplicable y jurisdicción</h2>
+            <p className="text-muted-foreground">
+              ArroyoBus se reserva la facultad de presentar las acciones civiles o penales que
+              considere necesarias por la utilización indebida del Sitio Web y sus Contenidos, o por
+              el incumplimiento de las presentes Condiciones.
+            </p>
+            <p className="text-muted-foreground mt-2">
+              La relación entre el Usuario y ArroyoBus se regirá por la normativa vigente y de
+              aplicación en el territorio español.
+            </p>
             <p className="text-muted-foreground">
               El presente aviso legal se rige por la legislación española. Para cualquier
               controversia derivada del uso del servicio, y salvo que la normativa aplicable
@@ -216,7 +252,7 @@ function AvisoLegal() {
           </section>
 
           <section>
-            <h2 className="text-xl font-semibold mb-3">12. Modificación del aviso legal</h2>
+            <h2 className="text-xl font-semibold mb-3">13. Modificación del aviso legal</h2>
             <p className="text-muted-foreground">
               El titular se reserva el derecho a modificar el presente aviso legal en cualquier
               momento para adaptarlo a novedades legislativas, jurisprudenciales o a las
