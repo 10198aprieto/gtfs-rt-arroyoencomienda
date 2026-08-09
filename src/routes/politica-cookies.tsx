@@ -100,7 +100,7 @@ function PoliticaCookies() {
           </section>
 
           <section>
-            <h2 className="text-xl font-semibold mb-3">3. Servicios de terceros</h2>
+            <h2 className="text-xl font-semibold mb-3">4. Servicios de terceros</h2>
             <p className="text-muted-foreground">
               El mapa interactivo carga imágenes de mosaicos (tiles) desde los servidores de
               OpenStreetMap, que puede registrar la dirección IP del visitante con fines técnicos.
@@ -113,7 +113,7 @@ function PoliticaCookies() {
           </section>
 
           <section>
-            <h2 className="text-xl font-semibold mb-3">4. Gestión y revocación del consentimiento</h2>
+            <h2 className="text-xl font-semibold mb-3">5. Gestión y revocación del consentimiento</h2>
             <p className="text-muted-foreground">
               El usuario puede aceptar o rechazar las cookies analíticas al entrar en el sitio y
               revocar en cualquier momento su decisión con el botón de abajo o borrándolas desde
@@ -142,7 +142,7 @@ function PoliticaCookies() {
           </section>
 
           <section>
-            <h2 className="text-xl font-semibold mb-3">5. Cambios en la política</h2>
+            <h2 className="text-xl font-semibold mb-3">6. Cambios en la política</h2>
             <p className="text-muted-foreground">
               ArroyoBus podrá modificar esta política para adaptarla a novedades legislativas
               o a nuevas funcionalidades del sitio. Se recomienda revisar esta página periódicamente.
