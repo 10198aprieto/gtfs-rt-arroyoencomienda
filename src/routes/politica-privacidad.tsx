@@ -51,7 +51,7 @@ function PoliticaPrivacidad() {
           </section>
 
           <section>
-            <h2 className="text-xl font-semibold mb-3">1 bis. Normativa aplicable</h2>
+            <h2 className="text-xl font-semibold mb-3">2. Normativa aplicable</h2>
             <p className="text-muted-foreground mb-2">
               Esta política está adaptada a la normativa española y europea vigente en materia de
               protección de datos personales en internet. En concreto, respeta:
@@ -72,7 +72,7 @@ function PoliticaPrivacidad() {
           </section>
 
           <section>
-            <h2 className="text-xl font-semibold mb-3">1 ter. Principios aplicables al tratamiento</h2>
+            <h2 className="text-xl font-semibold mb-3">3. Principios aplicables al tratamiento</h2>
             <p className="text-muted-foreground mb-2">
               El tratamiento de los datos personales del Usuario se somete a los principios del
               artículo 5 del RGPD y del artículo 4 y siguientes de la LOPD-GDD:
@@ -94,7 +94,7 @@ function PoliticaPrivacidad() {
           </section>
 
           <section>
-            <h2 className="text-xl font-semibold mb-3">2. Datos que se tratan</h2>
+            <h2 className="text-xl font-semibold mb-3">4. Datos que se tratan</h2>
             <p className="text-muted-foreground mb-2">
               ArroyoBus es un servicio de consulta de transporte público. El uso ordinario del
               sitio <strong className="text-foreground">no requiere registro</strong> y no se
@@ -128,7 +128,7 @@ function PoliticaPrivacidad() {
           </section>
 
           <section>
-            <h2 className="text-xl font-semibold mb-3">3. Base jurídica y finalidad</h2>
+            <h2 className="text-xl font-semibold mb-3">5. Base jurídica y finalidad</h2>
             <p className="text-muted-foreground">
               El tratamiento se basa en el <strong className="text-foreground">consentimiento del
               interesado</strong> (art. 6.1.a RGPD) para la geolocalización y el bot de Telegram, en
@@ -140,7 +140,7 @@ function PoliticaPrivacidad() {
           </section>
 
           <section>
-            <h2 className="text-xl font-semibold mb-3">4. Plazos de conservación</h2>
+            <h2 className="text-xl font-semibold mb-3">6. Plazos de conservación</h2>
             <p className="text-muted-foreground">
               Los datos se conservarán durante el tiempo estrictamente necesario para la finalidad
               para la que fueron recabados y, en su caso, durante los plazos legalmente exigidos.
@@ -150,7 +150,7 @@ function PoliticaPrivacidad() {
           </section>
 
           <section>
-            <h2 className="text-xl font-semibold mb-3">5. Destinatarios y transferencias internacionales</h2>
+            <h2 className="text-xl font-semibold mb-3">7. Destinatarios y transferencias internacionales</h2>
             <p className="text-muted-foreground">
               No se cederán datos a terceros salvo obligación legal. La infraestructura del sitio
               se apoya en proveedores de servicios en la nube (Lovable Cloud / Supabase y
@@ -161,7 +161,7 @@ function PoliticaPrivacidad() {
           </section>
 
           <section>
-            <h2 className="text-xl font-semibold mb-3">6. Derechos del interesado</h2>
+            <h2 className="text-xl font-semibold mb-3">8. Derechos del interesado</h2>
             <p className="text-muted-foreground">
               El usuario puede ejercer en cualquier momento los derechos de <strong className="text-foreground">
               acceso, rectificación, supresión, limitación del tratamiento, oposición y
@@ -176,7 +176,7 @@ function PoliticaPrivacidad() {
           </section>
 
           <section>
-            <h2 className="text-xl font-semibold mb-3">7. Medidas de seguridad</h2>
+            <h2 className="text-xl font-semibold mb-3">9. Medidas de seguridad</h2>
             <p className="text-muted-foreground">
               Se aplican las medidas técnicas y organizativas adecuadas para garantizar un nivel
               de seguridad apropiado al riesgo, incluyendo el cifrado de las comunicaciones
@@ -185,7 +185,7 @@ function PoliticaPrivacidad() {
           </section>
 
           <section>
-            <h2 className="text-xl font-semibold mb-3">8. Menores de edad</h2>
+            <h2 className="text-xl font-semibold mb-3">10. Menores de edad</h2>
             <p className="text-muted-foreground">
               El servicio puede ser utilizado por menores siempre que cuenten con la autorización
               de sus padres o tutores. No se recogen intencionadamente datos personales de
