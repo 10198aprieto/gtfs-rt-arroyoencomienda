@@ -100,7 +100,20 @@ function PoliticaCookies() {
           </section>
 
           <section>
-            <h2 className="text-xl font-semibold mb-3">3. Servicios de terceros</h2>
+            <h2 className="text-xl font-semibold mb-3">4. Servicios de terceros</h2>
+            <p className="text-muted-foreground mb-3">
+              <strong className="text-foreground">Tipos de cookies según su titularidad:</strong>{" "}
+              <em>propias</em>, enviadas desde equipos o dominios gestionados por ArroyoBus, y{" "}
+              <em>de terceros</em>, enviadas desde equipos o dominios gestionados por otra entidad.{" "}
+              <strong className="text-foreground">Según su plazo:</strong> <em>de sesión</em>,
+              diseñadas para recabar y almacenar datos mientras el Usuario navega, y{" "}
+              <em>persistentes</em>, cuyos datos siguen almacenados y pueden ser tratados durante un
+              periodo definido por el responsable.{" "}
+              <strong className="text-foreground">Según su finalidad:</strong> <em>técnicas</em>,
+              <em> de personalización</em>, <em>de análisis</em>, <em>publicitarias</em> y{" "}
+              <em>de publicidad comportamental</em>. ArroyoBus solo utiliza cookies técnicas y, previo
+              consentimiento, analíticas.
+            </p>
             <p className="text-muted-foreground">
               El mapa interactivo carga imágenes de mosaicos (tiles) desde los servidores de
               OpenStreetMap, que puede registrar la dirección IP del visitante con fines técnicos.
@@ -113,7 +126,7 @@ function PoliticaCookies() {
           </section>
 
           <section>
-            <h2 className="text-xl font-semibold mb-3">4. Gestión y revocación del consentimiento</h2>
+            <h2 className="text-xl font-semibold mb-3">5. Gestión y revocación del consentimiento</h2>
             <p className="text-muted-foreground">
               El usuario puede aceptar o rechazar las cookies analíticas al entrar en el sitio y
               revocar en cualquier momento su decisión con el botón de abajo o borrándolas desde
@@ -137,15 +150,43 @@ function PoliticaCookies() {
               Los principales navegadores ofrecen guías para gestionar cookies:
             </p>
             <ul className="list-disc list-inside text-muted-foreground mt-2 space-y-1">
-              <li>Google Chrome, Mozilla Firefox, Safari, Microsoft Edge, Opera y Brave.</li>
+              <li><a href="https://support.google.com/chrome/answer/95647" target="_blank" rel="noopener noreferrer" className="text-primary underline">Google Chrome</a></li>
+              <li><a href="https://support.mozilla.org/es/kb/Deshabilitar%20cookies%20de%20terceros" target="_blank" rel="noopener noreferrer" className="text-primary underline">Mozilla Firefox</a></li>
+              <li><a href="https://support.apple.com/es-es/guide/safari/sfri11471/mac" target="_blank" rel="noopener noreferrer" className="text-primary underline">Safari</a></li>
+              <li><a href="https://support.microsoft.com/es-es/microsoft-edge/eliminar-las-cookies-en-microsoft-edge-63947406-40ac-c3b8-57b9-2a946a29ae09" target="_blank" rel="noopener noreferrer" className="text-primary underline">Microsoft Edge</a></li>
+              <li><a href="https://help.opera.com/en/latest/web-preferences/" target="_blank" rel="noopener noreferrer" className="text-primary underline">Opera</a></li>
+              <li><a href="https://support.brave.com/hc/es-es/articles/360022806212" target="_blank" rel="noopener noreferrer" className="text-primary underline">Brave</a></li>
             </ul>
+            <p className="text-muted-foreground mt-3">
+              La desactivación total de las cookies técnicas puede impedir el correcto
+              funcionamiento de algunas funcionalidades del sitio, como el guardado de tarjetas
+              Buscyl o el recuerdo de la decisión sobre este aviso.
+            </p>
           </section>
 
           <section>
-            <h2 className="text-xl font-semibold mb-3">5. Cambios en la política</h2>
+            <h2 className="text-xl font-semibold mb-3">6. Cambios en la política</h2>
             <p className="text-muted-foreground">
               ArroyoBus podrá modificar esta política para adaptarla a novedades legislativas
               o a nuevas funcionalidades del sitio. Se recomienda revisar esta página periódicamente.
+            </p>
+            <p className="text-muted-foreground mt-2">
+              Los cambios no se notificarán de forma explícita al Usuario, por lo que se recomienda
+              consultar esta página periódicamente. El uso del Sitio Web implica la aceptación de la
+              presente Política de Cookies.
+            </p>
+          </section>
+
+          <section>
+            <h2 className="text-xl font-semibold mb-3">7. Responsable y contacto</h2>
+            <p className="text-muted-foreground">
+              Responsable: <strong className="text-foreground">Mateo Fernández Prieto</strong>,
+              NIF 71572693-M, C/ San Quince, nº 7, Chalet, 47195 — Arroyo de la Encomienda
+              (Valladolid). Teléfono <a href="tel:983182117" className="text-primary underline">983 182 117</a>{" "}
+              · Email <a href="mailto:arroyobusmaps@gmail.com" className="text-primary underline">arroyobusmaps@gmail.com</a>.
+              Más información en la{" "}
+              <Link to="/politica-privacidad" className="text-primary underline">Política de Privacidad</Link> y el{" "}
+              <Link to="/aviso-legal" className="text-primary underline">Aviso Legal</Link>.
             </p>
           </section>
         </div>

@@ -5,10 +5,10 @@ export const Route = createFileRoute("/aviso-legal")({
   component: AvisoLegal,
   head: () => ({
     meta: [
-      { title: "Aviso Legal y Términos de Uso — ArroyoBus GTFS-RT" },
-      { name: "description", content: "Aviso legal y términos de uso del servicio ArroyoBus GTFS-RT. Información sobre el origen de los datos y la propiedad intelectual del código." },
-      { property: "og:title", content: "Aviso Legal — ArroyoBus GTFS-RT" },
-      { property: "og:description", content: "Términos de uso y aviso legal del servicio ArroyoBus GTFS-RT." },
+      { title: "Aviso Legal y Condiciones Generales de Uso — ArroyoBus" },
+      { name: "description", content: "Aviso legal y condiciones generales de uso de ArroyoBus: titularidad, origen de los datos, propiedad intelectual, enlaces y jurisdicción." },
+      { property: "og:title", content: "Aviso Legal — ArroyoBus" },
+      { property: "og:description", content: "Condiciones generales de uso y aviso legal del servicio ArroyoBus." },
     ],
   }),
 });
@@ -41,16 +41,69 @@ function AvisoLegal() {
               informa al usuario de los siguientes datos del titular del sitio web:
             </p>
             <ul className="list-disc list-inside text-muted-foreground mt-2 space-y-1">
-              <li><strong className="text-foreground">Titular:</strong> Mateo Fernández Prieto.</li>
+              <li><strong className="text-foreground">Titular:</strong> Mateo Fernández Prieto (en adelante, "ArroyoBus - Autobuses en Tiempo Real").</li>
+              <li><strong className="text-foreground">NIF:</strong> 71572693M.</li>
               <li><strong className="text-foreground">Actividad:</strong> proyecto personal sin ánimo de lucro de información sobre transporte público.</li>
-              <li><strong className="text-foreground">Domicilio:</strong> Arroyo de la Encomienda (Valladolid), España.</li>
-              <li><strong className="text-foreground">Contacto:</strong> a través del formulario disponible en la página de <Link to="/contacto" className="text-primary underline">contacto</Link>.</li>
-              <li><strong className="text-foreground">Dominio:</strong> arroyobus.lovable.app.</li>
+              <li><strong className="text-foreground">Domicilio:</strong> C/ San Quince, nº 7, Chalet, 47195 — Arroyo de la Encomienda (Valladolid), España.</li>
+              <li><strong className="text-foreground">Teléfono:</strong> <a href="tel:983182117" className="text-primary underline">983 182 117</a>.</li>
+              <li><strong className="text-foreground">Email:</strong> <a href="mailto:arroyobusmaps@gmail.com" className="text-primary underline">arroyobusmaps@gmail.com</a>.</li>
+              <li><strong className="text-foreground">Contacto adicional:</strong> formulario disponible en la página de <Link to="/contacto" className="text-primary underline">contacto</Link>.</li>
+              <li><strong className="text-foreground">Dominios:</strong> arroyobus.lovable.app y www.arroyobus.net.</li>
             </ul>
           </section>
 
           <section>
-            <h2 className="text-xl font-semibold mb-3">2. Origen de los datos</h2>
+            <h2 className="text-xl font-semibold mb-3">2. Objeto de las condiciones: el Sitio Web</h2>
+            <p className="text-muted-foreground">
+              El objeto de las presentes Condiciones Generales de Uso (en adelante, Condiciones) es
+              regular el acceso y la utilización del Sitio Web. A estos efectos se entenderá como
+              Sitio Web la apariencia externa de los interfaces de pantalla, tanto de forma estática
+              como dinámica (el árbol de navegación), todos los elementos integrados en ellos
+              (Contenidos) y todos aquellos servicios o recursos en línea que en su caso se ofrezcan
+              a los Usuarios (Servicios).
+            </p>
+            <p className="text-muted-foreground mt-2">
+              ArroyoBus se reserva la facultad de modificar, en cualquier momento y sin aviso previo,
+              la presentación y configuración del Sitio Web y de los Contenidos y Servicios
+              incorporados, así como de interrumpir, desactivar y/o cancelar cualquiera de ellos.
+              El acceso al Sitio Web tiene carácter libre y gratuito, salvo el coste de la conexión
+              a través de la red de telecomunicaciones del proveedor de acceso contratado por el
+              Usuario. La utilización de determinados Contenidos o Servicios podrá requerir el
+              registro o suscripción previa del Usuario.
+            </p>
+          </section>
+
+          <section>
+            <h2 className="text-xl font-semibold mb-3">3. El Usuario</h2>
+            <p className="text-muted-foreground">
+              El acceso, la navegación y el uso del Sitio Web, así como de los espacios habilitados
+              para interactuar (comentarios, formularios, canales de Telegram y WhatsApp, bot,
+              asistente telefónico), confiere la condición de Usuario, aceptándose desde el inicio de
+              la navegación todas las Condiciones aquí establecidas y sus ulteriores modificaciones.
+              Se recomienda leerlas cada vez que se visite el Sitio Web.
+            </p>
+            <p className="text-muted-foreground mt-2">El Usuario asume su responsabilidad de hacer un uso correcto del Sitio Web, que se extenderá a:</p>
+            <ul className="list-disc list-inside text-muted-foreground mt-2 space-y-1">
+              <li>Un uso de la información, Contenidos, Servicios y datos que no sea contrario a estas Condiciones, la Ley, la moral o el orden público, ni lesione derechos de terceros o el propio funcionamiento del Sitio Web.</li>
+              <li>La veracidad y licitud de las informaciones aportadas en los formularios. El Usuario notificará de forma inmediata cualquier hecho que permita el uso indebido de dicha información (robo, extravío o acceso no autorizado a identificadores y/o contraseñas) para proceder a su cancelación.</li>
+            </ul>
+            <p className="text-muted-foreground mt-2">
+              ArroyoBus se reserva el derecho a retirar los comentarios y aportaciones que vulneren la
+              ley, el respeto a la dignidad de la persona, o que sean discriminatorios, xenófobos,
+              racistas, pornográficos, spam, o atenten contra la juventud, la infancia, el orden o la
+              seguridad pública, sin ser responsable de las opiniones vertidas por los Usuarios. El
+              mero acceso al Sitio Web no supone entablar relación comercial alguna.
+            </p>
+            <p className="text-muted-foreground mt-2">
+              El Sitio Web se dirige a todas las personas y principalmente a Usuarios residentes en
+              España. No se asegura el cumplimiento de legislaciones de otros países; quien acceda
+              desde otro lugar lo hará bajo su propia responsabilidad y deberá asegurarse de cumplir
+              la legislación local aplicable.
+            </p>
+          </section>
+
+          <section>
+            <h2 className="text-xl font-semibold mb-3">4. Origen de los datos</h2>
             <p className="text-muted-foreground">
               Los datos de posiciones de vehículos, estimaciones de llegada y horarios mostrados
               en este servicio se obtienen de la <strong className="text-foreground">API pública de ActioSAE</strong>,
@@ -67,7 +120,7 @@ function AvisoLegal() {
           </section>
 
           <section>
-            <h2 className="text-xl font-semibold mb-3">3. Propiedad intelectual e industrial</h2>
+            <h2 className="text-xl font-semibold mb-3">5. Propiedad intelectual e industrial</h2>
             <p className="text-muted-foreground">
               El código fuente, diseño, implementación e infraestructura de este servicio son
               <strong className="text-foreground"> propiedad intelectual de Mateo Fernández Prieto</strong>,
@@ -84,7 +137,7 @@ function AvisoLegal() {
           </section>
 
           <section>
-            <h2 className="text-xl font-semibold mb-3">4. Condiciones de uso del sitio</h2>
+            <h2 className="text-xl font-semibold mb-3">6. Condiciones de uso del sitio</h2>
             <p className="text-muted-foreground">
               El acceso al sitio es libre y gratuito. El usuario se compromete a hacer un uso
               diligente del mismo, conforme a la ley, al presente aviso legal, a la moral y al
@@ -99,7 +152,7 @@ function AvisoLegal() {
           </section>
 
           <section>
-            <h2 className="text-xl font-semibold mb-3">5. Uso permitido del feed GTFS Realtime</h2>
+            <h2 className="text-xl font-semibold mb-3">7. Uso permitido del feed GTFS Realtime</h2>
             <p className="text-muted-foreground">
               Los endpoints GTFS Realtime (<code className="bg-muted px-1.5 py-0.5 rounded text-xs">/api/gtfs-rt/*</code>)
               y el archivo GTFS estático se ofrecen de forma gratuita para su consumo en
@@ -113,7 +166,7 @@ function AvisoLegal() {
           </section>
 
           <section>
-            <h2 className="text-xl font-semibold mb-3">6. Exención y limitación de responsabilidad</h2>
+            <h2 className="text-xl font-semibold mb-3">8. Exención y limitación de responsabilidad</h2>
             <p className="text-muted-foreground">
               La información se ofrece <strong className="text-foreground">"tal cual" y "según disponibilidad"</strong>,
               sin garantías de exactitud, completitud, puntualidad o disponibilidad. El titular
@@ -129,7 +182,7 @@ function AvisoLegal() {
           </section>
 
           <section>
-            <h2 className="text-xl font-semibold mb-3">7. Protección de datos personales</h2>
+            <h2 className="text-xl font-semibold mb-3">9. Protección de datos personales</h2>
             <p className="text-muted-foreground">
               El tratamiento de los datos personales que pudieran recabarse a través del sitio
               se rige por lo dispuesto en la <Link to="/politica-privacidad" className="text-primary underline">Política
@@ -144,7 +197,7 @@ function AvisoLegal() {
           </section>
 
           <section>
-            <h2 className="text-xl font-semibold mb-3">8. Marcas y nombres comerciales</h2>
+            <h2 className="text-xl font-semibold mb-3">10. Marcas y nombres comerciales</h2>
             <p className="text-muted-foreground">
               "ArroyoBus", "ActioSAE" y demás marcas mencionadas pertenecen a sus respectivos
               titulares y se citan con fines meramente informativos y descriptivos.
@@ -152,7 +205,43 @@ function AvisoLegal() {
           </section>
 
           <section>
-            <h2 className="text-xl font-semibold mb-3">9. Legislación aplicable y jurisdicción</h2>
+            <h2 className="text-xl font-semibold mb-3">11. Política de enlaces</h2>
+            <p className="text-muted-foreground">
+              El Sitio Web pone o puede poner a disposición de los Usuarios medios de enlace
+              (links, banners, botones), directorios y motores de búsqueda que permiten acceder a
+              sitios web pertenecientes y/o gestionados por terceros. Su instalación tiene por objeto
+              facilitar la búsqueda y el acceso a la información disponible en Internet, sin que
+              pueda considerarse una sugerencia, recomendación o invitación a visitarlos.
+            </p>
+            <p className="text-muted-foreground mt-2">
+              ArroyoBus no ofrece ni comercializa, por sí ni por medio de terceros, los productos o
+              servicios disponibles en dichos sitios enlazados, ni garantiza su disponibilidad
+              técnica, exactitud, veracidad, validez o legalidad, ni revisa o controla sus
+              contenidos, no asumiendo responsabilidad alguna por los daños y perjuicios que
+              pudieran derivarse de su acceso o uso.
+            </p>
+            <p className="text-muted-foreground mt-2">
+              El Usuario o tercero que establezca un hipervínculo hacia este Sitio Web deberá saber que:
+            </p>
+            <ul className="list-disc list-inside text-muted-foreground mt-2 space-y-1">
+              <li>No se permite la reproducción, total o parcial, de ninguno de los Contenidos y/o Servicios del Sitio Web sin autorización expresa.</li>
+              <li>No se permite ninguna manifestación falsa, inexacta o incorrecta sobre el Sitio Web ni sobre sus Contenidos y/o Servicios.</li>
+              <li>Salvo el propio hipervínculo, el sitio enlazante no contendrá ningún elemento de este Sitio Web protegido como propiedad intelectual, salvo autorización expresa.</li>
+              <li>El establecimiento del hipervínculo no implica relación alguna entre ArroyoBus y el titular del sitio desde el que se realice, ni el conocimiento y aceptación de sus contenidos, servicios o actividades, y viceversa.</li>
+            </ul>
+          </section>
+
+          <section>
+            <h2 className="text-xl font-semibold mb-3">12. Acciones legales, legislación aplicable y jurisdicción</h2>
+            <p className="text-muted-foreground">
+              ArroyoBus se reserva la facultad de presentar las acciones civiles o penales que
+              considere necesarias por la utilización indebida del Sitio Web y sus Contenidos, o por
+              el incumplimiento de las presentes Condiciones.
+            </p>
+            <p className="text-muted-foreground mt-2">
+              La relación entre el Usuario y ArroyoBus se regirá por la normativa vigente y de
+              aplicación en el territorio español.
+            </p>
             <p className="text-muted-foreground">
               El presente aviso legal se rige por la legislación española. Para cualquier
               controversia derivada del uso del servicio, y salvo que la normativa aplicable
@@ -163,7 +252,7 @@ function AvisoLegal() {
           </section>
 
           <section>
-            <h2 className="text-xl font-semibold mb-3">10. Modificación del aviso legal</h2>
+            <h2 className="text-xl font-semibold mb-3">13. Modificación del aviso legal</h2>
             <p className="text-muted-foreground">
               El titular se reserva el derecho a modificar el presente aviso legal en cualquier
               momento para adaptarlo a novedades legislativas, jurisprudenciales o a las
