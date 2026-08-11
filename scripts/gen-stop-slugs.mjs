@@ -14,6 +14,7 @@ for (const s of stops) {
 }
 const inverse = Object.fromEntries(Object.entries(map).map(([id,sl]) => [sl, id]));
 const out = `// AUTO-GENERATED. Run scripts/gen-stop-slugs.mjs to refresh.
+export const STOP_SLUGS: Record<string,string> = ${JSON.stringify(map,null,2)};
 export const STOP_ID_TO_SLUG: Record<string,string> = ${JSON.stringify(map,null,2)};
 export const SLUG_TO_STOP_ID: Record<string,string> = ${JSON.stringify(inverse,null,2)};
 export function slugForStop(id: string): string | undefined { return STOP_ID_TO_SLUG[String(id)]; }

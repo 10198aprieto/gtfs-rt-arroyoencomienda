@@ -71,7 +71,7 @@
   },
   {
     "id": "11",
-    "name": "Avenida Jose Luis Lasa junto Glorieta de la Flecha",
+    "name": "Avenida de José Luis Lasa junto Glorieta de la Flecha",
     "desc": "Arroyo de la Encomienda",
     "lat": 41.6111638064782,
     "lon": -4.79186348266942
@@ -260,7 +260,7 @@
   },
   {
     "id": "38",
-    "name": "Paseo de Zorilla 65 frente El Corte Inglés",
+    "name": "Paseo de Zorrilla 65 frente El Corte Inglés",
     "desc": "Valladolid",
     "lat": 41.63699379460141,
     "lon": -4.738941465288063
@@ -470,7 +470,7 @@
   },
   {
     "id": "68",
-    "name": "Calle Arnaldo Vilanovajunto CEIP Kantica",
+    "name": "Calle Arnaldo Vilanova junto CEIP Kantica",
     "desc": "Arroyo de la Encomienda",
     "lat": 41.62194050398611,
     "lon": -4.797760359203861
@@ -509,5 +509,12 @@
     "desc": "Arroyo de la Encomienda",
     "lat": 41.62194431565437,
     "lon": -4.79777715455277
+  },
+  {
+    "id": "74",
+    "name": "Camino del Cementerio 35 junto Campus",
+    "desc": "Valladolid",
+    "lat": 41.66496,
+    "lon": -4.70562
   }
 ]
