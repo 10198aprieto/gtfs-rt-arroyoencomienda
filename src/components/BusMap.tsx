@@ -1,8 +1,11 @@
 import { useEffect, useRef, useState, useCallback } from "react";
-import { RefreshCw } from "lucide-react";
+import { RefreshCw, Crosshair } from "lucide-react";
 import stops from "@/data/stops.json";
+import shapes from "@/data/shapes.json";
+import { ROUTES, routeColor, routeMeta } from "@/data/routes";
 import { stopSanAntonioStatus } from "@/lib/sanAntonio";
 import { slugForStop } from "@/data/stop-slugs";
+import { trackStopVisit } from "@/lib/favorites";
 
 interface VehicleEntity {
   id: string;
@@ -21,17 +24,59 @@ interface FeedResponse {
 
 const ARROYO_CENTER: [number, number] = [41.6167, -4.7836];
 const REFRESH_INTERVAL = 15_000;
+const LIGHT_TILES = "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
+const DARK_TILES = "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png";
+
+const isNight = () => {
+  const h = new Date().getHours();
+  return h >= 21 || h < 7;
+};
+
+function busIconHtml(color: string, bearing: number | null) {
+  const rot = bearing == null ? "" : `transform:rotate(${bearing}deg);`;
+  return `<div class="ab-bus" style="--c:${color}">
+    <div class="ab-bus-dot" style="background:${color}">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="${rot}"><path d="M8 6v6"/><path d="M16 6v6"/><path d="M2 12h20"/><path d="M18 18H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2Z"/><circle cx="7" cy="18" r="2"/><circle cx="17" cy="18" r="2"/></svg>
+    </div>
+  </div>`;
+}
 
 export default function BusMap() {
   const mapRef = useRef<any>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const markersRef = useRef<Map<string, any>>(new Map());
+  const animsRef = useRef<Map<string, number>>(new Map());
   const stopMarkersRef = useRef<Map<string, any>>(new Map());
   const stopPopupTimers = useRef<Map<string, any>>(new Map());
+  const linesRef = useRef<Map<string, any[]>>(new Map());
   const leafletRef = useRef<any>(null);
+  const tileRef = useRef<any>(null);
+  const userMarkerRef = useRef<any>(null);
+  const activeLineRef = useRef<string | null>(null);
+  const [activeLine, setActiveLine] = useState<string | null>(null);
   const [count, setCount] = useState(0);
   const [loading, setLoading] = useState(true);
   const [lastUpdate, setLastUpdate] = useState<string>("");
+
+  // Movimiento animado entre actualizaciones
+  const animateMarker = useCallback((id: string, marker: any, to: [number, number]) => {
+    const L = leafletRef.current;
+    if (!L) return;
+    const from = marker.getLatLng();
+    if (from.lat === to[0] && from.lng === to[1]) return;
+    const prev = animsRef.current.get(id);
+    if (prev) cancelAnimationFrame(prev);
+    const start = performance.now();
+    const dur = 1400;
+    const step = (t: number) => {
+      const k = Math.min(1, (t - start) / dur);
+      const e = k < 0.5 ? 2 * k * k : 1 - Math.pow(-2 * k + 2, 2) / 2;
+      marker.setLatLng([from.lat + (to[0] - from.lat) * e, from.lng + (to[1] - from.lng) * e]);
+      if (k < 1) animsRef.current.set(id, requestAnimationFrame(step));
+      else animsRef.current.delete(id);
+    };
+    animsRef.current.set(id, requestAnimationFrame(step));
+  }, []);
 
   const fetchVehicles = useCallback(async () => {
     try {
@@ -44,44 +89,46 @@ export default function BusMap() {
       const L = leafletRef.current;
       if (!map || !L) return;
 
-      const busIcon = L.divIcon({
-        html: `<div style="background:hsl(221,83%,53%);width:28px;height:28px;border-radius:50%;border:3px solid white;box-shadow:0 2px 6px rgba(0,0,0,.35);display:flex;align-items:center;justify-content:center;">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 6v6"/><path d="M16 6v6"/><path d="M2 12h20"/><path d="M18 18H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2Z"/><circle cx="7" cy="18" r="2"/><circle cx="17" cy="18" r="2"/></svg>
-        </div>`,
-        className: "",
-        iconSize: [28, 28],
-        iconAnchor: [14, 14],
-        popupAnchor: [0, -16],
-      });
-
       const activeIds = new Set<string>();
+      const filter = activeLineRef.current;
 
       for (const e of entities) {
         const pos = e.vehicle?.position;
         if (!pos?.latitude || !pos?.longitude) continue;
+        const routeId = e.vehicle?.trip?.routeId || "";
+        if (filter && routeMeta(routeId)?.id !== filter) continue;
 
         const id = e.id;
         activeIds.add(id);
         const latlng: [number, number] = [pos.latitude, pos.longitude];
+        const color = routeColor(routeId);
 
-        const esc = (s: string) => s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+        const esc = (s: string) => s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
         const label = esc(String(e.vehicle?.vehicle?.label || e.vehicle?.vehicle?.id || id));
-        const route = esc(String(e.vehicle?.trip?.routeId || "—"));
+        const meta = routeMeta(routeId);
+        const route = esc(String(meta?.name || routeId || "—"));
         const speed = pos.speed != null ? `${(pos.speed * 3.6).toFixed(0)} km/h` : "—";
 
         const popupContent = `
-          <div style="font-family:system-ui;font-size:13px;line-height:1.5">
-            <strong>🚍 ${label}</strong><br/>
-            Ruta: <strong>${route}</strong><br/>
-            Velocidad: ${speed}
+          <div style="font-family:system-ui;font-size:13px;line-height:1.5;min-width:170px">
+            <div style="display:inline-block;background:${color};color:#fff;font-weight:700;font-size:11px;padding:2px 8px;border-radius:10px;margin-bottom:4px">${route}</div>
+            <div><strong>🚍 ${label}</strong></div>
+            <div>Velocidad: ${speed}</div>
+            <a href="/api/buses/${encodeURIComponent(label)}" style="display:inline-block;margin-top:6px;font-size:11px;color:#1d4ed8;font-weight:600">Datos del bus →</a>
           </div>`;
 
         const existing = markersRef.current.get(id);
         if (existing) {
-          existing.setLatLng(latlng);
+          animateMarker(id, existing, latlng);
           existing.setPopupContent(popupContent);
+          existing.setIcon(
+            L.divIcon({ html: busIconHtml(color, pos.bearing ?? null), className: "", iconSize: [30, 30], iconAnchor: [15, 15], popupAnchor: [0, -16] }),
+          );
         } else {
-          const marker = L.marker(latlng, { icon: busIcon })
+          const marker = L.marker(latlng, {
+            icon: L.divIcon({ html: busIconHtml(color, pos.bearing ?? null), className: "", iconSize: [30, 30], iconAnchor: [15, 15], popupAnchor: [0, -16] }),
+            zIndexOffset: 500,
+          })
             .bindPopup(popupContent)
             .addTo(map);
           markersRef.current.set(id, marker);
@@ -90,7 +137,10 @@ export default function BusMap() {
 
       for (const [id, marker] of markersRef.current) {
         if (!activeIds.has(id)) {
-          map.removeLayer(marker);
+          const el = marker.getElement?.();
+          if (el) el.classList.add("ab-bus-out");
+          const t = setTimeout(() => map.removeLayer(marker), 300);
+          void t;
           markersRef.current.delete(id);
         }
       }
@@ -102,7 +152,42 @@ export default function BusMap() {
     } finally {
       setLoading(false);
     }
+  }, [animateMarker]);
+
+  const locateUser = useCallback(() => {
+    const map = mapRef.current;
+    const L = leafletRef.current;
+    if (!map || !L || typeof navigator === "undefined" || !navigator.geolocation) return;
+    navigator.geolocation.getCurrentPosition(
+      (p) => {
+        const ll: [number, number] = [p.coords.latitude, p.coords.longitude];
+        if (userMarkerRef.current) userMarkerRef.current.setLatLng(ll);
+        else {
+          userMarkerRef.current = L.marker(ll, {
+            icon: L.divIcon({ html: `<div class="ab-user"></div>`, className: "", iconSize: [18, 18], iconAnchor: [9, 9] }),
+            zIndexOffset: 900,
+          }).addTo(map);
+        }
+        map.flyTo(ll, 15, { duration: 0.9 });
+      },
+      () => {},
+      { enableHighAccuracy: true, timeout: 8000, maximumAge: 30000 },
+    );
   }, []);
+
+  // Filtro de línea: resalta recorridos y refresca buses
+  useEffect(() => {
+    activeLineRef.current = activeLine;
+    for (const [id, polys] of linesRef.current) {
+      for (const p of polys) {
+        const dim = activeLine != null && activeLine !== id;
+        p.setStyle({ opacity: dim ? 0.12 : 0.85, weight: activeLine === id ? 6 : 4 });
+      }
+    }
+    for (const [, marker] of markersRef.current) mapRef.current?.removeLayer(marker);
+    markersRef.current.clear();
+    fetchVehicles();
+  }, [activeLine, fetchVehicles]);
 
   useEffect(() => {
     if (!containerRef.current || mapRef.current) return;
@@ -122,18 +207,37 @@ export default function BusMap() {
         center: ARROYO_CENTER,
         zoom: 14,
         zoomControl: true,
+        zoomAnimation: true,
       });
 
-      Leaf.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+      tileRef.current = Leaf.tileLayer(isNight() ? DARK_TILES : LIGHT_TILES, {
+        attribution: isNight()
+          ? '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; CARTO'
+          : '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
         maxZoom: 19,
       }).addTo(map);
 
       mapRef.current = map;
 
+      // --- Recorridos de línea ---
+      const shapeData = shapes as Record<string, [number, number][]>;
+      for (const r of ROUTES) {
+        const polys: any[] = [];
+        for (const sid of r.shapes) {
+          const pts = shapeData[sid];
+          if (!pts?.length) continue;
+          const casing = Leaf.polyline(pts, { color: "#00000033", weight: 7, opacity: 0.35, interactive: false }).addTo(map);
+          const line = Leaf.polyline(pts, { color: r.color, weight: 4, opacity: 0.85, lineJoin: "round" }).addTo(map);
+          line.bindTooltip(r.name, { sticky: true });
+          line.on("click", () => setActiveLine((cur) => (cur === r.id ? null : r.id)));
+          polys.push(casing, line);
+        }
+        linesRef.current.set(r.id, polys);
+      }
+
       // --- Paradas (GTFS estático) ---
       const stopIcon = Leaf.divIcon({
-        html: `<div style="background:white;width:14px;height:14px;border-radius:50%;border:2.5px solid hsl(221,83%,53%);box-shadow:0 1px 3px rgba(0,0,0,.3);"></div>`,
+        html: `<div class="ab-stop"></div>`,
         className: "",
         iconSize: [14, 14],
         iconAnchor: [7, 7],
@@ -161,24 +265,25 @@ export default function BusMap() {
             : "";
           const rows = list.length
             ? list.map((a) => {
-                const color = a.routeColor ? `#${a.routeColor}` : "hsl(221,83%,53%)";
-                const short = (a.routeShortName || a.routeName || "—").toString();
+                const color = routeColor(a.routeId, a.routeColor ? `#${a.routeColor}` : undefined);
+                const short = (routeMeta(a.routeId)?.name || a.routeShortName || a.routeName || "—").toString();
                 const head = (a.tripHeadsign || "").toString();
-                const time = new Date(a.estimatedArrival * 1000).toLocaleTimeString("es-ES",{hour:"2-digit",minute:"2-digit"});
-                const min = a.isScheduled
-                  ? time
-                  : (a.minutesAway === 0 ? "Ahora" : `${a.minutesAway} min`);
+                const time = new Date(a.estimatedArrival * 1000).toLocaleTimeString("es-ES", { hour: "2-digit", minute: "2-digit" });
+                const min = a.isScheduled ? time : a.minutesAway === 0 ? "Ahora" : `${a.minutesAway} min`;
+                const pct = Math.max(4, Math.min(100, ((15 - Math.min(a.minutesAway ?? 15, 15)) / 15) * 100));
                 const badge = a.isScheduled
                   ? `<span title="Llegada según horario" style="display:inline-flex;align-items:center;gap:3px;background:#f59e0b22;color:#b45309;font-size:10px;font-weight:600;padding:2px 6px;border-radius:8px;white-space:nowrap">⏱ Horario</span>`
                   : `<span title="Datos en tiempo real" style="display:inline-flex;align-items:center;gap:3px;background:#10b98122;color:#047857;font-size:10px;font-weight:600;padding:2px 6px;border-radius:8px;white-space:nowrap"><span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:#10b981"></span>En vivo</span>`;
                 return `<tr>
                   <td style="padding:4px 6px"><span style="display:inline-block;background:${color};color:#fff;font-weight:600;font-size:11px;padding:2px 7px;border-radius:10px">${short}</span></td>
-                  <td style="padding:4px 6px;color:#444;font-size:12px">${head}<div style="margin-top:2px">${badge}</div></td>
-                  <td style="padding:4px 6px;text-align:right;font-weight:600;font-size:12px">${min}</td>
+                  <td style="padding:4px 6px;color:#444;font-size:12px">${head}<div style="margin-top:2px">${badge}</div>
+                    <div style="margin-top:4px;height:4px;border-radius:4px;background:#e5e7eb;overflow:hidden"><div style="height:100%;width:${pct}%;background:${color};transition:width .8s ease"></div></div>
+                  </td>
+                  <td style="padding:4px 6px;text-align:right;font-weight:700;font-size:12px;color:${color}">${min}</td>
                 </tr>`;
               }).join("")
             : `<tr><td colspan="3" style="padding:8px;color:#888;font-size:12px;text-align:center">Sin llegadas próximas</td></tr>`;
-          return `<div style="font-family:system-ui;min-width:240px">
+          return `<div style="font-family:system-ui;min-width:250px">
             <div style="font-weight:600;font-size:13px;margin-bottom:6px">${stopName}</div>
             <div style="font-size:11px;color:#888;margin-bottom:4px">Parada ${stopId}</div>
             ${saHtml}
@@ -198,9 +303,9 @@ export default function BusMap() {
         const m = Leaf.marker([s.lat, s.lon], { icon: stopIcon }).addTo(map);
         m.bindPopup(`<div style="font-family:system-ui;font-size:13px"><strong>${s.name}</strong><br/><span style="color:#888">Cargando llegadas…</span></div>`);
         m.on("popupopen", async () => {
+          trackStopVisit(s.id);
           const html = await renderArrivals(s.id, s.name);
           m.setPopupContent(html);
-          // refresh while open every 15s
           const t = setInterval(async () => {
             const h = await renderArrivals(s.id, s.name);
             m.setPopupContent(h);
@@ -222,42 +327,69 @@ export default function BusMap() {
       cancelled = true;
       clearInterval(interval);
       for (const t of stopPopupTimers.current.values()) clearInterval(t);
+      for (const a of animsRef.current.values()) cancelAnimationFrame(a);
       stopPopupTimers.current.clear();
+      animsRef.current.clear();
       if (mapRef.current) {
         mapRef.current.remove();
         mapRef.current = null;
       }
       markersRef.current.clear();
       stopMarkersRef.current.clear();
+      linesRef.current.clear();
     };
   }, [fetchVehicles]);
 
+  const activeMeta = ROUTES.find((r) => r.id === activeLine);
+
   return (
-    <div className="border border-border rounded-xl overflow-hidden bg-card">
-      <div className="flex items-center justify-between px-4 py-3 border-b border-border">
+    <div
+      className="rounded-2xl overflow-hidden glass transition-shadow"
+      style={activeMeta ? { boxShadow: `0 12px 40px -18px ${activeMeta.color}` } : undefined}
+    >
+      <div className="flex items-center justify-between gap-2 px-4 py-3 border-b border-border">
         <div className="flex items-center gap-2">
           <div className="w-2.5 h-2.5 rounded-full bg-green-500 animate-pulse" />
           <span className="text-sm font-medium">
             {loading ? "Cargando…" : `${count} bus${count !== 1 ? "es" : ""} activo${count !== 1 ? "s" : ""}`}
           </span>
         </div>
-        <div className="flex items-center gap-3">
-          {lastUpdate && (
-            <span className="text-xs text-muted-foreground">
-              Actualizado: {lastUpdate}
-            </span>
-          )}
-          <button
-            onClick={fetchVehicles}
-            className="p-1.5 rounded-md hover:bg-accent transition-colors"
-            title="Actualizar"
-            aria-label="Actualizar posiciones de los autobuses"
-          >
-            <RefreshCw className="w-3.5 h-3.5 text-muted-foreground" />
+        <div className="flex items-center gap-2">
+          {lastUpdate && <span className="hidden sm:inline text-xs text-muted-foreground">Actualizado: {lastUpdate}</span>}
+          <button onClick={locateUser} className="p-1.5 rounded-md hover:bg-accent transition-colors" title="Mi ubicación" aria-label="Centrar en mi ubicación">
+            <Crosshair className="w-3.5 h-3.5 text-muted-foreground" />
+          </button>
+          <button onClick={fetchVehicles} className="p-1.5 rounded-md hover:bg-accent transition-colors group" title="Actualizar" aria-label="Actualizar posiciones de los autobuses">
+            <RefreshCw className={`w-3.5 h-3.5 text-muted-foreground ${loading ? "animate-spin" : "group-active:animate-spin"}`} />
           </button>
         </div>
       </div>
-      <div ref={containerRef} className="h-[400px] w-full" />
+
+      {/* Filtro por línea */}
+      <div className="flex gap-2 overflow-x-auto px-3 py-2 border-b border-border">
+        <button
+          onClick={() => setActiveLine(null)}
+          className={`px-3 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-all ${activeLine === null ? "bg-foreground text-background" : "bg-muted text-muted-foreground hover:bg-accent"}`}
+        >
+          Todas
+        </button>
+        {ROUTES.map((r) => (
+          <button
+            key={r.id}
+            onClick={() => setActiveLine((cur) => (cur === r.id ? null : r.id))}
+            className="px-3 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-all hover:scale-[1.04]"
+            style={
+              activeLine === r.id
+                ? { backgroundColor: r.color, color: "#fff", boxShadow: `0 4px 14px -4px ${r.color}` }
+                : { backgroundColor: `${r.color}1f`, color: r.color }
+            }
+          >
+            {r.emoji} {r.name.replace("Línea ", "")}
+          </button>
+        ))}
+      </div>
+
+      <div ref={containerRef} className="h-[440px] w-full" />
     </div>
   );
 }
