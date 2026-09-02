@@ -246,3 +246,68 @@
   .ios-dock { animation: none; }
   .is-ios .ios-press:active { transform: none; }
 }
+
+/* ── Mapa: buses, paradas y ubicación ───────────────────────── */
+.ab-bus {
+  width: 30px;
+  height: 30px;
+  animation: ab-pop 0.35s var(--ease-ios, ease-out) both;
+  transition: transform 0.2s ease;
+}
+.ab-bus:hover { transform: scale(1.12); }
+.ab-bus-dot {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 3px solid #fff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.ab-bus-out { animation: ab-fade-out 0.3s ease forwards; }
+
+.ab-stop {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #fff;
+  border: 2.5px solid var(--color-primary);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  transition: transform 0.18s ease;
+}
+.ab-stop:hover { transform: scale(1.4); }
+
+.ab-user {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #2563eb;
+  border: 3px solid #fff;
+  box-shadow: 0 0 0 6px rgba(37, 99, 235, 0.22);
+  animation: ab-ping 2s ease-out infinite;
+}
+
+@keyframes ab-pop {
+  from { transform: scale(0.4); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+@keyframes ab-fade-out {
+  to { transform: scale(0.5); opacity: 0; }
+}
+@keyframes ab-ping {
+  0%, 100% { box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.3); }
+  50% { box-shadow: 0 0 0 12px rgba(37, 99, 235, 0.08); }
+}
+
+/* Popups de Leaflet con estética de la app */
+.leaflet-popup-content-wrapper {
+  border-radius: 16px;
+  box-shadow: var(--glass-shadow);
+}
+.dark .leaflet-popup-content-wrapper,
+.dark .leaflet-popup-tip { background: oklch(0.22 0.04 265); color: oklch(0.98 0 0); }
+
+@media (prefers-reduced-motion: reduce) {
+  .ab-bus, .ab-user { animation: none; }
+}
