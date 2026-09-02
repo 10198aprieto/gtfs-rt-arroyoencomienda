@@ -1,7 +1,18 @@
 import { useEffect, useState } from "react";
 
 const STORAGE_KEY = "arroyobus_cookie_consent";
-const GA_ID = "G-QB86L2QP32";
+const GA_IDS: Record<string, string> = {
+  "arroyobus.net": "G-3WEWTBC71X",
+  "www.arroyobus.net": "G-3WEWTBC71X",
+  "arroyobus.lovable.app": "G-QB86L2QP32",
+};
+const DEFAULT_GA_ID = "G-QB86L2QP32";
+
+function gaId() {
+  if (typeof window === "undefined") return DEFAULT_GA_ID;
+  const host = window.location.hostname.toLowerCase();
+  return GA_IDS[host] ?? (host.endsWith("arroyobus.net") ? "G-3WEWTBC71X" : DEFAULT_GA_ID);
+}
 
 declare global {
   interface Window {
@@ -37,10 +48,11 @@ function loadGa() {
     ad_personalization: "denied",
     analytics_storage: "granted",
   });
-  gtag("config", GA_ID, { anonymize_ip: true });
+  const id = gaId();
+  gtag("config", id, { anonymize_ip: true });
   const s = document.createElement("script");
   s.async = true;
-  s.src = `https://www.googletagmanager.com/gtag/js?id=${GA_ID}`;
+  s.src = `https://www.googletagmanager.com/gtag/js?id=${id}`;
   document.head.appendChild(s);
 }
 
