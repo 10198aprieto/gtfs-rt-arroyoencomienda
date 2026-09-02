@@ -103,7 +103,7 @@ function AppPage() {
       <header className="sticky top-0 z-10 glass-strong border-x-0 border-t-0" style={{ paddingTop: "env(safe-area-inset-top)" }}>
         <div className="px-4 py-3 flex items-center gap-2">
           <Bus className="w-6 h-6 text-primary" />
-          <h1 className="text-lg font-semibold">ArroyoBus — Próximas llegadas</h1>
+          <h1 className="text-lg font-semibold">ArroyoBus</h1>
           <Link to="/" className="ml-auto text-xs text-muted-foreground underline">
             Web
           </Link>
