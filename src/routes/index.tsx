@@ -224,10 +224,15 @@ function Index() {
       </header>
 
       <main className="max-w-5xl mx-auto px-6 py-10 sm:py-14 space-y-12">
+        <AutoNightMode />
+
         {/* Stats */}
         <section aria-label="Estadísticas en tiempo real" className="-mt-20 sm:-mt-24 relative z-10">
           <LiveStats />
         </section>
+
+        {/* Panel personal */}
+        <Dashboard />
 
         <div className="flex flex-wrap items-center gap-3">
           <PresenceBadge />
