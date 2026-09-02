@@ -23,18 +23,25 @@ interface FeedResponse {
 }
 
 const ARROYO_CENTER: [number, number] = [41.6167, -4.7836];
-const REFRESH_INTERVAL = 15_000;
+const REFRESH_INTERVAL = 1_000;
 const LIGHT_TILES = "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
 const DARK_TILES = "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png";
 
 const isNight = () => {
+  if (typeof document !== "undefined" && document.documentElement.classList.contains("dark")) return true;
+  if (typeof window !== "undefined" && window.matchMedia?.("(prefers-color-scheme: dark)").matches) return true;
   const h = new Date().getHours();
   return h >= 21 || h < 7;
 };
 
-function busIconHtml(color: string, bearing: number | null) {
+function busIconHtml(color: string, bearing: number | null, speedKmh: number | null) {
   const rot = bearing == null ? "" : `transform:rotate(${bearing}deg);`;
+  const spd =
+    speedKmh == null
+      ? ""
+      : `<div class="ab-bus-speed" style="background:${color}">${Math.round(speedKmh)}<span>km/h</span></div>`;
   return `<div class="ab-bus" style="--c:${color}">
+    ${spd}
     <div class="ab-bus-dot" style="background:${color}">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="${rot}"><path d="M8 6v6"/><path d="M16 6v6"/><path d="M2 12h20"/><path d="M18 18H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2Z"/><circle cx="7" cy="18" r="2"/><circle cx="17" cy="18" r="2"/></svg>
     </div>
@@ -67,7 +74,7 @@ export default function BusMap() {
     const prev = animsRef.current.get(id);
     if (prev) cancelAnimationFrame(prev);
     const start = performance.now();
-    const dur = 1400;
+    const dur = 950;
     const step = (t: number) => {
       const k = Math.min(1, (t - start) / dur);
       const e = k < 0.5 ? 2 * k * k : 1 - Math.pow(-2 * k + 2, 2) / 2;
@@ -78,7 +85,10 @@ export default function BusMap() {
     animsRef.current.set(id, requestAnimationFrame(step));
   }, []);
 
+  const inFlight = useRef(false);
   const fetchVehicles = useCallback(async () => {
+    if (inFlight.current) return;
+    inFlight.current = true;
     try {
       const res = await fetch("/api/gtfs-rt/vehicle-positions?format=json");
       if (!res.ok) return;
@@ -107,7 +117,8 @@ export default function BusMap() {
         const label = esc(String(e.vehicle?.vehicle?.label || e.vehicle?.vehicle?.id || id));
         const meta = routeMeta(routeId);
         const route = esc(String(meta?.name || routeId || "—"));
-        const speed = pos.speed != null ? `${(pos.speed * 3.6).toFixed(0)} km/h` : "—";
+        const speedKmh = pos.speed != null ? pos.speed * 3.6 : null;
+        const speed = speedKmh != null ? `${speedKmh.toFixed(0)} km/h` : "—";
 
         const popupContent = `
           <div style="font-family:system-ui;font-size:13px;line-height:1.5;min-width:170px">
@@ -122,11 +133,11 @@ export default function BusMap() {
           animateMarker(id, existing, latlng);
           existing.setPopupContent(popupContent);
           existing.setIcon(
-            L.divIcon({ html: busIconHtml(color, pos.bearing ?? null), className: "", iconSize: [30, 30], iconAnchor: [15, 15], popupAnchor: [0, -16] }),
+            L.divIcon({ html: busIconHtml(color, pos.bearing ?? null, speedKmh), className: "", iconSize: [30, 30], iconAnchor: [15, 15], popupAnchor: [0, -22] }),
           );
         } else {
           const marker = L.marker(latlng, {
-            icon: L.divIcon({ html: busIconHtml(color, pos.bearing ?? null), className: "", iconSize: [30, 30], iconAnchor: [15, 15], popupAnchor: [0, -16] }),
+            icon: L.divIcon({ html: busIconHtml(color, pos.bearing ?? null, speedKmh), className: "", iconSize: [30, 30], iconAnchor: [15, 15], popupAnchor: [0, -22] }),
             zIndexOffset: 500,
           })
             .bindPopup(popupContent)
@@ -150,6 +161,7 @@ export default function BusMap() {
     } catch {
       // silent
     } finally {
+      inFlight.current = false;
       setLoading(false);
     }
   }, [animateMarker]);
