@@ -9,6 +9,8 @@ import AirQualityBadge from "@/components/AirQualityBadge";
 import { Typewriter } from "@/components/ui/typewriter";
 import VaporizeTextCycle, { Tag as VaporTag } from "@/components/ui/vapour-text-effect";
 import { useIsIOS } from "@/hooks/use-platform";
+import Dashboard from "@/components/Dashboard";
+import AutoNightMode from "@/components/AutoNightMode";
 
 export const Route = createFileRoute("/")({
   component: Index,
@@ -222,10 +224,15 @@ function Index() {
       </header>
 
       <main className="max-w-5xl mx-auto px-6 py-10 sm:py-14 space-y-12">
+        <AutoNightMode />
+
         {/* Stats */}
         <section aria-label="Estadísticas en tiempo real" className="-mt-20 sm:-mt-24 relative z-10">
           <LiveStats />
         </section>
+
+        {/* Panel personal */}
+        <Dashboard />
 
         <div className="flex flex-wrap items-center gap-3">
           <PresenceBadge />

@@ -220,7 +220,7 @@ export default function BusMap() {
       mapRef.current = map;
 
       // --- Recorridos de línea ---
-      const shapeData = shapes as Record<string, [number, number][]>;
+      const shapeData = shapes as unknown as Record<string, [number, number][]>;
       for (const r of ROUTES) {
         const polys: any[] = [];
         for (const sid of r.shapes) {
