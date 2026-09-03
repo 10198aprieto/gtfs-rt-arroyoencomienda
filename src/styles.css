@@ -265,7 +265,24 @@
   align-items: center;
   justify-content: center;
 }
+.ab-bus-speed {
+  position: absolute;
+  left: 50%;
+  top: -14px;
+  transform: translateX(-50%);
+  color: #fff;
+  font: 700 10px/1 system-ui, sans-serif;
+  padding: 2px 5px;
+  border-radius: 999px;
+  border: 1.5px solid #fff;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  white-space: nowrap;
+  pointer-events: none;
+}
+.ab-bus-speed span { font-size: 7px; font-weight: 600; opacity: 0.85; margin-left: 2px; }
+.ab-bus { position: relative; }
 .ab-bus-out { animation: ab-fade-out 0.3s ease forwards; }
+
 
 .ab-stop {
   width: 14px;
