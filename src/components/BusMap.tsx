@@ -53,6 +53,7 @@ export default function BusMap() {
   const containerRef = useRef<HTMLDivElement>(null);
   const markersRef = useRef<Map<string, any>>(new Map());
   const animsRef = useRef<Map<string, number>>(new Map());
+  const iconKeysRef = useRef<Map<string, string>>(new Map());
   const stopMarkersRef = useRef<Map<string, any>>(new Map());
   const stopPopupTimers = useRef<Map<string, any>>(new Map());
   const linesRef = useRef<Map<string, any[]>>(new Map());
@@ -128,14 +129,20 @@ export default function BusMap() {
             <a href="/api/buses/${encodeURIComponent(label)}" style="display:inline-block;margin-top:6px;font-size:11px;color:#1d4ed8;font-weight:600">Datos del bus →</a>
           </div>`;
 
+        const iconKey = `${color}|${pos.bearing ?? "-"}|${speedKmh == null ? "-" : Math.round(speedKmh)}`;
         const existing = markersRef.current.get(id);
         if (existing) {
           animateMarker(id, existing, latlng);
           existing.setPopupContent(popupContent);
-          existing.setIcon(
-            L.divIcon({ html: busIconHtml(color, pos.bearing ?? null, speedKmh), className: "", iconSize: [30, 30], iconAnchor: [15, 15], popupAnchor: [0, -22] }),
-          );
+          // Solo recreamos el icono si cambia algo visible (evita parpadeo al refrescar cada segundo)
+          if (iconKeysRef.current.get(id) !== iconKey) {
+            iconKeysRef.current.set(id, iconKey);
+            existing.setIcon(
+              L.divIcon({ html: busIconHtml(color, pos.bearing ?? null, speedKmh), className: "", iconSize: [30, 30], iconAnchor: [15, 15], popupAnchor: [0, -22] }),
+            );
+          }
         } else {
+          iconKeysRef.current.set(id, iconKey);
           const marker = L.marker(latlng, {
             icon: L.divIcon({ html: busIconHtml(color, pos.bearing ?? null, speedKmh), className: "", iconSize: [30, 30], iconAnchor: [15, 15], popupAnchor: [0, -22] }),
             zIndexOffset: 500,
@@ -153,6 +160,7 @@ export default function BusMap() {
           const t = setTimeout(() => map.removeLayer(marker), 300);
           void t;
           markersRef.current.delete(id);
+          iconKeysRef.current.delete(id);
         }
       }
 
