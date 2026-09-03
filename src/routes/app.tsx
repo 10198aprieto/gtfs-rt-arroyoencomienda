@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { Bus, Search, MapPin, RefreshCw, ArrowLeft, Map as MapIcon, CreditCard, Plus, Trash2, X, Pencil, ScanLine, Camera, Radio, CalendarClock } from "lucide-react";
+import { Bus, Search, MapPin, RefreshCw, ArrowLeft, Map as MapIcon, CreditCard, Plus, Trash2, X, Pencil, ScanLine, Camera, Radio, CalendarClock, ChevronRight } from "lucide-react";
 import QRCode from "qrcode";
 import stopsData from "@/data/stops.json";
 import { loadCards, addCard, removeCard, updateCard, type BuscylCard } from "@/lib/buscyl-cards";
@@ -100,11 +100,22 @@ function AppPage() {
 
   return (
     <div className="min-h-screen bg-background text-foreground flex flex-col" style={{ paddingBottom: "env(safe-area-inset-bottom)" }}>
-      <header className="sticky top-0 z-10 glass-strong border-x-0 border-t-0" style={{ paddingTop: "env(safe-area-inset-top)" }}>
-        <div className="px-4 py-3 flex items-center gap-2">
-          <Bus className="w-6 h-6 text-primary" />
-          <h1 className="text-lg font-semibold">ArroyoBus</h1>
-          <Link to="/" className="ml-auto text-xs text-muted-foreground underline">
+      <header className="sticky top-0 z-10 glass-strong border-x-0 border-t-0 overflow-hidden" style={{ paddingTop: "env(safe-area-inset-top)" }}>
+        <div className="absolute inset-0 -z-10 bg-gradient-to-br from-primary/15 via-transparent to-emerald-500/10" />
+        <div className="px-4 pt-3 pb-2 flex items-center gap-2.5">
+          <span className="w-9 h-9 rounded-2xl bg-primary text-primary-foreground grid place-items-center shadow-lg shadow-primary/30">
+            <Bus className="w-5 h-5" />
+          </span>
+          <div className="min-w-0">
+            <h1 className="text-lg font-black tracking-tight leading-none">ArroyoBus</h1>
+            <p className="text-[11px] text-muted-foreground leading-tight mt-0.5">
+              {tab === "stops" ? `${stops.length} paradas · tiempo real` : "Tus tarjetas Buscyl"}
+            </p>
+          </div>
+          <span className="ml-auto inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 text-[10px] font-bold">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" /> EN VIVO
+          </span>
+          <Link to="/" className="text-[11px] font-semibold text-primary hover:underline">
             Web
           </Link>
         </div>
@@ -115,7 +126,7 @@ function AppPage() {
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder="Buscar parada por nombre o número…"
-              className="w-full pl-9 pr-3 py-2.5 rounded-2xl glass text-sm focus:outline-none focus:ring-2 focus:ring-primary/40"
+              className="w-full pl-10 pr-3 py-3 rounded-2xl glass text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-primary/40 transition-shadow"
               inputMode="search"
             />
           </div>
@@ -138,9 +149,9 @@ function AppPage() {
             <li key={s.id}>
               <button
                 onClick={() => { haptic(); setSelected(s); }}
-                className="ios-press w-full text-left px-4 py-3 flex items-center gap-3 active:bg-accent transition-colors"
+                className="ios-press w-full text-left px-4 py-3.5 flex items-center gap-3 hover:bg-accent/50 active:bg-accent transition-colors"
               >
-                <div className="w-9 h-9 rounded-full bg-primary/10 text-primary flex items-center justify-center text-xs font-semibold shrink-0">
+                <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-primary to-primary/70 text-primary-foreground flex items-center justify-center text-sm font-bold shrink-0 shadow-md shadow-primary/20">
                   {s.id}
                 </div>
                 <div className="min-w-0 flex-1">
@@ -159,10 +170,11 @@ function AppPage() {
                   )}
                 </div>
                 {dist != null && (
-                  <span className="text-xs text-muted-foreground tabular-nums shrink-0">
+                  <span className="text-[11px] font-semibold tabular-nums shrink-0 px-2 py-1 rounded-full bg-muted text-muted-foreground">
                     {dist < 1000 ? `${Math.round(dist)} m` : `${(dist / 1000).toFixed(1)} km`}
                   </span>
                 )}
+                <ChevronRight className="w-4 h-4 text-muted-foreground shrink-0" />
               </button>
             </li>
           );
@@ -200,12 +212,12 @@ function AppPage() {
           </div>
         </nav>
       ) : (
-        <nav className="sticky bottom-0 border-t border-border bg-background/95 backdrop-blur">
+        <nav className="sticky bottom-0 border-t border-border bg-background/90 backdrop-blur-xl">
           <div className="grid grid-cols-3">
-            <button onClick={() => setTab("stops")} className={`py-3 text-xs font-medium flex flex-col items-center gap-0.5 ${tab === "stops" ? "text-primary" : "text-muted-foreground"}`}>
+            <button onClick={() => setTab("stops")} className={`py-3 text-xs font-semibold flex flex-col items-center gap-0.5 transition-colors ${tab === "stops" ? "text-primary" : "text-muted-foreground"}`}>
               <Bus className="w-5 h-5" /> Paradas
             </button>
-            <button onClick={() => setTab("cards")} className={`py-3 text-xs font-medium flex flex-col items-center gap-0.5 ${tab === "cards" ? "text-primary" : "text-muted-foreground"}`}>
+            <button onClick={() => setTab("cards")} className={`py-3 text-xs font-semibold flex flex-col items-center gap-0.5 transition-colors ${tab === "cards" ? "text-primary" : "text-muted-foreground"}`}>
               <CreditCard className="w-5 h-5" /> Buscyl
             </button>
             <Link to="/" className="py-3 text-xs font-medium text-muted-foreground flex flex-col items-center gap-0.5">
@@ -294,7 +306,7 @@ function StopDetail({ stop, onBack, userPos }: { stop: Stop; onBack: () => void;
           const short = a.routeShortName || a.routeName || "—";
           const min = a.minutesAway;
           return (
-            <li key={`${a.tripId}-${a.vehicleId}-${a.estimatedArrival}`} className="px-4 py-3 flex items-center gap-3">
+            <li key={`${a.tripId}-${a.vehicleId}-${a.estimatedArrival}`} className="px-4 py-3.5 flex items-center gap-3 animate-fade-in hover:bg-accent/40 transition-colors">
               <span
                 className="px-2.5 py-1 rounded-full text-[11px] font-semibold text-white shrink-0"
                 style={{ backgroundColor: color || "hsl(var(--primary))" }}
@@ -321,7 +333,7 @@ function StopDetail({ stop, onBack, userPos }: { stop: Stop; onBack: () => void;
                 </p>
               </div>
               <div className="text-right shrink-0">
-                <p className={`text-base font-semibold tabular-nums ${a.isScheduled ? "text-muted-foreground" : ""}`}>
+                <p className={`text-2xl font-black tabular-nums leading-none ${a.isScheduled ? "text-muted-foreground" : ""}`}>
                   {min === 0 && !a.isScheduled ? "Ahora" : `${min}′`}
                 </p>
                 <p className="text-[10px] text-muted-foreground">
