@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as PoliticaPrivacidadRouteImport } from './routes/politica-privacidad'
 import { Route as PoliticaCookiesRouteImport } from './routes/politica-cookies'
+import { Route as ParadasRouteImport } from './routes/paradas'
 import { Route as McpRouteImport } from './routes/mcp'
 import { Route as ContactoRouteImport } from './routes/contacto'
 import { Route as BusesRouteImport } from './routes/buses'
@@ -54,6 +55,11 @@ const PoliticaPrivacidadRoute = PoliticaPrivacidadRouteImport.update({
 const PoliticaCookiesRoute = PoliticaCookiesRouteImport.update({
   id: '/politica-cookies',
   path: '/politica-cookies',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ParadasRoute = ParadasRouteImport.update({
+  id: '/paradas',
+  path: '/paradas',
   getParentRoute: () => rootRouteImport,
 } as any)
 const McpRoute = McpRouteImport.update({
@@ -215,6 +221,7 @@ export interface FileRoutesByFullPath {
   '/buses': typeof BusesRoute
   '/contacto': typeof ContactoRoute
   '/mcp': typeof McpRoute
+  '/paradas': typeof ParadasRoute
   '/politica-cookies': typeof PoliticaCookiesRoute
   '/politica-privacidad': typeof PoliticaPrivacidadRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
@@ -248,6 +255,7 @@ export interface FileRoutesByTo {
   '/buses': typeof BusesRoute
   '/contacto': typeof ContactoRoute
   '/mcp': typeof McpRoute
+  '/paradas': typeof ParadasRoute
   '/politica-cookies': typeof PoliticaCookiesRoute
   '/politica-privacidad': typeof PoliticaPrivacidadRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
@@ -282,6 +290,7 @@ export interface FileRoutesById {
   '/buses': typeof BusesRoute
   '/contacto': typeof ContactoRoute
   '/mcp': typeof McpRoute
+  '/paradas': typeof ParadasRoute
   '/politica-cookies': typeof PoliticaCookiesRoute
   '/politica-privacidad': typeof PoliticaPrivacidadRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
@@ -317,6 +326,7 @@ export interface FileRouteTypes {
     | '/buses'
     | '/contacto'
     | '/mcp'
+    | '/paradas'
     | '/politica-cookies'
     | '/politica-privacidad'
     | '/sitemap.xml'
@@ -350,6 +360,7 @@ export interface FileRouteTypes {
     | '/buses'
     | '/contacto'
     | '/mcp'
+    | '/paradas'
     | '/politica-cookies'
     | '/politica-privacidad'
     | '/sitemap.xml'
@@ -383,6 +394,7 @@ export interface FileRouteTypes {
     | '/buses'
     | '/contacto'
     | '/mcp'
+    | '/paradas'
     | '/politica-cookies'
     | '/politica-privacidad'
     | '/sitemap.xml'
@@ -417,6 +429,7 @@ export interface RootRouteChildren {
   BusesRoute: typeof BusesRoute
   ContactoRoute: typeof ContactoRoute
   McpRoute: typeof McpRoute
+  ParadasRoute: typeof ParadasRoute
   PoliticaCookiesRoute: typeof PoliticaCookiesRoute
   PoliticaPrivacidadRoute: typeof PoliticaPrivacidadRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
@@ -461,6 +474,13 @@ declare module '@tanstack/react-router' {
       path: '/politica-cookies'
       fullPath: '/politica-cookies'
       preLoaderRoute: typeof PoliticaCookiesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/paradas': {
+      id: '/paradas'
+      path: '/paradas'
+      fullPath: '/paradas'
+      preLoaderRoute: typeof ParadasRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/mcp': {
@@ -683,6 +703,7 @@ const rootRouteChildren: RootRouteChildren = {
   BusesRoute: BusesRoute,
   ContactoRoute: ContactoRoute,
   McpRoute: McpRoute,
+  ParadasRoute: ParadasRoute,
   PoliticaCookiesRoute: PoliticaCookiesRoute,
   PoliticaPrivacidadRoute: PoliticaPrivacidadRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
