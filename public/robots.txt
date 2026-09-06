@@ -3,4 +3,4 @@ Allow: /
 Disallow: /admin
 Disallow: /api/
 
-Sitemap: https://arroyobus.lovable.app/sitemap.xml
+Sitemap: https://arroyobus.net/sitemap.xml
