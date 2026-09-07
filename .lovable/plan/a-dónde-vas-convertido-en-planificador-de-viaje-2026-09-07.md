@@ -7,11 +7,11 @@ Hoy el buscador de la portada solo encuentra paradas y direcciones, y como mucho
 1. Campo **"¿A dónde vas?"** con sugerencias mezcladas: paradas de ArroyoBus, calles y lugares (OpenStreetMap, ya en marcha, con más resultados y mejor orden).
 2. Campo de **origen** debajo, relleno con "Mi ubicación" y editable (puedes escribir otra dirección).
 3. Al elegir destino aparece una **tarjeta de viaje**:
-   - 🚶 Camina X min hasta la parada *Nombre (nº)*
-   - 🔵 Coge la *Línea Azul* — sale en *7 min* (en vivo si hay dato, horario si no)
-   - 🚏 Bájate en *Parada destino*
-   - 🔁 (si aplica) Enlaza con la *línea 7 de Auvasa* en *Parada X* y bájate en *Parada Y*
-   - 🚶 Camina Z min hasta tu destino · hora estimada de llegada
+  - 🚶 Camina X min hasta la parada *Nombre (nº)*
+  - 🔵 Coge la *Línea Azul* — sale en *7 min* (en vivo si hay dato, horario si no)
+  - 🚏 Bájate en *Parada destino*
+  - 🔁 (si aplica) Enlaza con la *línea 7 de Auvasa* en *Parada X* y bájate en *Parada Y*
+  - 🚶 Camina Z min hasta tu destino · hora estimada de llegada
 4. Hasta 3 alternativas ordenadas por hora de llegada, y un mapa con el recorrido y los puntos de subida/bajada.
 5. Si no hay ninguna combinación razonable, mensaje claro con la parada más cercana al destino (comportamiento actual como respaldo).
 
@@ -38,4 +38,10 @@ Hoy el buscador de la portada solo encuentra paradas y direcciones, y como mucho
 ## Fuera de alcance
 
 - Horarios en vivo de Auvasa (solo horario teórico en la segunda pierna).
-- Más de un transbordo.
+- Más de un transbordo.  
+  
+Avisar de que, en los autobuses urbanos de Valladolid, NO SIRVE EL BUSCYL. Se necesitará el bonobús de AUVASA, el QR de la aplicación "Auvasa PAY", el pago en metálico al conductor o el pago con tarjeta bancaria a través del EMV.  
+  
+También se pueden sacar SOLO LOS DATOS DE AUVASA DESDE ESTE REPOSITORIO DE GITHUB: https://github.com/VallaBus/api-auvasa.git  
+  
+Pero ten en cuenta que debes dar créditos en el footer donde pone lo de actiosae, añadirías: "Datos de AUVASA obtenidos del repositorio api-auvasa de VallaBus (con hipervínculo al repositorio)".
