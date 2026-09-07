@@ -1,67 +1,41 @@
-Voy a ejecutarlo en una sola tanda, pero algunas piezas quedarán “v1 funcional” y se irán puliendo después. Esto es lo que entrego y dónde voy a cortar para no inflar la entrega.
+# "¿A dónde vas?" convertido en planificador de viaje
 
-## 1. Avisos San Antonio (visible en toda la web)
+Hoy el buscador de la portada solo encuentra paradas y direcciones, y como mucho te lleva a la parada más cercana al destino. El objetivo: escribes un sitio ("Plaza Mayor", "Calle Zorrilla 120", "Hospital Río Hortega") y la app te dice, desde donde estás, en qué parada subir, qué bus coger, dónde bajarte y —si el destino está en Valladolid capital— qué línea de Auvasa enlazar después.
 
-- Copio `Avisos_Bus_San_Antonio.pdf` y `Servicio_Especial_fiestas.pdf` desde tus uploads a `public/avisos/`.
-- En `/avisos/san-antonio` añado dos botones grandes: “Abrir aviso oficial (PDF)” y “Servicio especial de fiestas (PDF)” + un botón “Descargar” cada uno.
-- Reemplazo `SanAntonioBanner` por un **banner rodante horizontal** (marquee CSS) con texto resumido y enlace a `/avisos/san-antonio`. Aparece en home, `/app`, y en el resto de páginas mediante un wrapper en `__root.tsx` (auto-oculto tras 19 junio 2026 y dismiss persistente).
-- Enlace destacado “⚠ Avisos San Antonio” en menú principal y en el footer global.
+## Lo que verá el usuario
 
-## 2. Avisos por parada (mapa + listado + tarjeta)
+1. Campo **"¿A dónde vas?"** con sugerencias mezcladas: paradas de ArroyoBus, calles y lugares (OpenStreetMap, ya en marcha, con más resultados y mejor orden).
+2. Campo de **origen** debajo, relleno con "Mi ubicación" y editable (puedes escribir otra dirección).
+3. Al elegir destino aparece una **tarjeta de viaje**:
+   - 🚶 Camina X min hasta la parada *Nombre (nº)*
+   - 🔵 Coge la *Línea Azul* — sale en *7 min* (en vivo si hay dato, horario si no)
+   - 🚏 Bájate en *Parada destino*
+   - 🔁 (si aplica) Enlaza con la *línea 7 de Auvasa* en *Parada X* y bájate en *Parada Y*
+   - 🚶 Camina Z min hasta tu destino · hora estimada de llegada
+4. Hasta 3 alternativas ordenadas por hora de llegada, y un mapa con el recorrido y los puntos de subida/bajada.
+5. Si no hay ninguna combinación razonable, mensaje claro con la parada más cercana al destino (comportamiento actual como respaldo).
 
-- Creo `src/lib/sanAntonio.ts` con: lista de stop IDs suspendidos, stop IDs con recorrido modificado, y stops del Búho Fiestas (Calle Picones 15 / Glorieta del Cañazo) con sus horarios por día.
-- Añado componente `<StopSanAntonioNotice stopId="…" />` que renderiza badge naranja “Parada suspendida 10–14 jun” o “Recorrido modificado” o tabla compacta de horarios Búho Fiestas según el caso.
-- Lo inserto en: tarjetas del listado de paradas, popup del mapa (`BusMap.tsx`) y nueva subpágina `/parada/$slug`.
+## Datos
 
-## 3. Subpáginas `/parada/$slug`
+- **ArroyoBus**: ya tenemos `src/data/stops.json` y `src/data/schedule.json`. Se reconstruyen las secuencias de cada viaje agrupando por `tripId` y ordenando por hora, para saber qué paradas van antes y después.
+- **Auvasa (Valladolid)**: GTFS oficial verificado y descargable en `http://212.170.201.204:50080/GTFSRTapi/api/gtfsfile` (582 paradas, 59 líneas, 7.424 viajes). Un script de generación lo convierte en ficheros compactos: paradas, patrones de línea (orden de paradas + minutos entre ellas) y horas de salida por viaje. Nada de esto se envía al navegador: vive en el servidor.
+- Los datos de Auvasa se regeneran con un comando cuando cambien (igual que hoy con el GTFS de La Regional).
 
-- Slugs derivados del nombre (ej. `clavel-casa-de-cultura`). Build de un mapa `slug → stopId` en `src/data/stop-slugs.ts` (generado una vez con script).
-- Página con: nombre, descripción, mapa Google embebido + Street View (iframe con `VITE_LOVABLE_CONNECTOR_GOOGLE_MAPS_BROWSER_KEY`), botón “Abrir en Google Maps” (link `https://www.google.com/maps/dir/?api=1&destination=lat,lon`), próximos buses en vivo (reutiliza `fetchStopArrivals`), horario completo del día (extraído de `schedule.json` con selector de día), aviso San Antonio si aplica.
-- Las rutas existentes (`/app`, listado) enlazan a estas subpáginas.
+## Detalles técnicos
 
-## 4. Selector de horario diario en cada parada
+- `scripts/gen-auvasa.mjs`: descarga y descomprime el GTFS de Auvasa, y escribe `src/data/auvasa/stops.json`, `patterns.json` (route_id + direction + secuencia de paradas + offsets acumulados) y `trips.json` (patrón, service_id, hora de salida). `calendar_dates.txt` define los días de servicio (no hay `calendar.txt` útil).
+- `src/lib/planner/graph.server.ts`: índices en memoria (cacheados por instancia) de paradas ArroyoBus + Auvasa, patrones y viajes; función `nearbyStops(lat, lon, radio)` con haversine.
+- `src/lib/planner/plan.server.ts`: búsqueda por tiempo de llegada
+  1. paradas de origen a ≤900 m y paradas de destino a ≤900 m;
+  2. viajes directos (mismo patrón, orden de paradas correcto) en cualquiera de las dos redes;
+  3. un transbordo: parada de bajada de ArroyoBus a ≤350 m de una parada de Auvasa (y viceversa) — así se resuelve "voy a Valladolid";
+  4. coste = caminar (4,5 km/h) + espera + trayecto; se devuelven las 3 mejores.
+- Primera pierna con datos en vivo: se reutiliza `fetch-arrivals.ts` para sustituir la hora teórica por la real cuando la parada es de ArroyoBus.
+- `src/lib/planner/plan.functions.ts`: `planTrip` como `createServerFn` (POST) con validación Zod de `{ from: {lat,lon} | texto, to: {lat,lon} | texto }`. La geocodificación de texto se hace en el servidor (Nominatim con cabecera de identificación y caché corta) para no depender del navegador.
+- UI: nuevo `src/components/TripPlanner.tsx` usado dentro de `Dashboard.tsx` (sustituye al bloque de búsqueda actual, conservando el listado de paradas), con `useQuery` y estados de carga/vacío. Colores de línea desde `src/data/routes.ts`; para Auvasa se usa `route_color` del propio GTFS.
+- El mapa del itinerario reutiliza `BusMap.tsx` con importación dinámica (Leaflet no puede cargarse en servidor).
 
-- En la subpágina y en el popup del listado añado un selector L–D que muestra todas las salidas del día desde `schedule.json` para esa parada, agrupadas por línea.
+## Fuera de alcance
 
-## 5. Telegram
-
-- El bot ya consume `fetchStopArrivals`, así que la info San Antonio aparece automáticamente.
-- Añado en el formato del bot un aviso fijo “⚠ Fiestas San Antonio – más info: arroyobus.lovable.app/avisos/san-antonio” hasta el 20 junio.
-- Comando `/parada <id>` ya enlazará a la nueva subpágina pública.
-
-## 6. `/admin` editable (un solo admin: tú)
-
-Nueva tabla `app_settings(key text primary key, value jsonb, updated_at timestamptz)` con RLS deny-all (solo accesible vía service-role desde server fns ya protegidas por `requireAdmin`). Edito desde `/admin`:
-
-- URL del feed GTFS-RT (override del proxy ActioSAE).
-- URL del GTFS static (uploader/URL).
-- Texto del banner San Antonio.
-- Link del bot Telegram (default `https://t.me/arroyobus_bot`) + botón “Abrir bot” que abre `t.me/arroyobus_bot`.
-- Sección **Secrets** con campos para reescribir (vía `secrets--update_secret` flow, pero como ese tool requiere intervención de usuario, en `/admin` muestro botón “Rotar / actualizar” que abre el diálogo de secret en Lovable Cloud — los valores reales NO se guardan en la DB).
-- Atajos a conectores (Google Maps, Search Console) con estado.
-
-## 7. Google Maps Platform + Google Search Console
-
-- Maps: ya está la browser key disponible; configuro los embeds y geocoding via gateway donde haga falta.
-- Search Console: ejecuto el flujo META (token → meta tag en `__root.tsx` → verify → add site) para `https://arroyobus.lovable.app/`.
-
-## 8. Badge “personas viendo ahora” (home)
-
-- Hook `usePresenceCount()` usando Supabase Realtime Presence en canal `arroyobus-home`. Muestra “👀 N viendo ahora” en la home (esquina o bajo el hero).
-
-## 9. Arreglo de “Security”
-
-- Ejecuto `security--run_security_scan`, corrijo lo que aparezca (probablemente RLS faltante en nueva tabla `app_settings` ya cubierto, y actualizo `security-memory`).
-
-## Recortes conscientes
-
-- El editor de secrets en `/admin` NO reescribe los valores reales en Lovable Cloud (eso requiere tu confirmación manual); el panel los enlaza y muestra last-updated.
-- La generación del mapa slug↔stop es estática (no admin), si cambias `stops.json` se regenera al hacer build.
-- Street View se embebe como iframe estático centrado en lat/lon (sin selector de heading manual).
-
-## Archivos clave
-
-- Nuevos: `src/components/MarqueeBanner.tsx`, `src/components/StopSanAntonioNotice.tsx`, `src/components/PresenceBadge.tsx`, `src/lib/sanAntonio.ts`, `src/data/stop-slugs.ts`, `src/routes/parada/$slug.tsx`, `src/lib/admin/settings.functions.ts`, migración `app_settings`.
-- Editados: `src/routes/__root.tsx`, `src/routes/index.tsx`, `src/routes/app.tsx`, `src/routes/avisos.san-antonio.tsx`, `src/routes/admin.tsx`, `src/components/BusMap.tsx`, `src/components/SanAntonioBanner.tsx` (lo convierto en marquee), `src/lib/telegram/format.ts`, `public/avisos/*.pdf`.
-
-¿Le doy?
+- Horarios en vivo de Auvasa (solo horario teórico en la segunda pierna).
+- Más de un transbordo.
