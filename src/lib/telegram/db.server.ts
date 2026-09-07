@@ -1,4 +1,4 @@
-import { supabaseAdmin } from "@/integrations/supabase/client.server";
+import { supabaseAdmin } from "@/lib/admin/supabase-admin.server";
 
 export async function upsertUser(user: { chat_id: number; username?: string; first_name?: string; language_code?: string }) {
   await supabaseAdmin.from("telegram_users").upsert(

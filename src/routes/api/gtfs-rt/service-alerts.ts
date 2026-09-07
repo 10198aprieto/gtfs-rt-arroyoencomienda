@@ -7,7 +7,7 @@ export const Route = createFileRoute("/api/gtfs-rt/service-alerts")({
       GET: async ({ request }) => {
         const url = new URL(request.url);
         const format = url.searchParams.get("format");
-        const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+        const { supabaseAdmin } = await import("@/lib/admin/supabase-admin.server");
         const nowIso = new Date().toISOString();
         const { data, error } = await supabaseAdmin
           .from("service_alerts")

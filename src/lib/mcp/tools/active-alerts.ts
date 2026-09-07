@@ -11,7 +11,7 @@ export default defineTool({
   },
   annotations: { readOnlyHint: true, openWorldHint: true },
   handler: async ({ limit }) => {
-    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const { supabaseAdmin } = await import("@/lib/admin/supabase-admin.server");
     const nowIso = new Date().toISOString();
     const { data, error } = await supabaseAdmin
       .from("service_alerts")

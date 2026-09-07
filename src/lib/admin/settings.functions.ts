@@ -21,7 +21,7 @@ export const DEFAULT_SETTINGS: Record<SettingKey, string> = {
 
 export const getAllSettings = createServerFn({ method: "GET" }).handler(async () => {
   await requireAdmin();
-  const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+  const { supabaseAdmin } = await import("@/lib/admin/supabase-admin.server");
   const { data } = await supabaseAdmin.from("app_settings").select("key, value, updated_at");
   const map: Record<string, { value: string; updated_at: string | null }> = {};
   for (const k of SETTING_KEYS) map[k] = { value: DEFAULT_SETTINGS[k], updated_at: null };
@@ -43,7 +43,7 @@ export const updateSetting = createServerFn({ method: "POST" })
   .inputValidator((d) => updateSchema.parse(d))
   .handler(async ({ data }) => {
     await requireAdmin();
-    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const { supabaseAdmin } = await import("@/lib/admin/supabase-admin.server");
     const { error } = await supabaseAdmin
       .from("app_settings")
       .upsert({ key: data.key, value: { v: data.value }, updated_at: new Date().toISOString() }, { onConflict: "key" });
@@ -56,7 +56,7 @@ export const resetSetting = createServerFn({ method: "POST" })
   .inputValidator((d) => z.object({ key: z.enum(SETTING_KEYS) }).parse(d))
   .handler(async ({ data }) => {
     await requireAdmin();
-    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const { supabaseAdmin } = await import("@/lib/admin/supabase-admin.server");
     await supabaseAdmin.from("app_settings").delete().eq("key", data.key);
     await supabaseAdmin.from("admin_audit_log").insert({ action: "reset_setting", meta: { key: data.key } });
     return { ok: true as const };

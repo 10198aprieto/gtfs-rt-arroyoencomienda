@@ -25,7 +25,7 @@ async function refresh() {
   };
   const indice = computeAirIndex(values);
 
-  const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+  const { supabaseAdmin } = await import("@/lib/admin/supabase-admin.server");
   const { error } = await supabaseAdmin
     .from("air_quality_cache")
     .upsert(

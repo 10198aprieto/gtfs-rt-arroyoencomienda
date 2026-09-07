@@ -45,7 +45,7 @@ export const createAlert = createServerFn({ method: "POST" })
   .inputValidator((d) => createSchema.parse(d))
   .handler(async ({ data }) => {
     await requireAdmin();
-    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const { supabaseAdmin } = await import("@/lib/admin/supabase-admin.server");
     const { error, data: row } = await supabaseAdmin.from("service_alerts").insert({
       header: data.header,
       description: data.description || "",
@@ -87,7 +87,7 @@ export const createAlert = createServerFn({ method: "POST" })
 
 export const listAlertsAdmin = createServerFn({ method: "GET" }).handler(async () => {
   await requireAdmin();
-  const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+  const { supabaseAdmin } = await import("@/lib/admin/supabase-admin.server");
   const { data } = await supabaseAdmin.from("service_alerts").select("*").order("created_at", { ascending: false }).limit(100);
   return data || [];
 });
@@ -96,14 +96,14 @@ export const deactivateAlert = createServerFn({ method: "POST" })
   .inputValidator((d) => z.object({ id: z.string().uuid() }).parse(d))
   .handler(async ({ data }) => {
     await requireAdmin();
-    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const { supabaseAdmin } = await import("@/lib/admin/supabase-admin.server");
     const { error } = await supabaseAdmin.from("service_alerts").update({ active: false, updated_at: new Date().toISOString() }).eq("id", data.id);
     if (error) return { ok: false as const, error: error.message };
     return { ok: true as const };
   });
 
 export const listActiveAlertsPublic = createServerFn({ method: "GET" }).handler(async () => {
-  const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+  const { supabaseAdmin } = await import("@/lib/admin/supabase-admin.server");
   const nowIso = new Date().toISOString();
   const { data } = await supabaseAdmin
     .from("service_alerts").select("*")
