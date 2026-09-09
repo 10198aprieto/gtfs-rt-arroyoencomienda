@@ -288,56 +288,9 @@ export default function Dashboard() {
         </span>
       </div>
 
-      {/* Buscador */}
-      <div className="relative">
-        <label htmlFor="dash-search" className="block text-sm font-semibold mb-2">¿A dónde vas?</label>
-        <div className="relative">
-          <Search className="w-4 h-4 absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground" />
-          <input
-            id="dash-search"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            placeholder="Buscar parada, calle o destino (p. ej. Plaza Mayor, Valladolid)"
-            className="w-full pl-11 pr-4 py-3.5 rounded-2xl glass text-sm focus:outline-none focus:ring-2 focus:ring-primary/40 transition-shadow"
-            inputMode="search"
-          />
-        </div>
-        {(results.length > 0 || osmResults.length > 0 || (osmLoading && query.trim().length >= 3)) && (
-          <ul className="absolute z-20 mt-2 w-full rounded-2xl glass-strong overflow-hidden animate-fade-in max-h-80 overflow-y-auto">
-            {results.map((s) => {
-              const slug = slugForStop(s.id);
-              const row = (
-                <div className="flex items-center gap-3 px-4 py-3 hover:bg-accent/60 transition-colors">
-                  <MapPin className="w-4 h-4 text-primary flex-shrink-0" />
-                  <div className="min-w-0">
-                    <div className="text-sm font-medium truncate">{s.name}</div>
-                    <div className="text-[11px] text-muted-foreground">Parada {s.id} · {s.desc}</div>
-                  </div>
-                  <ChevronRight className="w-4 h-4 ml-auto text-muted-foreground" />
-                </div>
-              );
-              return (
-                <li key={s.id}>
-                  {slug ? <Link to="/parada/$slug" params={{ slug }}>{row}</Link> : row}
-                </li>
-              );
-            })}
-            {osmResults.length > 0 && (
-              <li className="px-4 pt-2 pb-1 text-[10px] font-semibold uppercase tracking-wide text-muted-foreground">
-                Direcciones (OpenStreetMap)
-              </li>
-            )}
-            {osmResults.map((p) => (
-              <li key={p.id}><OsmRow place={p} /></li>
-            ))}
-            {osmLoading && (
-              <li className="flex items-center gap-2 px-4 py-3 text-xs text-muted-foreground">
-                <Loader2 className="w-3.5 h-3.5 animate-spin" /> Buscando direcciones…
-              </li>
-            )}
-          </ul>
-        )}
-      </div>
+      {/* Planificador de viaje */}
+      <TripPlanner />
+
 
       {/* Próximos buses */}
       <div className="glass rounded-2xl p-5">
