@@ -1,10 +1,12 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { Link } from "@tanstack/react-router";
-import { Search, MapPin, Star, ChevronRight, RefreshCw, Sparkles, Moon, Sun, Navigation, Loader2 } from "lucide-react";
+import { MapPin, Star, ChevronRight, RefreshCw, Sparkles, Moon, Sun } from "lucide-react";
 import stopsData from "@/data/stops.json";
 import { slugForStop } from "@/data/stop-slugs";
 import { routeColor, routeMeta } from "@/data/routes";
 import { loadPlaces, suggestedStop, lastStop, type FavoritePlace, togglePlace } from "@/lib/favorites";
+import TripPlanner from "@/components/TripPlanner";
+
 
 interface Stop { id: string; name: string; desc: string; lat: number; lon: number }
 interface Arrival {
