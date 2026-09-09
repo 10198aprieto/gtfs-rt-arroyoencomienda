@@ -215,10 +215,11 @@ export async function planTrip(
   for (const opt of options) {
     const sig = opt.legs
       .filter((l): l is BusLeg => l.kind === "bus")
-      .map((l) => `${l.net}${l.routeShort}${l.from.id}`)
+      .map((l) => `${l.net}${l.routeShort}`)
       .join(">");
     if (seen.has(sig)) continue;
     seen.add(sig);
+
     opt.totalMinutes = Math.max(1, Math.round((opt.arrive - opt.depart) / 60));
     best.push(opt);
     if (best.length >= 3) break;

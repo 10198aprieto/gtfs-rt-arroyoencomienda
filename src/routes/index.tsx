@@ -502,6 +502,18 @@ function Index() {
         <footer className="pt-8 pb-12 text-center text-xs text-muted-foreground space-y-1 border-t border-border">
           <p>Datos obtenidos de la API pública de ActioSAE · ArroyoBus · Arroyo de la Encomienda</p>
           <p>
+            Datos de AUVASA obtenidos del repositorio{" "}
+            <a
+              href="https://github.com/VallaBus/api-auvasa"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="underline hover:text-foreground transition-colors"
+            >
+              api-auvasa de VallaBus
+            </a>
+          </p>
+
+          <p>
             © {new Date().getFullYear()} Mateo Fernández Prieto · Todos los derechos reservados ·{" "}
             <Link to="/aviso-legal" className="underline hover:text-foreground transition-colors">
               Aviso legal

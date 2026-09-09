@@ -1,10 +1,12 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { Link } from "@tanstack/react-router";
-import { Search, MapPin, Star, ChevronRight, RefreshCw, Sparkles, Moon, Sun, Navigation, Loader2 } from "lucide-react";
+import { MapPin, Star, ChevronRight, RefreshCw, Sparkles, Moon, Sun } from "lucide-react";
 import stopsData from "@/data/stops.json";
 import { slugForStop } from "@/data/stop-slugs";
 import { routeColor, routeMeta } from "@/data/routes";
 import { loadPlaces, suggestedStop, lastStop, type FavoritePlace, togglePlace } from "@/lib/favorites";
+import TripPlanner from "@/components/TripPlanner";
+
 
 interface Stop { id: string; name: string; desc: string; lat: number; lon: number }
 interface Arrival {
@@ -148,78 +150,8 @@ function FavoriteCard({ place, onRemove }: { place: FavoritePlace; onRemove: (id
   return slug ? <Link to="/parada/$slug" params={{ slug }}>{inner}</Link> : inner;
 }
 
-interface OsmPlace { id: string; name: string; detail: string; lat: number; lon: number }
-
-/** Geocodificación con OpenStreetMap (Nominatim) para calles y sitios fuera de las paradas. */
-function useOsmSearch(query: string) {
-  const [results, setResults] = useState<OsmPlace[]>([]);
-  const [loading, setLoading] = useState(false);
-
-  useEffect(() => {
-    const q = query.trim();
-    if (q.length < 3) { setResults([]); setLoading(false); return; }
-    let cancelled = false;
-    setLoading(true);
-    const t = setTimeout(async () => {
-      try {
-        const url =
-          "https://nominatim.openstreetmap.org/search?format=jsonv2&limit=5&accept-language=es" +
-          "&viewbox=-5.05,41.78,-4.55,41.50&bounded=1&q=" +
-          encodeURIComponent(q);
-        const res = await fetch(url, { headers: { Accept: "application/json" } });
-        if (!res.ok) throw new Error("osm");
-        const data = (await res.json()) as Array<any>;
-        if (cancelled) return;
-        setResults(
-          data.map((d) => {
-            const parts = String(d.display_name || "").split(",").map((x: string) => x.trim());
-            return {
-              id: String(d.place_id),
-              name: d.name || parts[0] || "Lugar",
-              detail: parts.slice(1, 3).join(", "),
-              lat: parseFloat(d.lat),
-              lon: parseFloat(d.lon),
-            } as OsmPlace;
-          }),
-        );
-      } catch {
-        if (!cancelled) setResults([]);
-      } finally {
-        if (!cancelled) setLoading(false);
-      }
-    }, 450);
-    return () => { cancelled = true; clearTimeout(t); };
-  }, [query]);
-
-  return { results, loading };
-}
-
-/** Fila de resultado OSM: enlaza con la parada más cercana al destino. */
-function OsmRow({ place }: { place: OsmPlace }) {
-  const near = useMemo(
-    () => [...stops].sort((a, b) => distance(place, a) - distance(place, b))[0],
-    [place],
-  );
-  const slug = near ? slugForStop(near.id) : null;
-  const meters = near ? Math.round(distance(place, near)) : null;
-  const row = (
-    <div className="flex items-center gap-3 px-4 py-3 hover:bg-accent/60 transition-colors">
-      <Navigation className="w-4 h-4 text-emerald-500 flex-shrink-0" />
-      <div className="min-w-0">
-        <div className="text-sm font-medium truncate">{place.name}</div>
-        <div className="text-[11px] text-muted-foreground truncate">
-          {place.detail}
-          {near ? ` · parada ${near.name} a ${meters! < 1000 ? `${meters} m` : `${(meters! / 1000).toFixed(1)} km`}` : ""}
-        </div>
-      </div>
-      <ChevronRight className="w-4 h-4 ml-auto text-muted-foreground" />
-    </div>
-  );
-  return slug ? <Link to="/parada/$slug" params={{ slug }}>{row}</Link> : row;
-}
-
 export default function Dashboard() {
-  const [query, setQuery] = useState("");
+
   const [userPos, setUserPos] = useState<{ lat: number; lon: number } | null>(null);
   const [places, setPlaces] = useState<FavoritePlace[]>([]);
   const [suggested, setSuggested] = useState<string | null>(null);
@@ -254,16 +186,8 @@ export default function Dashboard() {
 
   const { arrivals, loading, reload } = useArrivals(nearest?.id ?? null);
 
-  const results = useMemo(() => {
-    const q = query.trim().toLowerCase();
-    if (!q) return [];
-    return stops
-      .filter((s) => s.name.toLowerCase().includes(q) || s.desc.toLowerCase().includes(q) || s.id === q)
-      .slice(0, 6);
-  }, [query]);
-
-  const { results: osmResults, loading: osmLoading } = useOsmSearch(query);
   const night = now.getHours() >= 21 || now.getHours() < 7;
+
 
   const addNearestAsPlace = () => {
     if (!nearest) return;
@@ -288,56 +212,9 @@ export default function Dashboard() {
         </span>
       </div>
 
-      {/* Buscador */}
-      <div className="relative">
-        <label htmlFor="dash-search" className="block text-sm font-semibold mb-2">¿A dónde vas?</label>
-        <div className="relative">
-          <Search className="w-4 h-4 absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground" />
-          <input
-            id="dash-search"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            placeholder="Buscar parada, calle o destino (p. ej. Plaza Mayor, Valladolid)"
-            className="w-full pl-11 pr-4 py-3.5 rounded-2xl glass text-sm focus:outline-none focus:ring-2 focus:ring-primary/40 transition-shadow"
-            inputMode="search"
-          />
-        </div>
-        {(results.length > 0 || osmResults.length > 0 || (osmLoading && query.trim().length >= 3)) && (
-          <ul className="absolute z-20 mt-2 w-full rounded-2xl glass-strong overflow-hidden animate-fade-in max-h-80 overflow-y-auto">
-            {results.map((s) => {
-              const slug = slugForStop(s.id);
-              const row = (
-                <div className="flex items-center gap-3 px-4 py-3 hover:bg-accent/60 transition-colors">
-                  <MapPin className="w-4 h-4 text-primary flex-shrink-0" />
-                  <div className="min-w-0">
-                    <div className="text-sm font-medium truncate">{s.name}</div>
-                    <div className="text-[11px] text-muted-foreground">Parada {s.id} · {s.desc}</div>
-                  </div>
-                  <ChevronRight className="w-4 h-4 ml-auto text-muted-foreground" />
-                </div>
-              );
-              return (
-                <li key={s.id}>
-                  {slug ? <Link to="/parada/$slug" params={{ slug }}>{row}</Link> : row}
-                </li>
-              );
-            })}
-            {osmResults.length > 0 && (
-              <li className="px-4 pt-2 pb-1 text-[10px] font-semibold uppercase tracking-wide text-muted-foreground">
-                Direcciones (OpenStreetMap)
-              </li>
-            )}
-            {osmResults.map((p) => (
-              <li key={p.id}><OsmRow place={p} /></li>
-            ))}
-            {osmLoading && (
-              <li className="flex items-center gap-2 px-4 py-3 text-xs text-muted-foreground">
-                <Loader2 className="w-3.5 h-3.5 animate-spin" /> Buscando direcciones…
-              </li>
-            )}
-          </ul>
-        )}
-      </div>
+      {/* Planificador de viaje */}
+      <TripPlanner />
+
 
       {/* Próximos buses */}
       <div className="glass rounded-2xl p-5">
