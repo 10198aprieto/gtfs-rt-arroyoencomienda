@@ -254,16 +254,8 @@ export default function Dashboard() {
 
   const { arrivals, loading, reload } = useArrivals(nearest?.id ?? null);
 
-  const results = useMemo(() => {
-    const q = query.trim().toLowerCase();
-    if (!q) return [];
-    return stops
-      .filter((s) => s.name.toLowerCase().includes(q) || s.desc.toLowerCase().includes(q) || s.id === q)
-      .slice(0, 6);
-  }, [query]);
-
-  const { results: osmResults, loading: osmLoading } = useOsmSearch(query);
   const night = now.getHours() >= 21 || now.getHours() < 7;
+
 
   const addNearestAsPlace = () => {
     if (!nearest) return;
