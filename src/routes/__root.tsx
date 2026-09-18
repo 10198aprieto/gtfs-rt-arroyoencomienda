@@ -36,6 +36,7 @@ export const Route = createRootRoute({
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
+      { name: "apple-mobile-web-app-title", content: "ArroyoBUS" },
       { name: "google-site-verification", content: "X9Z7x_mDLlvjkmhn9y_27VS9IQGM3XICEwtJwUaA77o" },
       { title: "ArroyoBus — Autobuses en tiempo real" },
       { name: "description", content: "ArroyoBus — sigue en tiempo real los autobuses de Arroyo de la Encomienda. Llegadas, posiciones GPS y tu tarjeta Buscyl en el bolsillo." },
@@ -53,6 +54,11 @@ export const Route = createRootRoute({
       { name: "twitter:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/q96k7LEcw9b6oVavZiCePAkLYvu1/social-images/social-1779626093161-Sigue_en_tiempo_real_los_autobuses_de_Arroyo_de_Encomnienda_Llegadas,_positiones_GPS_y_tu_tarjeta_Buscyl_en_la_bosbilio._(1).webp" },
     ],
     links: [
+      { rel: "icon", type: "image/png", href: "/favicon-96x96.png", sizes: "96x96" },
+      { rel: "icon", type: "image/svg+xml", href: "/favicon.svg" },
+      { rel: "shortcut icon", href: "/favicon.ico" },
+      { rel: "apple-touch-icon", sizes: "180x180", href: "/apple-touch-icon.png" },
+      { rel: "manifest", href: "/site.webmanifest" },
       {
         rel: "stylesheet",
         href: appCss,
