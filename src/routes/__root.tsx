@@ -13,17 +13,17 @@ function NotFoundComponent() {
       <div className="max-w-md text-center">
         <h1 className="text-7xl font-bold text-foreground">404</h1>
         <h2 className="mt-4 text-xl font-semibold text-foreground">
-          Page not found
+          Página no encontrada.
         </h2>
         <p className="mt-2 text-sm text-muted-foreground">
-          The page you're looking for doesn't exist or has been moved.
+          La página que buscas no existe o ha sido trasladada.
         </p>
         <div className="mt-6">
           <Link
             to="/"
             className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
           >
-            Go home
+            Ir a inicio.
           </Link>
         </div>
       </div>
@@ -40,7 +40,7 @@ export const Route = createRootRoute({
       { name: "google-site-verification", content: "X9Z7x_mDLlvjkmhn9y_27VS9IQGM3XICEwtJwUaA77o" },
       { title: "ArroyoBus — Autobuses en tiempo real" },
       { name: "description", content: "ArroyoBus — sigue en tiempo real los autobuses de Arroyo de la Encomienda. Llegadas, posiciones GPS y tu tarjeta Buscyl en el bolsillo." },
-      { name: "author", content: "Lovable" },
+      { name: "author", content: "Mateo Fernández Prieto" },
       { property: "og:title", content: "ArroyoBus — Autobuses en tiempo real" },
       { property: "og:description", content: "ArroyoBus — sigue en tiempo real los autobuses de Arroyo de la Encomienda. Llegadas, posiciones GPS y tu tarjeta Buscyl en el bolsillo." },
       { property: "og:type", content: "website" },
