@@ -40,7 +40,7 @@ export const Route = createRootRoute({
       { name: "google-site-verification", content: "X9Z7x_mDLlvjkmhn9y_27VS9IQGM3XICEwtJwUaA77o" },
       { title: "ArroyoBus — Autobuses en tiempo real" },
       { name: "description", content: "ArroyoBus — sigue en tiempo real los autobuses de Arroyo de la Encomienda. Llegadas, posiciones GPS y tu tarjeta Buscyl en el bolsillo." },
-      { name: "author", content: "Mateo Fernández Prieto" },
+      { name: "author", content: "ArroyoBUS - Proyecto independiente" },
       { property: "og:title", content: "ArroyoBus — Autobuses en tiempo real" },
       { property: "og:description", content: "ArroyoBus — sigue en tiempo real los autobuses de Arroyo de la Encomienda. Llegadas, posiciones GPS y tu tarjeta Buscyl en el bolsillo." },
       { property: "og:type", content: "website" },
