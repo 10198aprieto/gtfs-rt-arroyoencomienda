@@ -28,6 +28,8 @@ export interface VehiclePosition {
   speed?: number;
   bearing?: number;
   timestamp?: number;
+  occupancyStatus?: string | number;
+  occupancyPercentage?: number;
 }
 
 const UPSTREAM_VP = "https://enzeyiwpoomhlxmcjivn.supabase.co/functions/v1/gtfs-rt?format=json";
@@ -92,6 +94,8 @@ export async function fetchAllVehiclePositions(): Promise<VehiclePosition[]> {
           speed: typeof pos.speed === "number" ? pos.speed : undefined,
           bearing: typeof pos.bearing === "number" ? pos.bearing : undefined,
           timestamp: typeof v.timestamp === "number" ? v.timestamp : undefined,
+          occupancyStatus: v.occupancy_status ?? v.occupancyStatus,
+          occupancyPercentage: v.occupancy_percentage ?? v.occupancyPercentage,
         });
       }
       cachedVehicles = list;

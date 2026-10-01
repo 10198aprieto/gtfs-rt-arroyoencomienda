@@ -103,13 +103,37 @@ export const deactivateAlert = createServerFn({ method: "POST" })
   });
 
 export const listActiveAlertsPublic = createServerFn({ method: "GET" }).handler(async () => {
-  const { supabaseAdmin } = await import("@/lib/admin/supabase-admin.server");
   const nowIso = new Date().toISOString();
-  const { data } = await supabaseAdmin
-    .from("service_alerts").select("*")
-    .eq("active", true)
-    .lte("starts_at", nowIso)
-    .order("starts_at", { ascending: false })
-    .limit(50);
-  return (data || []).filter((a: any) => !a.ends_at || a.ends_at > nowIso);
+  try {
+    let client: any;
+    if ((process.env["SUPABASE_SERVICE_ROLE_KEY"] || "").trim()) {
+      client = (await import("@/lib/admin/supabase-admin.server")).supabaseAdmin;
+    } else {
+      const { createClient } = await import("@supabase/supabase-js");
+      const url = (process.env["SUPABASE_URL"] || "").trim();
+      const key = (process.env["SUPABASE_PUBLISHABLE_KEY"] || "").trim();
+      if (!url || !key) return [];
+      client = createClient(url, key, {
+        auth: { persistSession: false },
+        global: {
+          fetch: (input, init) => {
+            const h = new Headers(init?.headers);
+            if (key.startsWith("sb_") && h.get("Authorization") === `Bearer ${key}`) h.delete("Authorization");
+            h.set("apikey", key);
+            return fetch(input, { ...init, headers: h });
+          },
+        },
+      });
+    }
+    const { data } = await client
+      .from("service_alerts").select("*")
+      .eq("active", true)
+      .lte("starts_at", nowIso)
+      .order("starts_at", { ascending: false })
+      .limit(50);
+    return ((data || []) as any[]).filter((a) => !a.ends_at || a.ends_at > nowIso);
+  } catch (e) {
+    console.error("[alerts] public list failed:", (e as Error).message);
+    return [];
+  }
 });

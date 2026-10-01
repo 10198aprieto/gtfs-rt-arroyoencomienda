@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { fetchAllVehiclePositions, fetchAllArrivals } from "@/lib/gtfsrt/fetch-arrivals";
+import { parseOccupancy } from "@/lib/occupancy";
 
 export const Route = createFileRoute("/api/buses/$vehicleId")({
   server: {
@@ -41,6 +42,7 @@ export const Route = createFileRoute("/api/buses/$vehicleId")({
               routeId: v.routeId || null,
               position: { lat: v.lat, lon: v.lon, speed: v.speed ?? null, bearing: v.bearing ?? null },
               timestamp: v.timestamp ?? null,
+              occupancy: parseOccupancy(v.occupancyStatus, v.occupancyPercentage),
               nextStops: stops,
               updatedAt: now,
             },
