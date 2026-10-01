@@ -6,6 +6,7 @@ import { ROUTES, routeColor, routeMeta } from "@/data/routes";
 import { stopSanAntonioStatus } from "@/lib/sanAntonio";
 import { slugForStop } from "@/data/stop-slugs";
 import { trackStopVisit } from "@/lib/favorites";
+import { parseOccupancy, occupancyHtml } from "@/lib/occupancy";
 
 interface VehicleEntity {
   id: string;
@@ -126,6 +127,7 @@ export default function BusMap() {
             <div style="display:inline-block;background:${color};color:#fff;font-weight:700;font-size:11px;padding:2px 8px;border-radius:10px;margin-bottom:4px">${route}</div>
             <div><strong>🚍 ${label}</strong></div>
             <div>Velocidad: ${speed}</div>
+            ${occupancyHtml(parseOccupancy((e.vehicle as any)?.occupancyStatus, (e.vehicle as any)?.occupancyPercentage))}
             <a href="/api/buses/${encodeURIComponent(label)}" style="display:inline-block;margin-top:6px;font-size:11px;color:#1d4ed8;font-weight:600">Datos del bus →</a>
           </div>`;
 
