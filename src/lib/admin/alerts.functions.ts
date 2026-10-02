@@ -82,7 +82,10 @@ export const createAlert = createServerFn({ method: "POST" })
       }
     }
 
-    return { ok: true as const, id: row.id, channel };
+    const { broadcastPush } = await import("@/lib/push/send.server");
+    const push = await broadcastPush({ title: `⚠️ ${data.header}`, body: data.description || "Nuevo aviso de servicio", url: "/avisos", tag: `alert-${row.id}` });
+
+    return { ok: true as const, id: row.id, channel, push };
   });
 
 export const listAlertsAdmin = createServerFn({ method: "GET" }).handler(async () => {
