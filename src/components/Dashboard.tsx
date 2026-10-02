@@ -7,6 +7,7 @@ import { routeColor, routeMeta } from "@/data/routes";
 import { loadPlaces, suggestedStop, lastStop, type FavoritePlace, togglePlace } from "@/lib/favorites";
 import TripPlanner from "@/components/TripPlanner";
 import PushToggle from "@/components/PushToggle";
+import PassengerReport from "@/components/PassengerReport";
 
 
 interface Stop { id: string; name: string; desc: string; lat: number; lon: number }
@@ -216,6 +217,7 @@ export default function Dashboard() {
       {/* Planificador de viaje */}
       <TripPlanner />
       <PushToggle />
+      <PassengerReport />
 
 
       {/* Próximos buses */}
