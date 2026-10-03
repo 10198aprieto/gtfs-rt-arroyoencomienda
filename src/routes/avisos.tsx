@@ -47,7 +47,12 @@ function AvisosPage() {
             </div>
           )}
           {alerts?.map((a) => (
-            <article key={a.id} className="rounded-xl border border-border bg-card p-5 shadow-sm">
+            <article key={a.id} className={`rounded-xl border bg-card p-5 shadow-sm ${String(a.header).startsWith("👥") ? "border-dashed border-primary/50" : "border-border"}`}>
+              {String(a.header).startsWith("👥") && (
+                <div className="mb-2 inline-flex rounded-full bg-primary/10 text-primary text-[11px] font-semibold px-2 py-0.5">
+                  Publicado por pasajeros · no verificado
+                </div>
+              )}
               <div className="flex items-start justify-between gap-3">
                 <h2 className="text-lg font-bold">{a.header}</h2>
                 <span className="shrink-0 rounded-full bg-amber-500/15 text-amber-700 dark:text-amber-300 text-[11px] font-semibold px-2 py-0.5">
