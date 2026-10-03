@@ -113,6 +113,48 @@ export type Database = {
         }
         Relationships: []
       }
+      push_subscriptions: {
+        Row: {
+          arrival_minutes: number
+          auth: string
+          created_at: string
+          endpoint: string
+          id: string
+          notified: Json
+          notify_alerts: boolean
+          notify_arrivals: boolean
+          p256dh: string
+          stop_ids: string[]
+          updated_at: string
+        }
+        Insert: {
+          arrival_minutes?: number
+          auth: string
+          created_at?: string
+          endpoint: string
+          id?: string
+          notified?: Json
+          notify_alerts?: boolean
+          notify_arrivals?: boolean
+          p256dh: string
+          stop_ids?: string[]
+          updated_at?: string
+        }
+        Update: {
+          arrival_minutes?: number
+          auth?: string
+          created_at?: string
+          endpoint?: string
+          id?: string
+          notified?: Json
+          notify_alerts?: boolean
+          notify_arrivals?: boolean
+          p256dh?: string
+          stop_ids?: string[]
+          updated_at?: string
+        }
+        Relationships: []
+      }
       service_alerts: {
         Row: {
           active: boolean
@@ -352,7 +394,21 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      delete_push_subscription: {
+        Args: { _endpoint: string }
+        Returns: undefined
+      }
+      upsert_push_subscription: {
+        Args: {
+          _alerts: boolean
+          _arrivals: boolean
+          _auth: string
+          _endpoint: string
+          _p256dh: string
+          _stop_ids: string[]
+        }
+        Returns: undefined
+      }
     }
     Enums: {
       [_ in never]: never
