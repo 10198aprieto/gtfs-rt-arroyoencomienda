@@ -157,11 +157,9 @@ export default function Dashboard() {
   const [userPos, setUserPos] = useState<{ lat: number; lon: number } | null>(null);
   const [places, setPlaces] = useState<FavoritePlace[]>([]);
   const [suggested, setSuggested] = useState<string | null>(null);
-  // null hasta hidratar: evita mismatch SSR/cliente por zona horaria
-  const [now, setNow] = useState<Date | null>(null);
+  const [now, setNow] = useState(() => new Date());
 
   useEffect(() => {
-    setNow(new Date());
     setPlaces(loadPlaces());
     setSuggested(suggestedStop() ?? lastStop());
     const onFav = () => setPlaces(loadPlaces());
