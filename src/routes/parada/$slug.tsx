@@ -34,7 +34,7 @@ export const Route = createFileRoute("/parada/$slug")({
   ),
   errorComponent: ({ error }) => (
     <div className="min-h-screen flex items-center justify-center p-6 text-center">
-      <p className="text-sm text-muted-foreground">Error: {error.message}</p>
+      <p className="text-sm text-muted-foreground">Error: {error instanceof Error ? error.message : String(error)}</p>
     </div>
   ),
 });
