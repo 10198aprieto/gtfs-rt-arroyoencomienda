@@ -11,20 +11,7 @@ const subSchema = z.object({
 });
 
 async function publicClient() {
-  const { createClient } = await import("@supabase/supabase-js");
-  const url = (process.env["SUPABASE_URL"] || "").trim();
-  const key = (process.env["SUPABASE_PUBLISHABLE_KEY"] || "").trim();
-  return createClient(url, key, {
-    auth: { persistSession: false },
-    global: {
-      fetch: (input, init) => {
-        const h = new Headers(init?.headers);
-        if (key.startsWith("sb_") && h.get("Authorization") === `Bearer ${key}`) h.delete("Authorization");
-        h.set("apikey", key);
-        return fetch(input, { ...init, headers: h });
-      },
-    },
-  }) as any;
+  return (await import("@/lib/admin/supabase-admin.server")).supabaseAdmin as any;
 }
 
 export const savePushSubscription = createServerFn({ method: "POST" })
