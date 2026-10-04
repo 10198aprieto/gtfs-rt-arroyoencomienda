@@ -3,7 +3,10 @@ import { Bell, BellOff } from "lucide-react";
 import { useServerFn } from "@tanstack/react-start";
 import { VAPID_PUBLIC_KEY } from "@/lib/push/config";
 import { savePushSubscription, deletePushSubscription } from "@/lib/push/push.functions";
-import { loadPlaces } from "@/lib/favorites";
+import { loadPlaces, togglePlace, type FavoritePlace } from "@/lib/favorites";
+import stopsData from "@/data/stops.json";
+
+const STOPS = (stopsData as Array<{ id: string; name: string }>).slice().sort((a, b) => a.name.localeCompare(b.name, "es"));
 
 type State = "loading" | "unsupported" | "iframe" | "ios-install" | "denied" | "off" | "on";
 
@@ -15,6 +18,13 @@ function b64ToBytes(b64: string) {
 export default function PushToggle() {
   const [state, setState] = useState<State>("loading");
   const [busy, setBusy] = useState(false);
+  const [places, setPlaces] = useState<FavoritePlace[]>([]);
+  useEffect(() => {
+    const r = () => setPlaces(loadPlaces());
+    r();
+    window.addEventListener("arroyobus:favorites", r);
+    return () => window.removeEventListener("arroyobus:favorites", r);
+  }, []);
   const save = useServerFn(savePushSubscription);
   const del = useServerFn(deletePushSubscription);
 
@@ -78,7 +88,8 @@ export default function PushToggle() {
   };
 
   return (
-    <div className="glass rounded-2xl p-4 flex items-center gap-3">
+    <div className="glass rounded-2xl p-4">
+    <div className="flex items-center gap-3">
       <div className="p-2 rounded-full bg-primary/10 text-primary">
         {state === "on" ? <Bell className="w-5 h-5" /> : <BellOff className="w-5 h-5" />}
       </div>
@@ -99,6 +110,33 @@ export default function PushToggle() {
           {state === "on" ? "Desactivar" : "Activar"}
         </button>
       )}
+    </div>
+    {state === "on" && (
+      <div className="mt-3 space-y-2">
+        <div className="text-xs font-semibold">Paradas vigiladas (aviso a 5 min)</div>
+        <div className="flex flex-wrap gap-2">
+          {places.length === 0 && <span className="text-xs text-muted-foreground">Ninguna todavía. Añade una abajo.</span>}
+          {places.map((p) => (
+            <button key={p.stopId} onClick={() => togglePlace(p)} className="px-2.5 py-1 rounded-full bg-primary/10 text-primary text-xs font-semibold" aria-label={`Quitar ${p.label}`}>
+              {p.label} ✕
+            </button>
+          ))}
+        </div>
+        <select
+          value=""
+          onChange={(e) => {
+            const st = STOPS.find((x) => x.id === e.target.value);
+            if (st && !places.some((p) => p.stopId === st.id)) togglePlace({ stopId: st.id, label: st.name, emoji: "🔔" });
+          }}
+          className="w-full rounded-lg border border-border bg-background px-3 py-2 text-sm"
+        >
+          <option value="">+ Añadir parada…</option>
+          {STOPS.filter((st) => !places.some((p) => p.stopId === st.id)).map((st) => (
+            <option key={st.id} value={st.id}>{st.name}</option>
+          ))}
+        </select>
+      </div>
+    )}
     </div>
   );
 }
