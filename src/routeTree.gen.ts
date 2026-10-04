@@ -9,92 +9,42 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
-import { Route as PoliticaPrivacidadRouteImport } from './routes/politica-privacidad'
-import { Route as PoliticaCookiesRouteImport } from './routes/politica-cookies'
-import { Route as ParadasRouteImport } from './routes/paradas'
-import { Route as McpRouteImport } from './routes/mcp'
-import { Route as ContactoRouteImport } from './routes/contacto'
-import { Route as BusesRouteImport } from './routes/buses'
-import { Route as AvisosRouteImport } from './routes/avisos'
-import { Route as AvisoLegalRouteImport } from './routes/aviso-legal'
-import { Route as AsistentesRouteImport } from './routes/asistentes'
-import { Route as AppRouteImport } from './routes/app'
-import { Route as AdminRouteImport } from './routes/admin'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as ParadaSlugRouteImport } from './routes/parada/$slug'
-import { Route as AvisosSanAntonioRouteImport } from './routes/avisos.san-antonio'
-import { Route as Char91DotwellKnownChar93OauthProtectedResourceRouteImport } from './routes/[.well-known]/oauth-protected-resource'
+import { Route as AdminRouteImport } from './routes/admin'
+import { Route as AppRouteImport } from './routes/app'
+import { Route as AsistentesRouteImport } from './routes/asistentes'
+import { Route as AvisoLegalRouteImport } from './routes/aviso-legal'
+import { Route as AvisosRouteImport } from './routes/avisos'
+import { Route as BusesRouteImport } from './routes/buses'
+import { Route as ContactoRouteImport } from './routes/contacto'
+import { Route as McpRouteImport } from './routes/mcp'
+import { Route as ParadasRouteImport } from './routes/paradas'
+import { Route as PoliticaCookiesRouteImport } from './routes/politica-cookies'
+import { Route as PoliticaPrivacidadRouteImport } from './routes/politica-privacidad'
+import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as Char91DotmcpChar93ListToolsRouteImport } from './routes/[.mcp]/list-tools'
-import { Route as ApiStopsIndexRouteImport } from './routes/api/stops/index'
-import { Route as ApiBusesIndexRouteImport } from './routes/api/buses/index'
-import { Route as ApiStopsStopIdRouteImport } from './routes/api/stops/$stopId'
-import { Route as ApiGtfsRtVehiclePositionsRouteImport } from './routes/api/gtfs-rt/vehicle-positions'
-import { Route as ApiGtfsRtTripUpdatesRouteImport } from './routes/api/gtfs-rt/trip-updates'
-import { Route as ApiGtfsRtServiceAlertsRouteImport } from './routes/api/gtfs-rt/service-alerts'
-import { Route as ApiBusesVehicleIdRouteImport } from './routes/api/buses/$vehicleId'
+import { Route as Char91DotwellKnownChar93OauthProtectedResourceRouteImport } from './routes/[.well-known]/oauth-protected-resource'
+import { Route as AvisosSanAntonioRouteImport } from './routes/avisos.san-antonio'
+import { Route as ParadaSlugRouteImport } from './routes/parada/$slug'
 import { Route as Char91DotmcpChar93InvokeToolToolRouteImport } from './routes/[.mcp]/invoke-tool/$tool'
-import { Route as ApiPublicWhatsappWebhookRouteImport } from './routes/api/public/whatsapp/webhook'
-import { Route as ApiPublicVoiceStopRouteImport } from './routes/api/public/voice/stop'
-import { Route as ApiPublicTelegramWebhookRouteImport } from './routes/api/public/telegram/webhook'
-import { Route as ApiPublicTelegramTickRouteImport } from './routes/api/public/telegram/tick'
-import { Route as ApiPublicTelegramBroadcastRouteImport } from './routes/api/public/telegram/broadcast'
-import { Route as ApiPublicAlexaSkillRouteImport } from './routes/api/public/alexa/skill'
+import { Route as ApiBusesIndexRouteImport } from './routes/api/buses/index'
+import { Route as ApiBusesVehicleIdRouteImport } from './routes/api/buses/$vehicleId'
+import { Route as ApiGtfsRtServiceAlertsRouteImport } from './routes/api/gtfs-rt/service-alerts'
+import { Route as ApiGtfsRtTripUpdatesRouteImport } from './routes/api/gtfs-rt/trip-updates'
+import { Route as ApiGtfsRtVehiclePositionsRouteImport } from './routes/api/gtfs-rt/vehicle-positions'
+import { Route as ApiStopsIndexRouteImport } from './routes/api/stops/index'
+import { Route as ApiStopsStopIdRouteImport } from './routes/api/stops/$stopId'
 import { Route as ApiPublicAirQualityRefreshRouteImport } from './routes/api/public/air-quality/refresh'
+import { Route as ApiPublicAlexaSkillRouteImport } from './routes/api/public/alexa/skill'
+import { Route as ApiPublicTelegramBroadcastRouteImport } from './routes/api/public/telegram/broadcast'
+import { Route as ApiPublicTelegramTickRouteImport } from './routes/api/public/telegram/tick'
+import { Route as ApiPublicTelegramWebhookRouteImport } from './routes/api/public/telegram/webhook'
+import { Route as ApiPublicVoiceStopRouteImport } from './routes/api/public/voice/stop'
+import { Route as ApiPublicWhatsappWebhookRouteImport } from './routes/api/public/whatsapp/webhook'
 
-const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
-  id: '/sitemap.xml',
-  path: '/sitemap.xml',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const PoliticaPrivacidadRoute = PoliticaPrivacidadRouteImport.update({
-  id: '/politica-privacidad',
-  path: '/politica-privacidad',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const PoliticaCookiesRoute = PoliticaCookiesRouteImport.update({
-  id: '/politica-cookies',
-  path: '/politica-cookies',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ParadasRoute = ParadasRouteImport.update({
-  id: '/paradas',
-  path: '/paradas',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const McpRoute = McpRouteImport.update({
-  id: '/mcp',
-  path: '/mcp',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ContactoRoute = ContactoRouteImport.update({
-  id: '/contacto',
-  path: '/contacto',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const BusesRoute = BusesRouteImport.update({
-  id: '/buses',
-  path: '/buses',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AvisosRoute = AvisosRouteImport.update({
-  id: '/avisos',
-  path: '/avisos',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AvisoLegalRoute = AvisoLegalRouteImport.update({
-  id: '/aviso-legal',
-  path: '/aviso-legal',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AsistentesRoute = AsistentesRouteImport.update({
-  id: '/asistentes',
-  path: '/asistentes',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AppRoute = AppRouteImport.update({
-  id: '/app',
-  path: '/app',
+const IndexRoute = IndexRouteImport.update({
+  id: '/',
+  path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminRoute = AdminRouteImport.update({
@@ -102,67 +52,81 @@ const AdminRoute = AdminRouteImport.update({
   path: '/admin',
   getParentRoute: () => rootRouteImport,
 } as any)
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
+const AppRoute = AppRouteImport.update({
+  id: '/app',
+  path: '/app',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ParadaSlugRoute = ParadaSlugRouteImport.update({
-  id: '/parada/$slug',
-  path: '/parada/$slug',
+const AsistentesRoute = AsistentesRouteImport.update({
+  id: '/asistentes',
+  path: '/asistentes',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AvisosSanAntonioRoute = AvisosSanAntonioRouteImport.update({
-  id: '/san-antonio',
-  path: '/san-antonio',
-  getParentRoute: () => AvisosRoute,
+const AvisoLegalRoute = AvisoLegalRouteImport.update({
+  id: '/aviso-legal',
+  path: '/aviso-legal',
+  getParentRoute: () => rootRouteImport,
 } as any)
-const Char91DotwellKnownChar93OauthProtectedResourceRoute =
-  Char91DotwellKnownChar93OauthProtectedResourceRouteImport.update({
-    id: '/.well-known/oauth-protected-resource',
-    path: '/.well-known/oauth-protected-resource',
-    getParentRoute: () => rootRouteImport,
-  } as any)
+const AvisosRoute = AvisosRouteImport.update({
+  id: '/avisos',
+  path: '/avisos',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BusesRoute = BusesRouteImport.update({
+  id: '/buses',
+  path: '/buses',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ContactoRoute = ContactoRouteImport.update({
+  id: '/contacto',
+  path: '/contacto',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const McpRoute = McpRouteImport.update({
+  id: '/mcp',
+  path: '/mcp',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ParadasRoute = ParadasRouteImport.update({
+  id: '/paradas',
+  path: '/paradas',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PoliticaCookiesRoute = PoliticaCookiesRouteImport.update({
+  id: '/politica-cookies',
+  path: '/politica-cookies',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PoliticaPrivacidadRoute = PoliticaPrivacidadRouteImport.update({
+  id: '/politica-privacidad',
+  path: '/politica-privacidad',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const Char91DotmcpChar93ListToolsRoute =
   Char91DotmcpChar93ListToolsRouteImport.update({
     id: '/.mcp/list-tools',
     path: '/.mcp/list-tools',
     getParentRoute: () => rootRouteImport,
   } as any)
-const ApiStopsIndexRoute = ApiStopsIndexRouteImport.update({
-  id: '/api/stops/',
-  path: '/api/stops/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ApiBusesIndexRoute = ApiBusesIndexRouteImport.update({
-  id: '/api/buses/',
-  path: '/api/buses/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ApiStopsStopIdRoute = ApiStopsStopIdRouteImport.update({
-  id: '/api/stops/$stopId',
-  path: '/api/stops/$stopId',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ApiGtfsRtVehiclePositionsRoute =
-  ApiGtfsRtVehiclePositionsRouteImport.update({
-    id: '/api/gtfs-rt/vehicle-positions',
-    path: '/api/gtfs-rt/vehicle-positions',
+const Char91DotwellKnownChar93OauthProtectedResourceRoute =
+  Char91DotwellKnownChar93OauthProtectedResourceRouteImport.update({
+    id: '/.well-known/oauth-protected-resource',
+    path: '/.well-known/oauth-protected-resource',
     getParentRoute: () => rootRouteImport,
   } as any)
-const ApiGtfsRtTripUpdatesRoute = ApiGtfsRtTripUpdatesRouteImport.update({
-  id: '/api/gtfs-rt/trip-updates',
-  path: '/api/gtfs-rt/trip-updates',
-  getParentRoute: () => rootRouteImport,
+const AvisosSanAntonioRoute = AvisosSanAntonioRouteImport.update({
+  id: '/san-antonio',
+  path: '/san-antonio',
+  getParentRoute: () => AvisosRoute,
 } as any)
-const ApiGtfsRtServiceAlertsRoute = ApiGtfsRtServiceAlertsRouteImport.update({
-  id: '/api/gtfs-rt/service-alerts',
-  path: '/api/gtfs-rt/service-alerts',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ApiBusesVehicleIdRoute = ApiBusesVehicleIdRouteImport.update({
-  id: '/api/buses/$vehicleId',
-  path: '/api/buses/$vehicleId',
+const ParadaSlugRoute = ParadaSlugRouteImport.update({
+  id: '/parada/$slug',
+  path: '/parada/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
 const Char91DotmcpChar93InvokeToolToolRoute =
@@ -171,26 +135,51 @@ const Char91DotmcpChar93InvokeToolToolRoute =
     path: '/.mcp/invoke-tool/$tool',
     getParentRoute: () => rootRouteImport,
   } as any)
-const ApiPublicWhatsappWebhookRoute =
-  ApiPublicWhatsappWebhookRouteImport.update({
-    id: '/api/public/whatsapp/webhook',
-    path: '/api/public/whatsapp/webhook',
-    getParentRoute: () => rootRouteImport,
-  } as any)
-const ApiPublicVoiceStopRoute = ApiPublicVoiceStopRouteImport.update({
-  id: '/api/public/voice/stop',
-  path: '/api/public/voice/stop',
+const ApiBusesIndexRoute = ApiBusesIndexRouteImport.update({
+  id: '/api/buses/',
+  path: '/api/buses/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ApiPublicTelegramWebhookRoute =
-  ApiPublicTelegramWebhookRouteImport.update({
-    id: '/api/public/telegram/webhook',
-    path: '/api/public/telegram/webhook',
+const ApiBusesVehicleIdRoute = ApiBusesVehicleIdRouteImport.update({
+  id: '/api/buses/$vehicleId',
+  path: '/api/buses/$vehicleId',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiGtfsRtServiceAlertsRoute = ApiGtfsRtServiceAlertsRouteImport.update({
+  id: '/api/gtfs-rt/service-alerts',
+  path: '/api/gtfs-rt/service-alerts',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiGtfsRtTripUpdatesRoute = ApiGtfsRtTripUpdatesRouteImport.update({
+  id: '/api/gtfs-rt/trip-updates',
+  path: '/api/gtfs-rt/trip-updates',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiGtfsRtVehiclePositionsRoute =
+  ApiGtfsRtVehiclePositionsRouteImport.update({
+    id: '/api/gtfs-rt/vehicle-positions',
+    path: '/api/gtfs-rt/vehicle-positions',
     getParentRoute: () => rootRouteImport,
   } as any)
-const ApiPublicTelegramTickRoute = ApiPublicTelegramTickRouteImport.update({
-  id: '/api/public/telegram/tick',
-  path: '/api/public/telegram/tick',
+const ApiStopsIndexRoute = ApiStopsIndexRouteImport.update({
+  id: '/api/stops/',
+  path: '/api/stops/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiStopsStopIdRoute = ApiStopsStopIdRouteImport.update({
+  id: '/api/stops/$stopId',
+  path: '/api/stops/$stopId',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiPublicAirQualityRefreshRoute =
+  ApiPublicAirQualityRefreshRouteImport.update({
+    id: '/api/public/air-quality/refresh',
+    path: '/api/public/air-quality/refresh',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const ApiPublicAlexaSkillRoute = ApiPublicAlexaSkillRouteImport.update({
+  id: '/api/public/alexa/skill',
+  path: '/api/public/alexa/skill',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ApiPublicTelegramBroadcastRoute =
@@ -199,15 +188,26 @@ const ApiPublicTelegramBroadcastRoute =
     path: '/api/public/telegram/broadcast',
     getParentRoute: () => rootRouteImport,
   } as any)
-const ApiPublicAlexaSkillRoute = ApiPublicAlexaSkillRouteImport.update({
-  id: '/api/public/alexa/skill',
-  path: '/api/public/alexa/skill',
+const ApiPublicTelegramTickRoute = ApiPublicTelegramTickRouteImport.update({
+  id: '/api/public/telegram/tick',
+  path: '/api/public/telegram/tick',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ApiPublicAirQualityRefreshRoute =
-  ApiPublicAirQualityRefreshRouteImport.update({
-    id: '/api/public/air-quality/refresh',
-    path: '/api/public/air-quality/refresh',
+const ApiPublicTelegramWebhookRoute =
+  ApiPublicTelegramWebhookRouteImport.update({
+    id: '/api/public/telegram/webhook',
+    path: '/api/public/telegram/webhook',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const ApiPublicVoiceStopRoute = ApiPublicVoiceStopRouteImport.update({
+  id: '/api/public/voice/stop',
+  path: '/api/public/voice/stop',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiPublicWhatsappWebhookRoute =
+  ApiPublicWhatsappWebhookRouteImport.update({
+    id: '/api/public/whatsapp/webhook',
+    path: '/api/public/whatsapp/webhook',
     getParentRoute: () => rootRouteImport,
   } as any)
 
@@ -455,81 +455,11 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/sitemap.xml': {
-      id: '/sitemap.xml'
-      path: '/sitemap.xml'
-      fullPath: '/sitemap.xml'
-      preLoaderRoute: typeof SitemapDotxmlRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/politica-privacidad': {
-      id: '/politica-privacidad'
-      path: '/politica-privacidad'
-      fullPath: '/politica-privacidad'
-      preLoaderRoute: typeof PoliticaPrivacidadRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/politica-cookies': {
-      id: '/politica-cookies'
-      path: '/politica-cookies'
-      fullPath: '/politica-cookies'
-      preLoaderRoute: typeof PoliticaCookiesRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/paradas': {
-      id: '/paradas'
-      path: '/paradas'
-      fullPath: '/paradas'
-      preLoaderRoute: typeof ParadasRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/mcp': {
-      id: '/mcp'
-      path: '/mcp'
-      fullPath: '/mcp'
-      preLoaderRoute: typeof McpRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/contacto': {
-      id: '/contacto'
-      path: '/contacto'
-      fullPath: '/contacto'
-      preLoaderRoute: typeof ContactoRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/buses': {
-      id: '/buses'
-      path: '/buses'
-      fullPath: '/buses'
-      preLoaderRoute: typeof BusesRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/avisos': {
-      id: '/avisos'
-      path: '/avisos'
-      fullPath: '/avisos'
-      preLoaderRoute: typeof AvisosRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/aviso-legal': {
-      id: '/aviso-legal'
-      path: '/aviso-legal'
-      fullPath: '/aviso-legal'
-      preLoaderRoute: typeof AvisoLegalRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/asistentes': {
-      id: '/asistentes'
-      path: '/asistentes'
-      fullPath: '/asistentes'
-      preLoaderRoute: typeof AsistentesRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/app': {
-      id: '/app'
-      path: '/app'
-      fullPath: '/app'
-      preLoaderRoute: typeof AppRouteImport
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/admin': {
@@ -539,32 +469,81 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
+    '/app': {
+      id: '/app'
+      path: '/app'
+      fullPath: '/app'
+      preLoaderRoute: typeof AppRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/parada/$slug': {
-      id: '/parada/$slug'
-      path: '/parada/$slug'
-      fullPath: '/parada/$slug'
-      preLoaderRoute: typeof ParadaSlugRouteImport
+    '/asistentes': {
+      id: '/asistentes'
+      path: '/asistentes'
+      fullPath: '/asistentes'
+      preLoaderRoute: typeof AsistentesRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/avisos/san-antonio': {
-      id: '/avisos/san-antonio'
-      path: '/san-antonio'
-      fullPath: '/avisos/san-antonio'
-      preLoaderRoute: typeof AvisosSanAntonioRouteImport
-      parentRoute: typeof AvisosRoute
+    '/aviso-legal': {
+      id: '/aviso-legal'
+      path: '/aviso-legal'
+      fullPath: '/aviso-legal'
+      preLoaderRoute: typeof AvisoLegalRouteImport
+      parentRoute: typeof rootRouteImport
     }
-    '/.well-known/oauth-protected-resource': {
-      id: '/.well-known/oauth-protected-resource'
-      path: '/.well-known/oauth-protected-resource'
-      fullPath: '/.well-known/oauth-protected-resource'
-      preLoaderRoute: typeof Char91DotwellKnownChar93OauthProtectedResourceRouteImport
+    '/avisos': {
+      id: '/avisos'
+      path: '/avisos'
+      fullPath: '/avisos'
+      preLoaderRoute: typeof AvisosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/buses': {
+      id: '/buses'
+      path: '/buses'
+      fullPath: '/buses'
+      preLoaderRoute: typeof BusesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/contacto': {
+      id: '/contacto'
+      path: '/contacto'
+      fullPath: '/contacto'
+      preLoaderRoute: typeof ContactoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/mcp': {
+      id: '/mcp'
+      path: '/mcp'
+      fullPath: '/mcp'
+      preLoaderRoute: typeof McpRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/paradas': {
+      id: '/paradas'
+      path: '/paradas'
+      fullPath: '/paradas'
+      preLoaderRoute: typeof ParadasRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/politica-cookies': {
+      id: '/politica-cookies'
+      path: '/politica-cookies'
+      fullPath: '/politica-cookies'
+      preLoaderRoute: typeof PoliticaCookiesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/politica-privacidad': {
+      id: '/politica-privacidad'
+      path: '/politica-privacidad'
+      fullPath: '/politica-privacidad'
+      preLoaderRoute: typeof PoliticaPrivacidadRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sitemap.xml': {
+      id: '/sitemap.xml'
+      path: '/sitemap.xml'
+      fullPath: '/sitemap.xml'
+      preLoaderRoute: typeof SitemapDotxmlRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/.mcp/list-tools': {
@@ -574,53 +553,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof Char91DotmcpChar93ListToolsRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/api/stops/': {
-      id: '/api/stops/'
-      path: '/api/stops'
-      fullPath: '/api/stops/'
-      preLoaderRoute: typeof ApiStopsIndexRouteImport
+    '/.well-known/oauth-protected-resource': {
+      id: '/.well-known/oauth-protected-resource'
+      path: '/.well-known/oauth-protected-resource'
+      fullPath: '/.well-known/oauth-protected-resource'
+      preLoaderRoute: typeof Char91DotwellKnownChar93OauthProtectedResourceRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/api/buses/': {
-      id: '/api/buses/'
-      path: '/api/buses'
-      fullPath: '/api/buses/'
-      preLoaderRoute: typeof ApiBusesIndexRouteImport
-      parentRoute: typeof rootRouteImport
+    '/avisos/san-antonio': {
+      id: '/avisos/san-antonio'
+      path: '/san-antonio'
+      fullPath: '/avisos/san-antonio'
+      preLoaderRoute: typeof AvisosSanAntonioRouteImport
+      parentRoute: typeof AvisosRoute
     }
-    '/api/stops/$stopId': {
-      id: '/api/stops/$stopId'
-      path: '/api/stops/$stopId'
-      fullPath: '/api/stops/$stopId'
-      preLoaderRoute: typeof ApiStopsStopIdRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/api/gtfs-rt/vehicle-positions': {
-      id: '/api/gtfs-rt/vehicle-positions'
-      path: '/api/gtfs-rt/vehicle-positions'
-      fullPath: '/api/gtfs-rt/vehicle-positions'
-      preLoaderRoute: typeof ApiGtfsRtVehiclePositionsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/api/gtfs-rt/trip-updates': {
-      id: '/api/gtfs-rt/trip-updates'
-      path: '/api/gtfs-rt/trip-updates'
-      fullPath: '/api/gtfs-rt/trip-updates'
-      preLoaderRoute: typeof ApiGtfsRtTripUpdatesRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/api/gtfs-rt/service-alerts': {
-      id: '/api/gtfs-rt/service-alerts'
-      path: '/api/gtfs-rt/service-alerts'
-      fullPath: '/api/gtfs-rt/service-alerts'
-      preLoaderRoute: typeof ApiGtfsRtServiceAlertsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/api/buses/$vehicleId': {
-      id: '/api/buses/$vehicleId'
-      path: '/api/buses/$vehicleId'
-      fullPath: '/api/buses/$vehicleId'
-      preLoaderRoute: typeof ApiBusesVehicleIdRouteImport
+    '/parada/$slug': {
+      id: '/parada/$slug'
+      path: '/parada/$slug'
+      fullPath: '/parada/$slug'
+      preLoaderRoute: typeof ParadaSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/.mcp/invoke-tool/$tool': {
@@ -630,39 +581,60 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof Char91DotmcpChar93InvokeToolToolRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/api/public/whatsapp/webhook': {
-      id: '/api/public/whatsapp/webhook'
-      path: '/api/public/whatsapp/webhook'
-      fullPath: '/api/public/whatsapp/webhook'
-      preLoaderRoute: typeof ApiPublicWhatsappWebhookRouteImport
+    '/api/buses/': {
+      id: '/api/buses/'
+      path: '/api/buses'
+      fullPath: '/api/buses/'
+      preLoaderRoute: typeof ApiBusesIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/api/public/voice/stop': {
-      id: '/api/public/voice/stop'
-      path: '/api/public/voice/stop'
-      fullPath: '/api/public/voice/stop'
-      preLoaderRoute: typeof ApiPublicVoiceStopRouteImport
+    '/api/buses/$vehicleId': {
+      id: '/api/buses/$vehicleId'
+      path: '/api/buses/$vehicleId'
+      fullPath: '/api/buses/$vehicleId'
+      preLoaderRoute: typeof ApiBusesVehicleIdRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/api/public/telegram/webhook': {
-      id: '/api/public/telegram/webhook'
-      path: '/api/public/telegram/webhook'
-      fullPath: '/api/public/telegram/webhook'
-      preLoaderRoute: typeof ApiPublicTelegramWebhookRouteImport
+    '/api/gtfs-rt/service-alerts': {
+      id: '/api/gtfs-rt/service-alerts'
+      path: '/api/gtfs-rt/service-alerts'
+      fullPath: '/api/gtfs-rt/service-alerts'
+      preLoaderRoute: typeof ApiGtfsRtServiceAlertsRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/api/public/telegram/tick': {
-      id: '/api/public/telegram/tick'
-      path: '/api/public/telegram/tick'
-      fullPath: '/api/public/telegram/tick'
-      preLoaderRoute: typeof ApiPublicTelegramTickRouteImport
+    '/api/gtfs-rt/trip-updates': {
+      id: '/api/gtfs-rt/trip-updates'
+      path: '/api/gtfs-rt/trip-updates'
+      fullPath: '/api/gtfs-rt/trip-updates'
+      preLoaderRoute: typeof ApiGtfsRtTripUpdatesRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/api/public/telegram/broadcast': {
-      id: '/api/public/telegram/broadcast'
-      path: '/api/public/telegram/broadcast'
-      fullPath: '/api/public/telegram/broadcast'
-      preLoaderRoute: typeof ApiPublicTelegramBroadcastRouteImport
+    '/api/gtfs-rt/vehicle-positions': {
+      id: '/api/gtfs-rt/vehicle-positions'
+      path: '/api/gtfs-rt/vehicle-positions'
+      fullPath: '/api/gtfs-rt/vehicle-positions'
+      preLoaderRoute: typeof ApiGtfsRtVehiclePositionsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/stops/': {
+      id: '/api/stops/'
+      path: '/api/stops'
+      fullPath: '/api/stops/'
+      preLoaderRoute: typeof ApiStopsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/stops/$stopId': {
+      id: '/api/stops/$stopId'
+      path: '/api/stops/$stopId'
+      fullPath: '/api/stops/$stopId'
+      preLoaderRoute: typeof ApiStopsStopIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/public/air-quality/refresh': {
+      id: '/api/public/air-quality/refresh'
+      path: '/api/public/air-quality/refresh'
+      fullPath: '/api/public/air-quality/refresh'
+      preLoaderRoute: typeof ApiPublicAirQualityRefreshRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/public/alexa/skill': {
@@ -672,11 +644,39 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiPublicAlexaSkillRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/api/public/air-quality/refresh': {
-      id: '/api/public/air-quality/refresh'
-      path: '/api/public/air-quality/refresh'
-      fullPath: '/api/public/air-quality/refresh'
-      preLoaderRoute: typeof ApiPublicAirQualityRefreshRouteImport
+    '/api/public/telegram/broadcast': {
+      id: '/api/public/telegram/broadcast'
+      path: '/api/public/telegram/broadcast'
+      fullPath: '/api/public/telegram/broadcast'
+      preLoaderRoute: typeof ApiPublicTelegramBroadcastRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/public/telegram/tick': {
+      id: '/api/public/telegram/tick'
+      path: '/api/public/telegram/tick'
+      fullPath: '/api/public/telegram/tick'
+      preLoaderRoute: typeof ApiPublicTelegramTickRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/public/telegram/webhook': {
+      id: '/api/public/telegram/webhook'
+      path: '/api/public/telegram/webhook'
+      fullPath: '/api/public/telegram/webhook'
+      preLoaderRoute: typeof ApiPublicTelegramWebhookRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/public/voice/stop': {
+      id: '/api/public/voice/stop'
+      path: '/api/public/voice/stop'
+      fullPath: '/api/public/voice/stop'
+      preLoaderRoute: typeof ApiPublicVoiceStopRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/public/whatsapp/webhook': {
+      id: '/api/public/whatsapp/webhook'
+      path: '/api/public/whatsapp/webhook'
+      fullPath: '/api/public/whatsapp/webhook'
+      preLoaderRoute: typeof ApiPublicWhatsappWebhookRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
