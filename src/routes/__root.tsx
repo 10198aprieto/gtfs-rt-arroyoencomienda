@@ -1,5 +1,6 @@
 import { Outlet, Link, createRootRoute, HeadContent, Scripts } from "@tanstack/react-router";
 import CookieBanner from "@/components/CookieBanner";
+import PetitionBanner from "@/components/PetitionBanner";
 import MarqueeBanner from "@/components/MarqueeBanner";
 import FeedbackPopup from "@/components/FeedbackPopup";
 import AnalyticsLoader from "@/components/AnalyticsLoader";
@@ -126,6 +127,7 @@ function RootComponent() {
       <MarqueeBanner />
       <Outlet />
       <CookieBanner />
+      <PetitionBanner />
       <FeedbackPopup />
       <AnalyticsLoader />
       <Analytics />
