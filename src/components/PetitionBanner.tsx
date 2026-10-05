@@ -24,18 +24,22 @@ export default function PetitionBanner() {
     } catch {
       /* modo privado */
     }
+    setVisible(true);
+
+    let onConsent: (() => void) | null = null;
     try {
       const consent = localStorage.getItem("arroyobus_cookie_consent");
       if (!consent) {
         setCookiePending(true);
-        const onConsent = () => setCookiePending(false);
+        onConsent = () => setCookiePending(false);
         window.addEventListener("arroyobus:consent-changed", onConsent);
-        return () => window.removeEventListener("arroyobus:consent-changed", onConsent);
       }
     } catch {
       /* ignore */
     }
-    setVisible(true);
+    return () => {
+      if (onConsent) window.removeEventListener("arroyobus:consent-changed", onConsent);
+    };
   }, []);
 
   if (!visible) return null;
