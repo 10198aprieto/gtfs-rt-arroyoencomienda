@@ -74,7 +74,7 @@ export default function PetitionBanner() {
           rel="noopener noreferrer"
           className="ios-press inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full bg-primary text-primary-foreground text-xs font-semibold hover:opacity-90 transition-opacity flex-shrink-0"
         >
-          <span className="hidden xs:inline sm:inline">Firma en Change.org</span>
+          <span className="hidden sm:inline">Firma en Change.org</span>
           <span className="sm:hidden">Firmar</span>
           <ExternalLink className="w-3.5 h-3.5" />
         </a>
