@@ -25,6 +25,58 @@ export const Route = createFileRoute("/asistentes")({
   }),
 });
 
+const intent = (name: string, samples: string[], slots: { name: string; type: string }[] = []) => ({
+  name,
+  ...(slots.length ? { slots } : {}),
+  samples,
+});
+
+const ALEXA_MODEL = JSON.stringify(
+  {
+    interactionModel: {
+      languageModel: {
+        invocationName: "arroyo bus",
+        intents: [
+          { name: "AMAZON.HelpIntent", samples: [] },
+          { name: "AMAZON.StopIntent", samples: [] },
+          { name: "AMAZON.CancelIntent", samples: [] },
+          { name: "AMAZON.YesIntent", samples: [] },
+          { name: "AMAZON.NoIntent", samples: [] },
+          { name: "AMAZON.RepeatIntent", samples: [] },
+          { name: "AMAZON.FallbackIntent", samples: [] },
+          { name: "AMAZON.NavigateHomeIntent", samples: [] },
+          intent("ParadaIntent", ["próximo bus en la parada {parada}", "cuándo llega el bus a {parada}", "parada {parada}", "qué buses pasan por {parada}", "consulta la parada {parada}"], [{ name: "parada", type: "AMAZON.SearchQuery" }]),
+          intent("LineaParadaIntent", ["cuándo pasa la línea {linea} por {parada}", "cuándo llega la {linea} a {parada}", "próxima {linea} en {parada}", "cuándo pasa la {linea}"], [{ name: "linea", type: "LINEA" }, { name: "parada", type: "AMAZON.City" }]),
+          intent("DondeLineaIntent", ["dónde está la línea {linea}", "dónde va la {linea}", "por dónde va el {linea}"], [{ name: "linea", type: "LINEA" }]),
+          intent("BusesActivosIntent", ["cuántos buses hay circulando", "cuántos autobuses hay", "hay buses ahora", "cuántos buses de la {linea} hay"], [{ name: "linea", type: "LINEA" }]),
+          intent("AvisosIntent", ["hay avisos", "hay incidencias", "hay algún problema", "cómo va el servicio", "hay retrasos"]),
+          intent("LineasIntent", ["qué líneas hay", "qué líneas tiene arroyo bus", "dime las líneas"]),
+          intent("TarifasIntent", ["cuánto cuesta el billete", "precio del bus", "tarifas", "cuánto vale el autobús"]),
+          intent("BuscylIntent", ["qué es la tarjeta buscyl", "cómo consigo la buscyl", "tarjeta buscyl", "abono"]),
+          intent("ComoLlegarIntent", ["cómo voy a {destino}", "cómo llego a {destino}", "cómo ir a {destino}", "combinar con auvasa para ir a {destino}"], [{ name: "destino", type: "AMAZON.SearchQuery" }]),
+          intent("BuhoIntent", ["horario del búho", "a qué hora pasa el búho", "bus nocturno"]),
+          intent("TelefonoIntent", ["teléfono de atención", "a quién llamo", "número de teléfono"]),
+          intent("PeticionIntent", ["la petición de change", "qué es la petición", "recogida de firmas"]),
+          intent("RefrescarIntent", ["actualiza", "otra vez", "vuelve a consultar"]),
+        ],
+        types: [
+          {
+            name: "LINEA",
+            values: [
+              { name: { value: "azul", synonyms: ["línea azul"] } },
+              { name: { value: "roja", synonyms: ["línea roja", "rojo"] } },
+              { name: { value: "verde", synonyms: ["línea verde", "universidades"] } },
+              { name: { value: "búho", synonyms: ["buho", "nocturno", "el búho"] } },
+            ],
+          },
+        ],
+      },
+    },
+  },
+  null,
+  2,
+);
+
 function CopyInline({ value, label }: { value: string; label?: string }) {
   const [copied, setCopied] = useState(false);
   return (
@@ -218,34 +270,35 @@ function AsistentesPage() {
               de intents:
             </li>
           </ol>
-          <CodeBlock>{`{
-  "interactionModel": {
-    "languageModel": {
-      "invocationName": "arroyo bus",
-      "intents": [
-        { "name": "AMAZON.HelpIntent", "samples": [] },
-        { "name": "AMAZON.StopIntent", "samples": [] },
-        { "name": "AMAZON.CancelIntent", "samples": [] },
-        {
-          "name": "ParadaIntent",
-          "slots": [{ "name": "parada", "type": "AMAZON.SearchQuery" }],
-          "samples": [
-            "próximo bus en la parada {parada}",
-            "cuándo llega el bus a {parada}",
-            "parada {parada}",
-            "qué buses pasan por {parada}",
-            "consulta la parada {parada}"
-          ]
-        }
-      ]
-    }
-  }
-}`}</CodeBlock>
+          <CodeBlock>{ALEXA_MODEL}</CodeBlock>
           <p className="text-xs text-muted-foreground">
-            Guarda, construye el modelo y prueba con{" "}
-            <em>«Alexa, abre arroyo bus»</em> →{" "}
-            <em>«próximo bus en la parada 100»</em>.
+            Si ya tenías la skill creada, sustituye el modelo antiguo por este, pulsa{" "}
+            <strong>Save</strong> y <strong>Build Model</strong>. Prueba con{" "}
+            <em>«Alexa, abre arroyo bus»</em>.
           </p>
+          <div className="rounded-xl bg-background border border-border p-4 text-sm">
+            <h3 className="font-semibold mb-2">Qué le puedes preguntar</h3>
+            <ul className="grid sm:grid-cols-2 gap-x-6 gap-y-1.5 text-muted-foreground text-[13px]">
+              <li>🚏 «próximo bus en la parada 100»</li>
+              <li>🔵 «cuándo pasa la línea azul por Plaza España»</li>
+              <li>📍 «dónde está la línea roja»</li>
+              <li>🚌 «cuántos buses hay circulando»</li>
+              <li>⚠️ «hay avisos» / «hay incidencias»</li>
+              <li>🗺️ «qué líneas hay»</li>
+              <li>🎫 «cuánto cuesta el billete»</li>
+              <li>💳 «qué es la tarjeta BusCyL»</li>
+              <li>🏥 «cómo voy al hospital Río Hortega»</li>
+              <li>🎓 «cómo llego a la universidad»</li>
+              <li>🦉 «horario del búho»</li>
+              <li>📞 «teléfono de atención»</li>
+              <li>✍️ «la petición de change»</li>
+              <li>🔁 «repite» / «actualiza» (vuelve a consultar la última parada)</li>
+            </ul>
+            <p className="text-xs text-muted-foreground mt-3">
+              Alexa mantiene la conversación abierta: tras cada respuesta puedes
+              hacer otra pregunta sin repetir «abre arroyo bus». Di «no» o «para» para terminar.
+            </p>
+          </div>
           <p className="text-xs text-muted-foreground">
             Opcional: para restringir el endpoint a tu skill, configura el secreto{" "}
             <code className="px-1 bg-background border border-border rounded">ALEXA_SKILL_ID</code>{" "}
