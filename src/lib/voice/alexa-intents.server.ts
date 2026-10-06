@@ -170,7 +170,7 @@ export async function handleIntent(intent: any, session: Record<string, any> = {
     case "LineasIntent":
       return keep(
         "Arroyo Bus tiene cuatro líneas: " +
-          ROUTES.map((r) => `la ${r.name}, ${r.desc.replace(/·/g, ",")}`).join("; ") +
+          ROUTES.map((r) => `la ${r.name}, ${r.desc.replace(/ ·/g, ",").replace(" (noche)", ", de noche")}`).join("; ") +
           "."
       );
     case "TarifasIntent":
